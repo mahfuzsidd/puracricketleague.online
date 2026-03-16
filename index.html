@@ -1,87 +1,297 @@
-<script>
-    // 1. MASTER DATABASE: Sare players ka data yahan add karein
-    const profiles = {
-        "mahfuz siddqui": {
-            name: "Mahfuz Siddqui",
-            team: "ADNAN XI",
-            role: "All Rounder",
-            stats: { mat: 3, runs: 178, hs: 94, sr: 202.27, sixes: 18, wkts: 2 }
-        },
-        "farid mahmood": {
-            name: "Farid Mahmood",
-            team: "ADNAN XI",
-            role: "Lead Bowler",
-            stats: { mat: 3, runs: 8, wkts: 6, econ: 14.43, best: "2/15", sr: 7.0 }
-        },
-        "adnan": {
-            name: "Adnan (Captain)",
-            team: "ADNAN XI",
-            role: "Captain / Batsman",
-            stats: { mat: 3, runs: 30, hs: 23, sr: 176.47, sixes: 1, wkts: 0 }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCL Session 1 | Professional Match Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Public+Sans:wght@300;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        /* --- CRICBUZZ PROFESSIONAL THEME ARCHITECTURE --- */
+        :root {
+            --cb-green: #009270;
+            --cb-navy: #1d2d35;
+            --cb-bg: #e3e6e3;
+            --cb-white: #ffffff;
+            --cb-gold: #f59e0b;
+            --cb-border: #d1d5db;
+            --cb-text-main: #222222;
+            --cb-text-sec: #666666;
+            --cb-live-red: #d32f2f;
         }
-    };
 
-    // 2. GLOBAL CLICK LISTENER: Ye function poori website pe nazar rakhega
-    document.addEventListener('click', function (e) {
-        // Hum check kar rahe hain ki kya click hone wali cheez me "player-link" class hai
-        // Ya fir kya usme likha hua text hamari profile database se match karta hai
-        if (e.target.classList.contains('player-link') || isPlayerName(e.target.innerText)) {
-            const playerName = e.target.innerText.split('(')[0].trim().toLowerCase();
-            if (profiles[playerName]) {
-                showProfile(playerName);
-            }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Roboto', sans-serif; background-color: var(--cb-bg); color: var(--cb-text-main); line-height: 1.5; }
+
+        /* --- GLOBAL HEADER --- */
+        nav { background: var(--cb-navy); padding: 12px 6%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .nav-left { display: flex; align-items: center; gap: 20px; }
+        .main-logo { height: 45px; width: auto; filter: brightness(1.2); }
+        .nav-links a { color: #ccc; text-decoration: none; font-size: 14px; font-weight: 500; padding: 5px 10px; transition: 0.3s; }
+        .nav-links a:hover, .nav-links a.active { color: white; border-bottom: 3px solid var(--cb-green); }
+
+        /* --- MATCH HEADER (Cricbuzz Style) --- */
+        .match-header-strip { background: #2b3e4a; color: white; padding: 25px 6%; border-bottom: 4px solid var(--cb-green); }
+        .series-name { font-size: 13px; color: var(--cb-gold); font-weight: bold; text-transform: uppercase; margin-bottom: 8px; }
+        .match-desc { font-size: 20px; font-weight: 700; margin-bottom: 15px; }
+        .score-row { display: flex; align-items: center; gap: 40px; margin-bottom: 10px; }
+        .team-info { display: flex; align-items: center; gap: 12px; }
+        .team-name { font-size: 24px; font-weight: 900; }
+        .team-score { font-size: 26px; font-weight: 900; color: #fff; }
+        .match-status { color: #00ffcc; font-weight: 600; font-size: 14px; margin-top: 10px; padding: 5px 12px; background: rgba(255,255,255,0.1); border-radius: 4px; display: inline-block; }
+
+        /* --- TAB NAVIGATION --- */
+        .tab-bar { background: white; padding: 0 6%; border-bottom: 1px solid var(--cb-border); display: flex; gap: 30px; }
+        .tab-item { padding: 15px 0; color: var(--cb-text-sec); font-weight: 700; cursor: pointer; font-size: 14px; border-bottom: 3px solid transparent; text-transform: uppercase; }
+        .tab-item.active { color: var(--cb-green); border-bottom-color: var(--cb-green); }
+
+        /* --- SCORECARD LAYOUT --- */
+        .main-content { max-width: 1200px; margin: 20px auto; padding: 0 20px; display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+        .card { background: white; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; overflow: hidden; }
+        .card-header { background: #f1f5f9; padding: 12px 20px; font-weight: 800; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+        
+        /* --- TABLES --- */
+        .sc-table { width: 100%; border-collapse: collapse; }
+        .sc-table th { background: #f9fafb; text-align: left; padding: 10px 20px; font-size: 12px; color: #777; text-transform: uppercase; }
+        .sc-table td { padding: 12px 20px; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
+        .player-n { color: #2b6cb0; font-weight: 700; cursor: pointer; text-decoration: none; }
+        .player-n:hover { text-decoration: underline; color: var(--cb-navy); }
+        .bold { font-weight: 800; }
+        .text-right { text-align: right; }
+        .bg-grey { background: #fbfbfb; }
+
+        /* --- SIDEBAR --- */
+        .sidebar-item { padding: 15px; border-bottom: 1px solid #eee; }
+        .sidebar-title { font-weight: bold; font-size: 13px; color: var(--cb-green); margin-bottom: 10px; text-transform: uppercase; }
+
+        /* --- PLAYER MODAL (Deep Details) --- */
+        .modal { display: none; position: fixed; z-index: 5000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); overflow-y: auto; }
+        .modal-content { background: #fff; margin: 2% auto; width: 90%; max-width: 850px; border-radius: 8px; overflow: hidden; animation: fadeIn 0.4s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .modal-header-cb { background: var(--cb-navy); color: white; padding: 30px; display: flex; gap: 30px; align-items: center; }
+        .p-avatar { width: 110px; height: 110px; border-radius: 50%; border: 4px solid var(--cb-green); background: #eee; display: flex; align-items: center; justify-content: center; font-size: 50px; }
+        .p-meta h2 { font-size: 32px; font-family: 'Public Sans'; }
+        .stats-row-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #eee; border: 1px solid #eee; }
+        .stat-box { background: white; padding: 20px; text-align: center; }
+        .stat-l { font-size: 11px; color: #888; font-weight: bold; display: block; margin-bottom: 5px; }
+        .stat-v { font-size: 24px; font-weight: 900; color: var(--cb-navy); }
+
+        @media (max-width: 768px) {
+            .main-content { grid-template-columns: 1fr; }
+            .team-name { font-size: 18px; }
+            .team-score { font-size: 20px; }
         }
-    });
+    </style>
+</head>
+<body>
 
-    // Helper function to check if text is a player
-    function isPlayerName(text) {
-        const cleanName = text.split('(')[0].trim().toLowerCase();
-        return profiles.hasOwnProperty(cleanName);
-    }
+    <nav>
+        <div class="nav-left">
+            <img src="1000278764.png" alt="PCL Logo" class="main-logo">
+            <div class="nav-links">
+                <a href="#" class="active">MATCHES</a>
+                <a href="#">VIDEOS</a>
+                <a href="#">NEWS</a>
+                <a href="#">RANKINGS</a>
+            </div>
+        </div>
+        <div style="color: white; font-weight: bold; font-size: 12px; opacity: 0.8;">SESSION 1 • 2024</div>
+    </nav>
 
-    // 3. SHOW PROFILE: Popup dikhane ka logic
-    function showProfile(id) {
-        const p = profiles[id];
-        document.getElementById('playerData').innerHTML = `
-            <div class="profile-header">
-                <div class="profile-img"><i class="fas fa-user-tie"></i></div>
-                <div>
-                    <h2 style="text-transform:uppercase;">${p.name}</h2>
-                    <p style="color:#666; font-weight:bold;">${p.team} | ${p.role}</p>
+    <div class="match-header-strip">
+        <div class="series-name">Pura Cricket League • Season 1</div>
+        <div class="match-desc">ADNAN XI vs NEHAL XI, Final</div>
+        
+        <div class="score-row">
+            <div class="team-info">
+                <span class="team-name">ADNAN XI</span>
+                <span class="team-score">134/3 (12.0)</span>
+            </div>
+            <div style="font-weight: bold; color: #888;">vs</div>
+            <div class="team-info">
+                <span class="team-name">NEHAL XI</span>
+                <span class="team-score">139/5 (10.1)</span>
+            </div>
+        </div>
+        <div class="match-status">NEHAL XI won by 5 wickets</div>
+    </div>
+
+    <div class="tab-bar">
+        <div class="tab-item" onclick="showTab('info')">INFO</div>
+        <div class="tab-item active" onclick="showTab('scorecard')">SCORECARD</div>
+        <div class="tab-item" onclick="showTab('squads')">SQUADS</div>
+        <div class="tab-item" onclick="showTab('highlights')">HIGHLIGHTS</div>
+    </div>
+
+    <div class="main-content">
+        <div id="scorecard-container">
+            <div class="card">
+                <div class="card-header">
+                    <span>ADNAN XI INNINGS</span>
+                    <span style="font-weight: normal; font-size: 13px;">134-3 (12.0 Ov)</span>
+                </div>
+                <table class="sc-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 40%;">Batter</th>
+                            <th></th>
+                            <th class="text-right">R</th>
+                            <th class="text-right">B</th>
+                            <th class="text-right">4s</th>
+                            <th class="text-right">6s</th>
+                            <th class="text-right">SR</th>
+                        </tr>
+                    </thead>
+                    <tbody id="batting-data-adn">
+                        </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <div class="card-header">BOWLING (NEHAL XI)</div>
+                <table class="sc-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 40%;">Bowler</th>
+                            <th class="text-right">O</th>
+                            <th class="text-right">M</th>
+                            <th class="text-right">R</th>
+                            <th class="text-right">W</th>
+                            <th class="text-right">NB</th>
+                            <th class="text-right">WD</th>
+                            <th class="text-right">ECO</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bowling-data-neh"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="card">
+                <div class="card-header">MATCH INFO</div>
+                <div class="sidebar-item">
+                    <div class="sidebar-title">Match</div>
+                    <div>ADNAN XI vs NEHAL XI, Final</div>
+                </div>
+                <div class="sidebar-item">
+                    <div class="sidebar-title">Venue</div>
+                    <div>Pura Historical Stadium, Darbhanga</div>
+                </div>
+                <div class="sidebar-item">
+                    <div class="sidebar-title">Toss</div>
+                    <div>ADNAN XI won the toss and opt to bat</div>
+                </div>
+                <div class="sidebar-item">
+                    <div class="sidebar-title">Series MVP</div>
+                    <div class="player-n" onclick="openP('mahfuz siddqui')">Mahfuz Siddqui (21.48 Pts)</div>
                 </div>
             </div>
-            <div class="stats-grid">
-                <div class="stat-item"><span style="font-size:11px; color:#888;">MATCHES</span><span class="stat-val">${p.stats.mat}</span></div>
-                <div class="stat-item"><span style="font-size:11px; color:#888;">RUNS</span><span class="stat-val">${p.stats.runs}</span></div>
-                <div class="stat-item"><span style="font-size:11px; color:#888;">HIGH SCORE</span><span class="stat-val">${p.stats.hs || '0'}</span></div>
-                <div class="stat-item"><span style="font-size:11px; color:#888;">WICKETS</span><span class="stat-val">${p.stats.wkts}</span></div>
-                <div class="stat-item"><span style="font-size:11px; color:#888;">SIXES</span><span class="stat-val">${p.stats.sixes || '0'}</span></div>
-                <div class="stat-item"><span style="font-size:11px; color:#888;">S/R</span><span class="stat-val">${p.stats.sr}</span></div>
+        </div>
+    </div>
+
+    <div id="pModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header-cb">
+                <div class="p-avatar"><i class="fas fa-user"></i></div>
+                <div class="p-meta">
+                    <h2 id="p-name">PLAYER NAME</h2>
+                    <p id="p-team" style="color: var(--cb-gold); font-weight: bold;"></p>
+                    <p id="p-role" style="font-size: 14px; opacity: 0.8;"></p>
+                </div>
+                <span onclick="closeModal()" style="margin-left: auto; cursor: pointer; font-size: 30px;">&times;</span>
             </div>
-            <div style="margin-top:20px; padding:10px; background:#fff9e6; border-radius:5px; font-size:12px; text-align:center;">
-                Official PCL Session 1 Record
+            <div class="stats-row-grid">
+                <div class="stat-box"><span class="stat-l">MATCHES</span><span class="stat-v" id="st-mat">0</span></div>
+                <div class="stat-box"><span class="stat-l">RUNS</span><span class="stat-v" id="st-runs">0</span></div>
+                <div class="stat-box"><span class="stat-l">HIGHEST</span><span class="stat-v" id="st-hs">0</span></div>
+                <div class="stat-box"><span class="stat-l">SR</span><span class="stat-v" id="st-sr">0</span></div>
+                <div class="stat-box"><span class="stat-l">WICKETS</span><span class="stat-v" id="st-wkts">0</span></div>
+                <div class="stat-box"><span class="stat-l">AVG</span><span class="stat-v" id="st-avg">0</span></div>
+                <div class="stat-box"><span class="stat-l">ECON</span><span class="stat-v" id="st-econ">0</span></div>
+                <div class="stat-box"><span class="stat-l">SIXES</span><span class="stat-v" id="st-6s">0</span></div>
             </div>
-        `;
-        document.getElementById('playerModal').style.display = "block";
-    }
+            <div style="padding: 20px; text-align: right; background: #f9fafb;">
+                <button onclick="closeModal()" style="padding: 10px 25px; background: var(--cb-navy); color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">CLOSE</button>
+            </div>
+        </div>
+    </div>
 
-    // Match Modal Logic
-    function openMatch(id) {
-        document.getElementById('matchData').innerHTML = `
-            <h2 style="color:var(--navy)">Match Full Scorecard</h2>
-            <p style="color:#888; margin-bottom:20px;">Pura Historical Stadium, Darbhanga</p>
-            
-            <h3 style="background:#eee; padding:8px 10px; border-radius:5px;">ADNAN XI Innings (134/3)</h3>
-            <table class="fo-table">
-                <tr><th>Batsman</th><th>R</th><th>B</th><th>4s</th><th>6s</th><th>SR</th></tr>
-                <tr><td class="player-link">Mahfuz Siddqui</td><td>94</td><td>42</td><td>5</td><td>12</td><td>223.8</td></tr>
-                <tr><td class="player-link">Adnan</td><td>23</td><td>17</td><td>4</td><td>1</td><td>135.2</td></tr>
-            </table>
-            <p style="font-size:12px; margin-top:10px; color:#666;">* Click on any name above to see their career stats.</p>
-        `;
-        document.getElementById('matchModal').style.display = "block";
-    }
+    <script>
+        // --- DEEP DATA ENGINE (Analysis from your PDFs) ---
+        const PLAYER_DB = {
+            "mahfuz siddqui": { name: "Mahfuz Siddqui", team: "ADNAN XI", role: "Batting Allrounder", mat: 3, runs: 178, hs: 94, sr: 202.27, wkts: 2, avg: 89.0, sixes: 18, econ: 9.43 },
+            "shanu sidd": { name: "Shanu Sidd", team: "NEHAL XI", role: "LHB Batsman", mat: 3, runs: 84, hs: 54, sr: 221.05, wkts: 1, avg: 28.0, sixes: 9, econ: 9.50 },
+            "md hassan": { name: "Md Hassan", team: "NEHAL XI", role: "Allrounder", mat: 3, runs: 80, hs: 29, sr: 195.12, wkts: 3, avg: 40.0, sixes: 10, econ: 9.00 },
+            "farid mahmood": { name: "Farid Mahmood", team: "ADNAN XI", role: "Lead Bowler", mat: 3, runs: 8, hs: 5, sr: 114.28, wkts: 6, avg: 16.83, sixes: 1, econ: 14.43 },
+            "wasim": { name: "Wasim", team: "NEHAL XI", role: "Bowler", mat: 3, runs: 41, hs: 33, sr: 164.0, wkts: 5, avg: 13.6, sixes: 3, econ: 12.25 },
+            "bablu": { name: "Bablu", team: "NEHAL XI", role: "Bowler", mat: 3, runs: 39, hs: "27*", sr: 205.2, wkts: 3, avg: 39.0, sixes: 2, econ: 1.00 },
+            "afzal sajjad": { name: "Afzal Sajjad", team: "ADNAN XI", role: "Allrounder", mat: 3, runs: 44, hs: 26, sr: 118.92, wkts: 4, avg: 22.0, sixes: 2, econ: 6.00 },
+            "adnan": { name: "Adnan", team: "ADNAN XI", role: "Captain", mat: 3, runs: 30, hs: 23, sr: 176.47, wkts: 0, avg: 30.0, sixes: 1, econ: 0 }
+        };
 
-    function closeModal(id) { document.getElementById(id).style.display = "none"; }
-</script>
+        const MATCH_DATA = {
+            batting: [
+                { name: "Mahfuz Siddqui", out: "c Wasim b Shanu Sidd", r: 94, b: 46, f4: 6, s6: 9, sr: 204.35 },
+                { name: "Adnan", out: "c Md Hassan b Wasim", r: 23, b: 17, f4: 4, s6: 1, sr: 135.29 },
+                { name: "Afzal Sajjad", out: "not out", r: 12, b: 11, f4: 0, s6: 2, sr: 109.09 }
+            ],
+            bowling: [
+                { name: "Wasim", o: 3.0, m: 0, r: 47, w: 2, nb: 0, wd: 2, eco: 15.67 },
+                { name: "Shanu Sidd", o: 2.0, m: 0, r: 18, w: 1, nb: 0, wd: 1, eco: 9.00 },
+                { name: "Md Hassan", o: 3.0, m: 0, r: 24, w: 0, nb: 0, wd: 1, eco: 8.00 }
+            ]
+        };
 
+        // --- RENDER ENGINE ---
+        function loadScorecard() {
+            let batHtml = '';
+            MATCH_DATA.batting.forEach(b => {
+                batHtml += `<tr>
+                    <td><a class="player-n" onclick="openP('${b.name.toLowerCase()}')">${b.name}</a><br><small style="color:#999">${b.out}</small></td>
+                    <td></td><td class="bold text-right">${b.r}</td><td class="text-right">${b.b}</td>
+                    <td class="text-right">${b.f4}</td><td class="text-right">${b.s6}</td><td class="text-right">${b.sr}</td>
+                </tr>`;
+            });
+            document.getElementById('batting-data-adn').innerHTML = batHtml;
+
+            let bowlHtml = '';
+            MATCH_DATA.bowling.forEach(bw => {
+                bowlHtml += `<tr>
+                    <td><a class="player-n" onclick="openP('${bw.name.toLowerCase()}')">${bw.name}</a></td>
+                    <td class="text-right bold">${bw.o}</td><td class="text-right">${bw.m}</td>
+                    <td class="text-right">${bw.r}</td><td class="text-right bold">${bw.w}</td>
+                    <td class="text-right">${bw.nb}</td><td class="text-right">${bw.wd}</td>
+                    <td class="text-right">${bw.eco}</td>
+                </tr>`;
+            });
+            document.getElementById('bowling-data-neh').innerHTML = bowlHtml;
+        }
+
+        function openP(id) {
+            const p = PLAYER_DB[id];
+            if(!p) return;
+            document.getElementById('p-name').innerText = p.name;
+            document.getElementById('p-team').innerText = p.team;
+            document.getElementById('p-role').innerText = p.role;
+            document.getElementById('st-mat').innerText = p.mat;
+            document.getElementById('st-runs').innerText = p.runs;
+            document.getElementById('st-hs').innerText = p.hs;
+            document.getElementById('st-sr').innerText = p.sr;
+            document.getElementById('st-wkts').innerText = p.wkts;
+            document.getElementById('st-avg').innerText = p.avg;
+            document.getElementById('st-econ').innerText = p.econ;
+            document.getElementById('st-6s').innerText = p.sixes;
+            document.getElementById('pModal').style.display = "block";
+        }
+
+        function closeModal() { document.getElementById('pModal').style.display = "none"; }
+        window.onclick = function(e) { if(e.target.className === 'modal') closeModal(); }
+        
+        // Initial Load
+        window.onload = loadScorecard;
+    </script>
+</body>
+</html>
