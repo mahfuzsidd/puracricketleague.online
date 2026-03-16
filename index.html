@@ -3,180 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PCL - Pura Cricket League (Darbhanga)</title>
+    <title>PCL - Pura Cricket League 2026</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root {
-            --primary-blue: #001f3f;
-            --accent-gold: #ffcc00;
-            --light-bg: #f4f7f6;
-            --white: #ffffff;
-        }
-
+        :root { --primary-blue: #001f3f; --accent-gold: #ffcc00; --light-bg: #f8f9fa; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body { background-color: var(--light-bg); color: #333; }
-
-        /* Header & Nav */
-        header {
-            background-color: var(--primary-blue);
-            color: white;
-            padding: 15px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .logo-section { display: flex; align-items: center; gap: 10px; }
-        .logo-badge { background: var(--accent-gold); color: var(--primary-blue); padding: 5px 10px; border-radius: 4px; font-weight: 900; }
         
-        .nav-menu { display: flex; list-style: none; gap: 20px; }
+        /* Navigation */
+        header { background: var(--primary-blue); color: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .logo-badge { background: var(--accent-gold); color: var(--primary-blue); padding: 5px 12px; border-radius: 4px; font-weight: 900; }
+        .nav-menu { display: flex; list-style: none; gap: 15px; }
         .nav-menu a { color: white; text-decoration: none; font-size: 14px; font-weight: 500; text-transform: uppercase; }
-        .nav-menu a:hover { color: var(--accent-gold); }
 
-        /* Tournament Hero */
-        .hero {
-            background: linear-gradient(rgba(0,31,63,0.8), rgba(0,31,63,0.8)), url('https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=1350&q=80');
-            background-size: cover;
-            color: white;
-            padding: 60px 5%;
-            text-align: center;
-        }
+        /* Sections */
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        .section-title { border-left: 5px solid var(--accent-gold); padding-left: 15px; margin: 40px 0 20px; color: var(--primary-blue); text-transform: uppercase; }
+        
+        /* Tables */
+        .data-card { background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow-x: auto; margin-bottom: 30px; }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        th { background: var(--primary-blue); color: white; padding: 12px; text-align: left; font-size: 13px; }
+        td { padding: 12px; border-bottom: 1px solid #eee; font-size: 14px; }
+        tr:hover { background: #fff9e6; }
+        .highlight { font-weight: bold; color: var(--primary-blue); }
 
-        .hero h1 { font-size: 3rem; text-transform: uppercase; }
-        .hero p { font-size: 1.2rem; color: var(--accent-gold); margin-top: 10px; }
-
-        /* Main Grid Layout */
-        .dashboard {
-            max-width: 1200px;
-            margin: -40px auto 50px;
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 25px;
-            padding: 0 20px;
-        }
-
-        .card {
-            background: var(--white);
-            border-radius: 10px;
-            padding: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        h2 { border-left: 5px solid var(--accent-gold); padding-left: 15px; margin-bottom: 20px; font-size: 20px; }
-
-        /* Points Table Styling */
-        table { width: 100%; border-collapse: collapse; }
-        th { background: #eee; padding: 12px; text-align: left; font-size: 13px; }
-        td { padding: 15px 12px; border-bottom: 1px solid #eee; font-weight: 500; }
-        .pts-highlight { color: var(--primary-blue); font-weight: 800; }
-
-        /* Top Players List */
-        .player-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .player-info span { display: block; font-size: 12px; color: #777; }
-        .stat-value { background: var(--primary-blue); color: white; padding: 4px 10px; border-radius: 20px; font-size: 14px; }
-
-        footer { background: #111; color: white; text-align: center; padding: 30px; margin-top: 50px; }
-
-        @media (max-width: 768px) {
-            .dashboard { grid-template-columns: 1fr; }
-            .nav-menu { display: none; }
-        }
+        /* Grid for Stats */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .top-performer { text-align: center; padding: 20px; background: white; border-radius: 8px; border-top: 4px solid var(--accent-gold); }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo-section">
+        <div style="display: flex; align-items: center; gap: 10px;">
             <div class="logo-badge">PCL</div>
             <div style="font-weight: bold;">Pura Cricket League</div>
         </div>
         <ul class="nav-menu">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Schedule</a></li>
-            <li><a href="#">Teams</a></li>
-            <li><a href="#">Gallery</a></li>
+            <li><a href="#points">Points Table</a></li>
+            <li><a href="#stats">Leaderboard</a></li>
+            <li><a href="#teams">Teams</a></li>
         </ul>
     </header>
 
-    <section class="hero">
-        <h1>Pura Cricket League</h1>
-        <p><i class="fas fa-map-marker-alt"></i> Darbhanga, Bihar | Season 2024</p>
-    </section>
+    <div class="container">
+        <p style="text-align: right; font-size: 12px; color: #666;">Last Updated: 16-03-2026 [cite: 5, 8]</p>
 
-    <div class="dashboard">
-        <div class="card">
-            <h2><i class="fas fa-list-ol"></i> Points Table</h2>
+        <h2 id="points" class="section-title">Points Table (Super League)</h2>
+        <div class="data-card">
             <table>
                 <thead>
                     <tr>
-                        <th>TEAM</th>
-                        <th>MATCHES</th>
-                        <th>WON</th>
-                        <th>LOST</th>
-                        <th>POINTS</th>
+                        <th>#</th>
+                        <th>Team</th>
+                        <th>Mat</th>
+                        <th>Won</th>
+                        <th>Lost</th>
+                        <th>NRR</th>
+                        <th>Pts</th>
+                        <th>Last 5</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>ADNAN XI</td>
-                        <td>3</td>
-                        <td>2</td>
                         <td>1</td>
-                        <td class="pts-highlight">4</td>
+                        <td class="highlight">ADNAN XI</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>+2.700</td>
+                        <td>2</td>
+                        <td style="color: green; font-weight: bold;">W</td>
                     </tr>
                     <tr>
-                        <td>NEHAL XI</td>
-                        <td>3</td>
-                        <td>1</td>
                         <td>2</td>
-                        <td class="pts-highlight">2</td>
+                        <td class="highlight">NEHAL XI</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>-2.700</td>
+                        <td>0</td>
+                        <td style="color: red; font-weight: bold;">L</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <div class="card">
-            <h2><i class="fas fa-star"></i> Top Performers</h2>
-            
-            <div class="player-item">
-                <div class="player-info">
-                    <strong>Mahfuz Siddiqui</strong>
-                    <span>ADNAN XI (Batsman)</span>
-                </div>
-                <div class="stat-value">178 Runs</div>
+        <h2 id="stats" class="section-title">Top Performers</h2>
+        <div class="stats-grid">
+            <div class="top-performer">
+                <h3 style="color: #e67e22;">Leading Run Scorer</h3>
+                <h2 style="margin: 10px 0;">Mahfuz Siddqui</h2>
+                <p><strong>178 Runs</strong> (3 Matches)</p>
+                <p style="font-size: 13px; color: #666;">Highest: 94 | SR: 202.27 | 6s: 18 </p>
             </div>
-
-            <div class="player-item">
-                <div class="player-info">
-                    <strong>Md Hassan</strong>
-                    <span>NEHAL XI (Batsman)</span>
-                </div>
-                <div class="stat-value">80 Runs</div>
+            <div class="top-performer">
+                <h3 style="color: #8e44ad;">Leading Wicket Taker</h3>
+                <h2 style="margin: 10px 0;">Farid Mahmood</h2>
+                <p><strong>6 Wickets</strong> (3 Innings)</p>
+                <p style="font-size: 13px; color: #666;">Econ: 14.43 | SR: 7.00 </p>
             </div>
+        </div>
 
-            <div class="player-item">
-                <div class="player-info">
-                    <strong>Farid Mahmood</strong>
-                    <span>ADNAN XI (Bowler)</span>
-                </div>
-                <div class="stat-value" style="background: #28a745;">6 Wickets</div>
+        <h2 class="section-title">MVP Leaderboard (Top 5)</h2>
+        <div class="data-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Player</th>
+                        <th>Team</th>
+                        <th>Batting</th>
+                        <th>Bowling</th>
+                        <th>Total Points</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td class="highlight">Mahfuz Siddqui</td><td>ADNAN XI</td><td>18.090</td><td>2.947</td><td>21.485</td></tr>
+                    <tr><td>2</td><td class="highlight">Md Hassan</td><td>NEHAL XI</td><td>8.092</td><td>4.474</td><td>12.566</td></tr>
+                    <tr><td>3</td><td class="highlight">Afzal Sajjad</td><td>ADNAN XI</td><td>4.400</td><td>6.812</td><td>12.332</td></tr>
+                    <tr><td>4</td><td class="highlight">Wasim</td><td>NEHAL XI</td><td>4.116</td><td>6.593</td><td>10.989</td></tr>
+                    <tr><td>5</td><td class="highlight">Shanu Sidd</td><td>NEHAL XI</td><td>8.537</td><td>1.398</td><td>9.935</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2 id="teams" class="section-title">Team Squads</h2>
+        <div class="stats-grid">
+            <div class="data-card" style="padding: 15px;">
+                <h3 style="color: var(--primary-blue); margin-bottom: 10px;">ADNAN XI</h3>
+                <p style="font-size: 14px; line-height: 1.6;">
+                    Adnan (C), Afzal Sajjad, Farid Mahmood, Mahfuz Siddiqui, Md Ali, Raja, Sarfarj, Yasir, Md Arbaj, Adil Ayub, Akram, Chunnu, Hasnain, Tauqeer.
+                </p>
+            </div>
+            <div class="data-card" style="padding: 15px;">
+                <h3 style="color: var(--primary-blue); margin-bottom: 10px;">NEHAL XI</h3>
+                <p style="font-size: 14px; line-height: 1.6;">
+                    Nehal Siddiqui (C), Atif Ayub, Wasim, Ejaj, Md Hassan, Shanu Sidd, Saddam, Md Faizan, Afsar, Md Moiz, Roomi, Md Mohtada, Afzal Ali, Bablu, Hatim, Jasim.
+                </p>
             </div>
         </div>
     </div>
 
-    <footer>
-        <p>Official Portal: <strong>puracricketleague.online</strong></p>
-        <p style="font-size: 12px; margin-top: 10px; opacity: 0.6;">&copy; 2026 PCL Darbhanga. All Rights Reserved.</p>
+    <footer style="background: #111; color: white; text-align: center; padding: 20px; margin-top: 50px;">
+        <p>Pura Cricket League Official Portal &copy; 2026</p>
+        <p style="font-size: 12px; color: #999; margin-top: 5px;">Data Source: CricHeroes [cite: 5, 8]</p>
     </footer>
 
 </body>
