@@ -1,197 +1,74 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="UTF-8">
+
 <title>Pura Cricket League</title>
 
-<style>
-body{
-font-family:Arial;
-background:#f5f7fb;
-margin:0;
-}
+<link rel="stylesheet" href="css/style.css">
 
-header{
-background:#0a3d91;
-color:white;
-padding:20px;
-text-align:center;
-}
-
-section{
-padding:20px;
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-background:white;
-margin-top:10px;
-}
-
-th,td{
-padding:10px;
-border-bottom:1px solid #ddd;
-text-align:center;
-}
-
-th{
-background:#0a3d91;
-color:white;
-}
-
-.card{
-background:white;
-padding:15px;
-border-radius:10px;
-margin-bottom:20px;
-box-shadow:0 3px 10px rgba(0,0,0,0.1);
-}
-
-.highlight{
-font-size:18px;
-font-weight:bold;
-color:#0a3d91;
-}
-</style>
 </head>
 
 <body>
 
 <header>
-<h1>Pura Cricket League</h1>
-<p>Official Tournament Website</p>
+
+<h1>PURA CRICKET LEAGUE</h1>
+
+<nav>
+
+<ul>
+
+<li><a href="index.html">Home</a></li>
+
+<li><a href="season.html">Series</a></li>
+
+<li><a href="matches.html">Matches</a></li>
+
+<li><a href="stats.html">Stats</a></li>
+
+<li><a href="heroes.html">Heroes</a></li>
+
+<li><a href="teams.html">Teams</a></li>
+
+<li><a href="players.html">Players</a></li>
+
+<li><a href="gallery.html">Gallery</a></li>
+
+</ul>
+
+</nav>
+
 </header>
 
-<section>
+<section class="season">
 
-<div class="card">
-<h2>🏆 Orange Cap</h2>
-<div id="orangeCap" class="highlight"></div>
+<h2>PCL Seasons</h2>
+
+<div class="season-box">
+
+<h3>PCL 2024</h3>
+
+<p>18 Apr 2024 - 20 Apr 2024</p>
+
+<p>Location: Pura Historical Stadium, Darbhanga</p>
+
+<a href="season.html">View Season</a>
+
 </div>
 
-<div class="card">
-<h2>🎯 Purple Cap</h2>
-<div id="purpleCap" class="highlight"></div>
-</div>
+<div class="season-box">
 
-<div class="card">
-<h2>📊 Points Table</h2>
-<table>
-<thead>
-<tr>
-<th>Team</th>
-<th>Played</th>
-<th>Won</th>
-<th>Lost</th>
-<th>Points</th>
-</tr>
-</thead>
-<tbody id="pointsTable"></tbody>
-</table>
-</div>
+<h3>PCL 2026</h3>
 
-<div class="card">
-<h2>🏏 Batting Leaderboard</h2>
-<table>
-<thead>
-<tr>
-<th>Player</th>
-<th>Team</th>
-<th>Runs</th>
-<th>Highest</th>
-<th>Strike Rate</th>
-</tr>
-</thead>
-<tbody id="battingTable"></tbody>
-</table>
-</div>
+<p>Upcoming Season</p>
 
-<div class="card">
-<h2>🎯 Bowling Leaderboard</h2>
-<table>
-<thead>
-<tr>
-<th>Player</th>
-<th>Team</th>
-<th>Wickets</th>
-<th>Economy</th>
-</tr>
-</thead>
-<tbody id="bowlingTable"></tbody>
-</table>
+<a href="season.html">Open</a>
+
 </div>
 
 </section>
 
-<script>
-
-/* ========= EDIT DATA HERE ========= */
-
-const teams = [
-{name:"Nehal XI", played:3, won:2, lost:1, points:4},
-{name:"Adnan XI", played:3, won:1, lost:2, points:2}
-];
-
-const batting = [
-{player:"Mahfuz Siddqui", team:"Adnan XI", runs:178, high:94, sr:202},
-{player:"Shanu Sidd", team:"Nehal XI", runs:84, high:54, sr:221},
-{player:"Md Hassan", team:"Nehal XI", runs:80, high:29, sr:195}
-];
-
-const bowling = [
-{player:"Farid Mahmood", team:"Nehal XI", wickets:6, eco:5.2},
-{player:"Wasim", team:"Adnan XI", wickets:4, eco:6.8}
-];
-
-/* ========= AUTO GENERATE TABLES ========= */
-
-const pointsTable = document.getElementById("pointsTable");
-teams.forEach(t=>{
-pointsTable.innerHTML += `
-<tr>
-<td>${t.name}</td>
-<td>${t.played}</td>
-<td>${t.won}</td>
-<td>${t.lost}</td>
-<td>${t.points}</td>
-</tr>`;
-});
-
-const battingTable = document.getElementById("battingTable");
-batting.forEach(p=>{
-battingTable.innerHTML += `
-<tr>
-<td>${p.player}</td>
-<td>${p.team}</td>
-<td>${p.runs}</td>
-<td>${p.high}</td>
-<td>${p.sr}</td>
-</tr>`;
-});
-
-const bowlingTable = document.getElementById("bowlingTable");
-bowling.forEach(p=>{
-bowlingTable.innerHTML += `
-<tr>
-<td>${p.player}</td>
-<td>${p.team}</td>
-<td>${p.wickets}</td>
-<td>${p.eco}</td>
-</tr>`;
-});
-
-/* ========= CAPS ========= */
-
-let orange = batting.reduce((a,b)=>a.runs>b.runs?a:b);
-document.getElementById("orangeCap").innerText =
-orange.player+" ("+orange.runs+" Runs)";
-
-let purple = bowling.reduce((a,b)=>a.wickets>b.wickets?a:b);
-document.getElementById("purpleCap").innerText =
-purple.player+" ("+purple.wickets+" Wickets)";
-
-</script>
-
 </body>
+
 </html>
