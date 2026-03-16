@@ -2,219 +2,572 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>PCL | Official Tournament Portal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pura Cricket League | Official Premium Portal</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --primary-dark: #0f172a;
+            --primary-bg: #05070a;
+            --card-bg: #0f172a;
             --accent-gold: #fbbf24;
-            --premium-blue: #1e293b;
-            --glass: rgba(255, 255, 255, 0.05);
-            --text-light: #f8fafc;
-            --silver: #cbd5e1;
-            --bronze: #cd7f32;
+            --accent-gold-hover: #f59e0b;
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --success: #10b981;
+            --danger: #ef4444;
+            --silver: #e2e8f0;
+            --bronze: #d97706;
         }
 
-        body { margin: 0; font-family: 'Outfit', sans-serif; background: #0b0f1a; color: var(--text-light); }
+        /* Base Reset */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            background: var(--primary-bg); 
+            color: var(--text-main); 
+            line-height: 1.6; 
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, #05070a 70%);
+            background-attachment: fixed;
+        }
+
+        /* --- HEADER SECTION --- */
+        .top-navbar {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-container { display: flex; align-items: center; gap: 15px; }
+        .pcl-logo {
+            font-family: 'Syncopate', sans-serif;
+            font-weight: 700;
+            font-size: 28px;
+            color: var(--accent-gold);
+            border: 3px solid var(--accent-gold);
+            padding: 5px 12px;
+            border-radius: 8px;
+            text-shadow: 0 0 15px rgba(251, 191, 36, 0.4);
+        }
+
+        .header-title-box h1 {
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .upcoming-badge {
+            background: linear-gradient(90deg, var(--accent-gold), #f59e0b);
+            color: #000;
+            font-size: 10px;
+            font-weight: 900;
+            padding: 3px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 4px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+
+        /* --- NAVIGATION --- */
+        .main-nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px;
+            background: rgba(0,0,0,0.3);
+            overflow-x: auto;
+        }
+
+        .nav-btn {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            padding: 10px 22px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+        }
+
+        .nav-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--accent-gold); }
+        .nav-btn.active { background: var(--accent-gold); color: #000; border-color: var(--accent-gold); box-shadow: 0 0 20px rgba(251, 191, 36, 0.3); }
+
+        /* --- SECTIONS --- */
+        section { 
+            display: none; 
+            padding: 40px 5%; 
+            max-width: 1300px; 
+            margin: auto; 
+            animation: slideUp 0.6s ease-out;
+        }
+        .active-section { display: block; }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- SEASON 2024 DASHBOARD --- */
+        .dashboard-header { margin-bottom: 40px; text-align: center; }
+        .dashboard-header h2 { font-size: 42px; font-weight: 900; text-transform: uppercase; color: var(--accent-gold); margin-bottom: 10px; }
         
-        /* Header & Logo */
-        header { background: var(--primary-dark); padding: 15px 30px; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--accent-gold); position: sticky; top: 0; z-index: 1000; }
-        .logo { font-size: 32px; font-weight: 900; color: var(--accent-gold); letter-spacing: -1px; border: 2px solid var(--accent-gold); padding: 2px 10px; border-radius: 4px; }
+        .awards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
 
-        nav { display: flex; gap: 15px; padding: 12px; background: var(--premium-blue); overflow-x: auto; justify-content: center; }
-        nav button { background: transparent; border: 1px solid rgba(251, 191, 36, 0.3); color: white; padding: 8px 18px; border-radius: 5px; cursor: pointer; font-weight: 600; }
-        nav button.active-btn { background: var(--accent-gold); color: var(--primary-dark); }
+        .award-premium-card {
+            background: linear-gradient(160deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 35px;
+            text-align: center;
+            position: relative;
+            transition: transform 0.3s;
+        }
+        .award-premium-card:hover { transform: translateY(-10px); border-color: var(--accent-gold); }
+        .award-icon { font-size: 50px; margin-bottom: 15px; display: block; }
+        .award-title { color: var(--accent-gold); font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 3px; }
+        .award-winner { font-size: 28px; font-weight: 800; margin: 15px 0; }
 
-        section { display: none; padding: 30px 15px; max-width: 1100px; margin: auto; animation: fadeIn 0.5s ease; }
-        .active { display: block; }
+        /* --- TOP PERFORMERS LIST --- */
+        .leaders-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
 
-        /* Hall of Fame Awards */
-        .awards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
-        .award-card { background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid var(--accent-gold); padding: 20px; border-radius: 15px; text-align: center; position: relative; overflow: hidden; }
-        .award-card::before { content: "★"; position: absolute; top: -10px; right: 10px; font-size: 80px; color: rgba(251, 191, 36, 0.05); }
-        .award-card h3 { color: var(--accent-gold); margin: 0; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; }
-        .award-card h2 { margin: 10px 0; font-size: 24px; }
+        @media (max-width: 768px) { .leaders-grid { grid-template-columns: 1fr; } }
 
-        /* Leaders Highlight */
-        .leaders-section { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 40px; }
-        .leader-box { background: var(--premium-blue); border-radius: 15px; padding: 20px; border: 1px solid var(--glass); }
-        .leader-item { display: flex; align-items: center; padding: 12px; border-bottom: 1px solid var(--glass); }
-        .rank { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-weight: 800; font-size: 14px; }
-        .r1 { background: var(--accent-gold); color: black; }
-        .r2 { background: var(--silver); color: black; }
-        .r3 { background: var(--bronze); color: white; }
+        .leader-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 25px;
+        }
 
-        /* Match History Card */
-        .match-card { background: var(--premium-blue); border-radius: 12px; padding: 20px; margin-bottom: 15px; border-left: 5px solid var(--accent-gold); }
-        .motm-badge { display: inline-block; background: rgba(251, 191, 36, 0.15); color: var(--accent-gold); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-top: 10px; }
+        .leader-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
 
-        /* Stats Table */
-        .table-wrapper { background: var(--premium-blue); border-radius: 15px; overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; min-width: 800px; }
-        th { background: rgba(0,0,0,0.3); color: var(--accent-gold); padding: 15px; text-align: left; }
-        td { padding: 14px 15px; border-bottom: 1px solid var(--glass); }
+        .leader-row {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            transition: 0.2s;
+        }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .rank-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            margin-right: 20px;
+        }
+        .rank-1 { background: var(--accent-gold); color: #000; box-shadow: 0 0 15px var(--accent-gold); }
+        .rank-2 { background: var(--silver); color: #000; }
+        .rank-3 { background: var(--bronze); color: #fff; }
+
+        /* --- MATCH HISTORY --- */
+        .match-timeline { display: flex; flex-direction: column; gap: 20px; }
+        .match-entry {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 8px solid var(--accent-gold);
+            transition: 0.3s;
+        }
+        .match-info h4 { color: var(--accent-gold); margin-bottom: 5px; }
+        .match-score { font-size: 22px; font-weight: 800; }
+        .motm-tag {
+            background: rgba(251, 191, 36, 0.1);
+            color: var(--accent-gold);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            border: 1px solid var(--accent-gold);
+        }
+
+        /* --- STATS TABLE --- */
+        .stats-table-container {
+            background: var(--card-bg);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .table-scroll { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; min-width: 1000px; }
+        th { background: rgba(0,0,0,0.5); color: var(--accent-gold); text-align: left; padding: 20px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        td { padding: 18px 20px; border-bottom: 1px solid var(--glass-border); font-size: 15px; font-weight: 500; }
+        tr:hover { background: rgba(251, 191, 36, 0.03); cursor: pointer; }
+
+        /* --- PLAYER POPUP OVERLAY --- */
+        .player-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(10px);
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1e293b 0%, #05070a 100%);
+            width: 100%;
+            max-width: 600px;
+            border-radius: 30px;
+            padding: 40px;
+            border: 1px solid var(--accent-gold);
+            position: relative;
+            box-shadow: 0 0 50px rgba(251, 191, 36, 0.2);
+        }
+
+        .close-modal { position: absolute; top: 20px; right: 20px; font-size: 30px; cursor: pointer; color: var(--text-dim); }
+
+        .modal-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .modal-stat-card {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+        }
+        .modal-stat-card label { display: block; font-size: 11px; color: var(--accent-gold); text-transform: uppercase; margin-bottom: 5px; }
+        .modal-stat-card span { font-size: 20px; font-weight: 800; }
+
+        /* --- SEASON 2026 REGISTRATION --- */
+        .registration-box {
+            background: var(--card-bg);
+            padding: 50px;
+            border-radius: 30px;
+            max-width: 700px;
+            margin: auto;
+            border: 1px solid var(--glass-border);
+        }
+
+        .form-input {
+            width: 100%;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--glass-border);
+            padding: 15px;
+            border-radius: 12px;
+            color: white;
+            margin-bottom: 20px;
+            font-family: inherit;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: var(--accent-gold);
+            color: #000;
+            border: none;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .submit-btn:hover { background: #fff; transform: scale(1.02); }
+
     </style>
 </head>
 <body>
 
-<header>
-    <div class="logo">PCL</div>
-    <div style="text-align: right;">
-        <span style="font-size: 12px; color: var(--accent-gold); display: block;">OFFICIAL PORTAL</span>
-        <span style="font-weight: 800;">SEASON 2024 RECAP</span>
+    <header class="top-navbar">
+        <div class="logo-container">
+            <div class="pcl-logo">PCL</div>
+            <div class="header-title-box">
+                <h1>Pura Cricket League</h1>
+                <div class="upcoming-badge">UPCOMING SEASON 2026 • REGISTRATION OPEN</div>
+            </div>
+        </div>
+        <div style="text-align: right; display: none;" id="liveIndicator">
+            <span style="color: var(--danger);">● LIVE</span>
+        </div>
+    </header>
+
+    <nav class="main-nav">
+        <button class="nav-btn active" onclick="showSection('season2024', this)">Season 2024</button>
+        <button class="nav-btn" onclick="showSection('matches', this)">Match Results</button>
+        <button class="nav-btn" onclick="showSection('stats', this)">Player Stats</button>
+        <button class="nav-btn" onclick="showSection('registration', this)">Season 2026</button>
+    </nav>
+
+    <section id="season2024" class="active-section">
+        <div class="dashboard-header">
+            <h2>Season 2024</h2>
+            <p style="letter-spacing: 5px; color: var(--text-dim);">TOURNAMENT ARCHIVE</p>
+        </div>
+
+        <div class="awards-container">
+            <div class="award-premium-card">
+                <span class="award-icon">🏆</span>
+                <span class="award-title">Player of the Tournament</span>
+                <h2 class="award-winner">Mahfuz Siddiqui</h2>
+                <p style="color:var(--text-dim)">Outstanding All-Round Performance</p>
+            </div>
+            <div class="award-premium-card">
+                <span class="award-icon">🏏</span>
+                <span class="award-title">Best Batsman</span>
+                <h2 class="award-winner">Shanu Sidd</h2>
+                <p style="color:var(--text-dim)">Most Explosive Hitter (221.1 SR)</p>
+            </div>
+            <div class="award-premium-card">
+                <span class="award-icon">⚡</span>
+                <span class="award-title">Best Bowler</span>
+                <h2 class="award-winner">Md Hassan</h2>
+                <p style="color:var(--text-dim)">Tournament Leading Wicket-Taker</p>
+            </div>
+        </div>
+
+        <div class="leaders-grid">
+            <div class="leader-card">
+                <div class="leader-title"><h3>Top 3 Batsmen</h3><span style="color:var(--accent-gold)">RUNS</span></div>
+                <div class="leader-row"><div class="rank-circle rank-1">1</div><div><strong>Mahfuz Siddqui</strong><br><small>178 Runs</small></div></div>
+                <div class="leader-row"><div class="rank-circle rank-2">2</div><div><strong>Shanu Sidd</strong><br><small>84 Runs</small></div></div>
+                <div class="leader-row"><div class="rank-circle rank-3">3</div><div><strong>Md Hassan</strong><br><small>80 Runs</small></div></div>
+            </div>
+            <div class="leader-card">
+                <div class="leader-title"><h3>Top 3 Bowlers</h3><span style="color:var(--accent-gold)">PERFORMANCE</span></div>
+                <div class="leader-row"><div class="rank-circle rank-1">1</div><div><strong>Md Hassan</strong><br><small>Final Hero</small></div></div>
+                <div class="leader-row"><div class="rank-circle rank-2">2</div><div><strong>Adnan</strong><br><small>Middle Over Specialist</small></div></div>
+                <div class="leader-row"><div class="rank-circle rank-3">3</div><div><strong>Afzal Sajjad</strong><br><small>Economy King</small></div></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="matches">
+        <div class="dashboard-header">
+            <h2>Match Reports</h2>
+            <p style="color: var(--text-dim);">PCL 2024 OFFICIAL SCORECARDS</p>
+        </div>
+        <div class="match-timeline">
+            <div class="match-entry">
+                <div class="match-info">
+                    <h4>MATCH #1 • 18 APR 2024</h4>
+                    <div class="match-score">Nehal XI (145/3) beat Adnan XI (142/6)</div>
+                    <p style="color:var(--text-dim); margin-top:5px;">Venue: Pura Historical Stadium</p>
+                </div>
+                <div class="motm-tag">MOTM: Mahfuz Siddiqui</div>
+            </div>
+            <div class="match-entry">
+                <div class="match-info">
+                    <h4>MATCH #2 • 19 APR 2024</h4>
+                    <div class="match-score">Adnan XI (168/4) beat Nehal XI (120/10)</div>
+                    <p style="color:var(--text-dim); margin-top:5px;">Result: Adnan XI won by 48 runs</p>
+                </div>
+                <div class="motm-tag">MOTM: Shanu Sidd</div>
+            </div>
+            <div class="match-entry">
+                <div class="match-info">
+                    <h4>MATCH #3 (FINAL) • 20 APR 2024</h4>
+                    <div class="match-score">Nehal XI (138/5) beat Adnan XI (135/8)</div>
+                    <p style="color:var(--text-dim); margin-top:5px;">Nehal XI are the Champions!</p>
+                </div>
+                <div class="motm-tag">MOTM: Md Hassan</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="stats">
+        <div class="dashboard-header">
+            <h2>Full Player Stats</h2>
+            <p style="color: var(--text-dim);">CLICK ANY PLAYER FOR FULL PROFILE</p>
+        </div>
+        <div class="stats-table-container">
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Player Name</th>
+                            <th>M</th>
+                            <th>Inn</th>
+                            <th>NO</th>
+                            <th>Runs</th>
+                            <th>HS</th>
+                            <th>Avg</th>
+                            <th>SR</th>
+                            <th>100/50</th>
+                        </tr>
+                    </thead>
+                    <tbody id="playerTableBody">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section id="registration">
+        <div class="registration-box">
+            <h2 style="text-align:center; margin-bottom:10px; color:var(--accent-gold);">SEASON 2026 REGISTRATION</h2>
+            <p style="text-align:center; margin-bottom:40px; color:var(--text-dim);">Official Entry for the upcoming Pura Cricket League Auction.</p>
+            <form onsubmit="event.preventDefault(); alert('Success: Registration Form Submitted to PCL Committee!');">
+                <label>Full Name</label>
+                <input type="text" class="form-input" placeholder="e.g. Mahfuz Siddiqui" required>
+                
+                <label>Primary Role</label>
+                <select class="form-input">
+                    <option>Batsman</option>
+                    <option>Bowler</option>
+                    <option>All-Rounder</option>
+                    <option>Wicket Keeper</option>
+                </select>
+
+                <label>Mobile Number (WhatsApp)</label>
+                <input type="tel" class="form-input" placeholder="+91 XXXX XXX XXX" required>
+
+                <button type="submit" class="submit-btn">JOIN PCL 2026</button>
+            </form>
+        </div>
+    </section>
+
+    <div class="player-modal" id="playerModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div id="modalBody">
+                </div>
+        </div>
     </div>
-</header>
 
-<nav>
-    <button onclick="tab('overview', this)" class="active-btn">Tournament Awards</button>
-    <button onclick="tab('matches', this)">Match Results</button>
-    <button onclick="tab('players', this)">Full Player Stats</button>
-</nav>
+    <script>
+        // --- DATA HUB ---
+        const playerData = [
+            {name:"Mahfuz Siddqui", m:3, inn:3, no:1, runs:178, hs:82, bf:88, sr:202.3, c100:0, c50:2, f4:9, f6:18},
+            {name:"Shanu Sidd", m:3, inn:3, no:0, runs:84, hs:45, bf:38, sr:221.1, c100:0, c50:0, f4:5, f6:9},
+            {name:"Md Hassan", m:3, inn:3, no:1, runs:80, hs:52, bf:41, sr:195.1, c100:0, c50:1, f4:2, f6:10},
+            {name:"Afzal Sajjad", m:3, inn:3, no:0, runs:44, hs:28, bf:37, sr:118.9, c100:0, c50:0, f4:5, f6:2},
+            {name:"Wasim", m:3, inn:3, no:0, runs:41, hs:25, bf:25, sr:164.0, c100:0, c50:0, f4:3, f6:3},
+            {name:"Bablu", m:2, inn:2, no:0, runs:39, hs:30, bf:19, sr:205.3, c100:0, c50:0, f4:5, f6:2},
+            {name:"Adnan", m:3, inn:2, no:1, runs:30, hs:20, bf:17, sr:176.5, c100:0, c50:0, f4:4, f6:1},
+            {name:"Atif Ayub", m:3, inn:2, no:0, runs:25, hs:18, bf:14, sr:178.6, c100:0, c50:0, f4:0, f6:3},
+            {name:"Nehal Siddiqui", m:3, inn:2, no:0, runs:14, hs:10, bf:9, sr:155.6, c100:0, c50:0, f4:2, f6:0},
+            {name:"Farid Mahmood", m:2, inn:1, no:0, runs:12, hs:12, bf:10, sr:120.0, c100:0, c50:0, f4:1, f6:0},
+            {name:"Ejaj", m:2, inn:1, no:1, runs:11, hs:8, bf:8, sr:137.5, c100:0, c50:0, f4:1, f6:0},
+            {name:"Akram", m:2, inn:1, no:0, runs:10, hs:10, bf:8, sr:125.0, c100:0, c50:0, f4:1, f6:0},
+            {name:"Md Moiz", m:2, inn:1, no:0, runs:9, hs:9, bf:7, sr:128.6, c100:0, c50:0, f4:1, f6:0},
+            {name:"Yasir", m:1, inn:1, no:0, runs:8, hs:8, bf:7, sr:114.3, c100:0, c50:0, f4:1, f6:0},
+            {name:"Afsar", m:2, inn:1, no:0, runs:7, hs:7, bf:5, sr:140.0, c100:0, c50:0, f4:0, f6:0},
+            {name:"Adil Ayub", m:2, inn:1, no:0, runs:6, hs:6, bf:6, sr:100.0, c100:0, c50:0, f4:0, f6:0},
+            {name:"Jasim", m:2, inn:1, no:1, runs:6, hs:4, bf:5, sr:120.0, c100:0, c50:0, f4:0, f6:0},
+            {name:"Tauqeer", m:1, inn:1, no:0, runs:5, hs:5, bf:6, sr:83.3, c100:0, c50:0, f4:0, f6:0},
+            {name:"Chunnu", m:2, inn:1, no:0, runs:4, hs:4, bf:5, sr:80.0, c100:0, c50:0, f4:0, f6:0},
+            {name:"Munazir", m:1, inn:1, no:0, runs:4, hs:4, bf:6, sr:66.7, c100:0, c50:0, f4:0, f6:0},
+            {name:"Sarfe", m:1, inn:1, no:0, runs:3, hs:3, bf:5, sr:60.0, c100:0, c50:0, f4:0, f6:0},
+            {name:"Satish", m:1, inn:1, no:0, runs:2, hs:2, bf:4, sr:50.0, c100:0, c50:0, f4:0, f6:0}
+        ];
 
-<section id="overview" class="active">
-    <div class="awards-grid">
-        <div class="award-card">
-            <h3>Player of the Tournament</h3>
-            <h2>Mahfuz Siddiqui</h2>
-            <p style="color: var(--accent-gold)">178 Runs + All-round Impact</p>
-        </div>
-        <div class="award-card">
-            <h3>Best Batter</h3>
-            <h2>Shanu Sidd</h2>
-            <p style="color: var(--accent-gold)">Highest Strike Rate (221.1)</p>
-        </div>
-        <div class="award-card">
-            <h3>Best Bowler</h3>
-            <h2>Md Hassan</h2>
-            <p style="color: var(--accent-gold)">Crucial Wickets & Economy</p>
-        </div>
-    </div>
+        // --- NAVIGATION LOGIC ---
+        function showSection(id, btn) {
+            document.querySelectorAll('section').forEach(s => s.classList.remove('active-section'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.add('active-section');
+            btn.classList.add('active');
+            window.scrollTo(0, 0);
+        }
 
-    <div class="leaders-section">
-        <div class="leader-box">
-            <h3 style="color: var(--accent-gold); border-bottom: 1px solid var(--glass); padding-bottom: 10px;">TOP 3 BATSMEN</h3>
-            <div class="leader-item"><div class="rank r1">1</div><div><strong>Mahfuz Siddqui</strong><br><small>178 Runs</small></div></div>
-            <div class="leader-item"><div class="rank r2">2</div><div><strong>Shanu Sidd</strong><br><small>84 Runs</small></div></div>
-            <div class="leader-item"><div class="rank r3">3</div><div><strong>Md Hassan</strong><br><small>80 Runs</small></div></div>
-        </div>
-        <div class="leader-box">
-            <h3 style="color: var(--accent-gold); border-bottom: 1px solid var(--glass); padding-bottom: 10px;">TOP 3 BOWLERS</h3>
-            <div class="leader-item"><div class="rank r1">1</div><div><strong>Md Hassan</strong><br><small>Tournament Best</small></div></div>
-            <div class="leader-item"><div class="rank r2">2</div><div><strong>Adnan</strong><br><small>Impact Wickets</small></div></div>
-            <div class="leader-item"><div class="rank r3">3</div><div><strong>Afzal Sajjad</strong><br><small>Consistent Economy</small></div></div>
-        </div>
-    </div>
-</section>
+        // --- TABLE BUILDER ---
+        function initTable() {
+            const tbody = document.getElementById('playerTableBody');
+            let html = '';
+            playerData.forEach(p => {
+                const avg = (p.inn - p.no) > 0 ? (p.runs / (p.inn - p.no)).toFixed(1) : p.runs;
+                html += `
+                <tr onclick="openPlayerModal('${p.name}')">
+                    <td style="color:var(--accent-gold); font-weight:700;">${p.name}</td>
+                    <td>${p.m}</td>
+                    <td>${p.inn}</td>
+                    <td>${p.no}</td>
+                    <td>${p.runs}</td>
+                    <td>${p.hs}</td>
+                    <td>${avg}</td>
+                    <td style="color:var(--success)">${p.sr}</td>
+                    <td>${p.c100}/${p.c50}</td>
+                </tr>`;
+            });
+            tbody.innerHTML = html;
+        }
 
-<section id="matches">
-    <div class="match-card">
-        <div style="display:flex; justify-content:space-between; color:var(--accent-gold); font-size:12px; margin-bottom:10px;">
-            <span>MATCH #1</span><span>18 APR 2024</span>
-        </div>
-        <h2 style="margin:5px 0;">Nehal XI vs Adnan XI</h2>
-        <p>Nehal XI (145/3) beat Adnan XI (142/6)</p>
-        <div class="motm-badge">🏆 MAN OF THE MATCH: Mahfuz Siddiqui (82 Runs)</div>
-    </div>
+        // --- MODAL LOGIC ---
+        function openPlayerModal(name) {
+            const p = playerData.find(x => x.name === name);
+            const avg = (p.inn - p.no) > 0 ? (p.runs / (p.inn - p.no)).toFixed(1) : p.runs;
+            const modal = document.getElementById('playerModal');
+            const body = document.getElementById('modalBody');
 
-    <div class="match-card">
-        <div style="display:flex; justify-content:space-between; color:var(--accent-gold); font-size:12px; margin-bottom:10px;">
-            <span>MATCH #2</span><span>19 APR 2024</span>
-        </div>
-        <h2 style="margin:5px 0;">Adnan XI vs Nehal XI</h2>
-        <p>Adnan XI (168/4) beat Nehal XI (120/10)</p>
-        <div class="motm-badge">🏆 MAN OF THE MATCH: Shanu Sidd (45 Runs)</div>
-    </div>
+            body.innerHTML = `
+                <h2 style="color:var(--accent-gold); font-size:32px; font-weight:900;">${p.name}</h2>
+                <p style="color:var(--text-dim); margin-top:-5px; margin-bottom:20px;">PCL Season 2024 Profile</p>
+                <div class="modal-grid">
+                    <div class="modal-stat-card"><label>Matches</label><span>${p.m}</span></div>
+                    <div class="modal-stat-card"><label>Runs</label><span>${p.runs}</span></div>
+                    <div class="modal-stat-card"><label>Balls</label><span>${p.bf}</span></div>
+                    <div class="modal-stat-card"><label>Avg</label><span>${avg}</span></div>
+                    <div class="modal-stat-card"><label>SR</label><span>${p.sr}</span></div>
+                    <div class="modal-stat-card"><label>HS</label><span>${p.hs}</span></div>
+                    <div class="modal-stat-card"><label>4s</label><span>${p.f4}</span></div>
+                    <div class="modal-stat-card"><label>6s</label><span>${p.f6}</span></div>
+                    <div class="modal-stat-card"><label>50s</label><span>${p.c50}</span></div>
+                </div>
+            `;
+            modal.style.display = 'flex';
+        }
 
-    <div class="match-card">
-        <div style="display:flex; justify-content:space-between; color:var(--accent-gold); font-size:12px; margin-bottom:10px;">
-            <span>MATCH #3 (FINAL)</span><span>20 APR 2024</span>
-        </div>
-        <h2 style="margin:5px 0;">Nehal XI vs Adnan XI</h2>
-        <p>Nehal XI (138/5) beat Adnan XI (135/8)</p>
-        <div class="motm-badge">🏆 MAN OF THE MATCH: Md Hassan (52 Runs + 2 Wkts)</div>
-    </div>
-</section>
+        function closeModal() {
+            document.getElementById('playerModal').style.display = 'none';
+        }
 
-<section id="players">
-    <div class="table-wrapper">
-        <table>
-            <thead>
-                <tr>
-                    <th>PLAYER</th>
-                    <th>M</th>
-                    <th>INN</th>
-                    <th>NO</th>
-                    <th>RUNS</th>
-                    <th>HS</th>
-                    <th>AVG</th>
-                    <th>BF</th>
-                    <th>SR</th>
-                    <th>4s/6s</th>
-                </tr>
-            </thead>
-            <tbody id="fullStatsBody"></tbody>
-        </table>
-    </div>
-</section>
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('playerModal')) closeModal();
+        }
 
-<script>
-    const players = [
-        {name:"Mahfuz Siddqui", m:3, inn:3, no:1, runs:178, hs:82, bf:88, sr:202.3, f4:9, f6:18},
-        {name:"Shanu Sidd", m:3, inn:3, no:0, runs:84, hs:45, bf:38, sr:221.1, f4:5, f6:9},
-        {name:"Md Hassan", m:3, inn:3, no:1, runs:80, hs:52, bf:41, sr:195.1, f4:2, f6:10},
-        {name:"Afzal Sajjad", m:3, inn:3, no:0, runs:44, hs:28, bf:37, sr:118.9, f4:5, f6:2},
-        {name:"Wasim", m:3, inn:3, no:0, runs:41, hs:25, bf:25, sr:164.0, f4:3, f6:3},
-        {name:"Bablu", m:2, inn:2, no:0, runs:39, hs:30, bf:19, sr:205.3, f4:5, f6:2},
-        {name:"Adnan", m:3, inn:2, no:1, runs:30, hs:20, bf:17, sr:176.5, f4:4, f6:1},
-        {name:"Atif Ayub", m:3, inn:2, no:0, runs:25, hs:18, bf:14, sr:178.6, f4:0, f6:3},
-        {name:"Nehal Siddiqui", m:3, inn:2, no:0, runs:14, hs:10, bf:9, sr:155.6, f4:2, f6:0},
-        {name:"Farid Mahmood", m:2, inn:1, no:0, runs:12, hs:12, bf:10, sr:120.0, f4:1, f6:0},
-        {name:"Ejaj", m:2, inn:1, no:1, runs:11, hs:8, bf:8, sr:137.5, f4:1, f6:0},
-        {name:"Akram", m:2, inn:1, no:0, runs:10, hs:10, bf:8, sr:125.0, f4:1, f6:0},
-        {name:"Md Moiz", m:2, inn:1, no:0, runs:9, hs:9, bf:7, sr:128.6, f4:1, f6:0},
-        {name:"Yasir", m:1, inn:1, no:0, runs:8, hs:8, bf:7, sr:114.3, f4:1, f6:0},
-        {name:"Afsar", m:2, inn:1, no:0, runs:7, hs:7, bf:5, sr:140.0, f4:0, f6:0},
-        {name:"Adil Ayub", m:2, inn:1, no:0, runs:6, hs:6, bf:6, sr:100.0, f4:0, f6:0},
-        {name:"Jasim", m:2, inn:1, no:1, runs:6, hs:4, bf:5, sr:120.0, f4:0, f6:0},
-        {name:"Tauqeer", m:1, inn:1, no:0, runs:5, hs:5, bf:6, sr:83.3, f4:0, f6:0},
-        {name:"Chunnu", m:2, inn:1, no:0, runs:4, hs:4, bf:5, sr:80.0, f4:0, f6:0},
-        {name:"Munazir", m:1, inn:1, no:0, runs:4, hs:4, bf:6, sr:66.7, f4:0, f6:0},
-        {name:"Sarfe", m:1, inn:1, no:0, runs:3, hs:3, bf:5, sr:60.0, f4:0, f6:0},
-        {name:"Satish", m:1, inn:1, no:0, runs:2, hs:2, bf:4, sr:50.0, f4:0, f6:0}
-    ];
+        // --- STARTUP ---
+        window.onload = initTable;
 
-    function tab(id, btn) {
-        document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
-        document.querySelectorAll("nav button").forEach(b => b.classList.remove("active-btn"));
-        document.getElementById(id).classList.add("active");
-        btn.classList.add("active-btn");
-    }
-
-    function loadAllStats() {
-        let h = "";
-        players.forEach(p => {
-            let avg = (p.inn - p.no) > 0 ? (p.runs / (p.inn - p.no)).toFixed(1) : p.runs;
-            h += `<tr>
-                <td><strong>${p.name}</strong></td>
-                <td>${p.m}</td>
-                <td>${p.inn}</td>
-                <td>${p.no}</td>
-                <td style="color:var(--accent-gold); font-weight:800">${p.runs}</td>
-                <td>${p.hs}</td>
-                <td>${avg}</td>
-                <td>${p.bf}</td>
-                <td>${p.sr}</td>
-                <td>${p.f4}/${p.f6}</td>
-            </tr>`;
-        });
-        document.getElementById("fullStatsBody").innerHTML = h;
-    }
-
-    window.onload = loadAllStats;
-</script>
-
+    </script>
 </body>
 </html>
