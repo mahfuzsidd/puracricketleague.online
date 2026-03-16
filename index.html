@@ -1,82 +1,243 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCL - Pura Cricket League</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #001f3f;
+            --accent-gold: #ffcc00;
+            --light-bg: #f8f9fa;
+        }
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
 
-<title>Pura Cricket League</title>
+        body {
+            background-color: var(--light-bg);
+        }
 
-<link rel="stylesheet" href="css/style.css">
+        /* Top Bar with Domain */
+        .top-bar {
+            background: #000;
+            color: #fff;
+            padding: 8px 5%;
+            font-size: 12px;
+            text-align: right;
+            letter-spacing: 1px;
+        }
 
+        /* Header & Navigation */
+        header {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 10px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-badge {
+            background: var(--accent-gold);
+            color: var(--primary-blue);
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-weight: 900;
+            font-size: 24px;
+        }
+
+        .brand-name {
+            font-size: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 15px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+
+        .nav-menu a:hover, .nav-menu a.active {
+            background: var(--accent-gold);
+            color: var(--primary-blue);
+        }
+
+        /* Hero Banner */
+        .hero {
+            height: 70vh;
+            background: linear-gradient(rgba(0,31,63,0.7), rgba(0,31,63,0.7)), 
+                        url('https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=1500&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            color: var(--accent-gold);
+        }
+
+        .cta-btn {
+            background: var(--accent-gold);
+            color: var(--primary-blue);
+            padding: 15px 35px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 50px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(255, 204, 0, 0.3);
+        }
+
+        /* Stats Strip */
+        .stats-strip {
+            background: white;
+            padding: 30px 5%;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            text-align: center;
+            margin-top: -50px;
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .stat-item h3 { font-size: 28px; color: var(--primary-blue); }
+        .stat-item p { color: #666; font-size: 14px; }
+
+        /* Main Content */
+        .main-container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title h2 {
+            font-size: 32px;
+            color: var(--primary-blue);
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .section-title h2::after {
+            content: '';
+            width: 60px;
+            height: 4px;
+            background: var(--accent-gold);
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        footer {
+            background: #111;
+            color: #999;
+            padding: 40px 5%;
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        .footer-logo { color: #fff; font-size: 24px; margin-bottom: 10px; }
+    </style>
 </head>
-
 <body>
 
-<header>
+    <div class="top-bar">
+        OFFICIAL SITE: PURACRICKETLEAGUE.ONLINE
+    </div>
 
-<h1>Pura Cricket League</h1>
+    <header>
+        <div class="logo-section">
+            <div class="logo-badge">PCL</div>
+            <div class="brand-name">Pura Cricket League</div>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="#" class="active">Home</a></li>
+            <li><a href="#">Schedule</a></li>
+            <li><a href="#">Points Table</a></li>
+            <li><a href="#">Teams</a></li>
+            <li><a href="#">Stats</a></li>
+            <li><a href="#">Register</a></li>
+        </ul>
+    </header>
 
-<nav>
+    <section class="hero">
+        <h1>PURA CRICKET LEAGUE</h1>
+        <p>Where Legends Are Born • Join the PCL Season 2026</p>
+        <a href="#" class="cta-btn">View Match Center</a>
+    </section>
 
-<a href="index.html">Home</a>
-<a href="players.html">Players</a>
-<a href="teams.html">Teams</a>
-<a href="matches.html">Matches</a>
-<a href="points.html">Points Table</a>
-<a href="gallery.html">Gallery</a>
-<a href="grounds.html">Grounds</a>
+    <div class="stats-strip">
+        <div class="stat-item"><h3>12</h3><p>Teams</p></div>
+        <div class="stat-item"><h3>45</h3><p>Matches</p></div>
+        <div class="stat-item"><h3>180+</h3><p>Players</p></div>
+        <div class="stat-item"><h3>8</h3><p>Venues</p></div>
+    </div>
 
-</nav>
+    <main class="main-container">
+        <div class="section-title">
+            <h2>Latest Update</h2>
+        </div>
+        <div style="background: white; padding: 40px; border-radius: 8px; text-align: center;">
+            <p>Welcome to <strong>puracricketleague.online</strong>. We are currently preparing for the upcoming tournament. Stay tuned for the player auction and match schedules.</p>
+        </div>
+    </main>
 
-</header>
-
-<section class="hero">
-
-<h2>Welcome to Pura Cricket League</h2>
-<p>Official Cricket Tournament Website</p>
-
-</section>
-
-<section class="container">
-
-<h2>Latest Results</h2>
-
-<div class="card">
-
-Team Warriors beat City Kings by 4 wickets
-
-</div>
-
-<div class="card">
-
-Super Strikers beat Royal Eagles by 20 runs
-
-</div>
-
-</section>
-
-<section class="container">
-
-<h2>Upcoming Matches</h2>
-
-<div class="card">
-
-Warriors vs Kings  
-Date: 25 April  
-Ground: Pura Stadium
-
-</div>
-
-</section>
-
-<footer>
-
-© 2026 Pura Cricket League
-
-</footer>
+    <footer>
+        <div class="footer-logo">PCL - Pura Cricket League</div>
+        <p>Copyright © 2026 puracricketleague.online. All Rights Reserved.</p>
+        <div style="margin-top: 20px; font-size: 20px; gap: 15px; display: flex; justify-content: center;">
+            <i class="fab fa-facebook"></i>
+            <i class="fab fa-instagram"></i>
+            <i class="fab fa-youtube"></i>
+        </div>
+    </footer>
 
 </body>
-
 </html>
