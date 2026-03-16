@@ -3,26 +3,27 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
 <title>Pura Cricket League</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
 
 body{
 margin:0;
 font-family:Poppins;
-background:#08142b;
-color:white;
+background:#f5f7fb;
+color:#222;
 }
 
 header{
-background:#e50914;
-padding:20px;
+background:white;
+box-shadow:0 2px 10px rgba(0,0,0,.1);
+padding:18px;
 text-align:center;
-font-size:30px;
+font-size:26px;
 font-weight:700;
 }
 
@@ -31,23 +32,29 @@ display:flex;
 justify-content:center;
 gap:10px;
 flex-wrap:wrap;
-background:#0b1c3d;
+background:#ffffff;
+border-bottom:1px solid #eee;
 padding:10px;
 }
 
 nav button{
-background:#e50914;
 border:none;
-color:white;
+background:#eef2f8;
 padding:10px 16px;
-cursor:pointer;
 border-radius:6px;
+cursor:pointer;
 font-weight:600;
+}
+
+nav button:hover{
+background:#dbe4f3;
 }
 
 section{
 display:none;
 padding:30px;
+max-width:1100px;
+margin:auto;
 }
 
 .active{
@@ -55,23 +62,20 @@ display:block;
 }
 
 .hero{
-height:420px;
+height:380px;
 background:url("https://images.unsplash.com/photo-1593341646782-e0b495cff86d");
 background-size:cover;
 background-position:center;
 display:flex;
 align-items:center;
 justify-content:center;
-}
-
-.hero h1{
-background:rgba(0,0,0,0.6);
-padding:20px 40px;
+color:white;
+font-size:46px;
+font-weight:700;
 border-radius:10px;
-font-size:48px;
 }
 
-.card-grid{
+.grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
 gap:20px;
@@ -79,45 +83,47 @@ margin-top:20px;
 }
 
 .card{
-background:#122b5c;
+background:white;
 padding:20px;
 border-radius:10px;
+box-shadow:0 3px 10px rgba(0,0,0,.08);
 }
 
 table{
 width:100%;
 border-collapse:collapse;
 margin-top:20px;
+background:white;
 }
 
 th{
-background:#e50914;
+background:#f1f4f9;
 padding:10px;
 }
 
 td{
 padding:8px;
 text-align:center;
-border-bottom:1px solid #333;
+border-bottom:1px solid #eee;
 }
 
-.live-box{
-font-size:30px;
+.liveBox{
 background:black;
+color:#00ff88;
 padding:20px;
+font-size:30px;
 border-radius:10px;
 text-align:center;
 }
 
-.gallery{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:10px;
-}
-
-.gallery img{
-width:100%;
-border-radius:8px;
+.controls button{
+margin:5px;
+padding:8px 14px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+background:#2b7cff;
+color:white;
 }
 
 .popup{
@@ -126,67 +132,138 @@ top:0;
 left:0;
 width:100%;
 height:100%;
-background:rgba(0,0,0,0.7);
+background:rgba(0,0,0,.6);
 display:none;
 align-items:center;
 justify-content:center;
 }
 
-.popup-content{
-background:#122b5c;
+.popupContent{
+background:white;
 padding:30px;
 border-radius:10px;
+}
+
+.gallery{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:10px;
+}
+
+.gallery img{
+width:100%;
+border-radius:8px;
 }
 
 </style>
 
 <script>
 
-function openTab(tab){
+function tab(t){
 document.querySelectorAll("section").forEach(s=>s.classList.remove("active"))
-document.getElementById(tab).classList.add("active")
+document.getElementById(t).classList.add("active")
 }
 
 let score=0
 let wickets=0
-let overs=0
+let balls=0
 
 function run(r){
 score+=r
-updateScore()
+balls++
+update()
 }
 
 function wicket(){
 wickets++
-updateScore()
+balls++
+update()
 }
 
-function over(){
-overs++
-updateScore()
-}
+function update(){
 
-function updateScore(){
-document.getElementById("liveScore").innerHTML=
+let overs=Math.floor(balls/6)+"."+balls%6
+
+document.getElementById("score").innerHTML=
 score+"/"+wickets+" ("+overs+" ov)"
+
 }
 
-function player(name,runs,balls,fours,sixes){
+const players=[
+
+{name:"Mahfuz Siddqui",runs:178,balls:88,fours:9,sixes:18},
+{name:"Shanu Sidd",runs:84,balls:38,fours:5,sixes:9},
+{name:"Md Hassan",runs:80,balls:41,fours:2,sixes:10},
+{name:"Afzal Sajjad",runs:44,balls:37,fours:5,sixes:2},
+{name:"Wasim",runs:41,balls:25,fours:3,sixes:3},
+{name:"Bablu",runs:39,balls:19,fours:5,sixes:2},
+{name:"Adnan",runs:30,balls:17,fours:4,sixes:1},
+{name:"Atif Ayub",runs:25,balls:14,fours:0,sixes:3},
+
+{name:"Farid Mahmood",runs:12,balls:10,fours:1,sixes:0},
+{name:"Akram",runs:10,balls:8,fours:1,sixes:0},
+{name:"Yasir",runs:8,balls:7,fours:1,sixes:0},
+{name:"Adil Ayub",runs:6,balls:6,fours:0,sixes:0},
+{name:"Tauqeer",runs:5,balls:6,fours:0,sixes:0},
+{name:"Chunnu",runs:4,balls:5,fours:0,sixes:0},
+
+{name:"Nehal Siddiqui",runs:14,balls:9,fours:2,sixes:0},
+{name:"Ejaj",runs:11,balls:8,fours:1,sixes:0},
+{name:"Md Moiz",runs:9,balls:7,fours:1,sixes:0},
+{name:"Afsar",runs:7,balls:5,fours:0,sixes:0},
+{name:"Jasim",runs:6,balls:5,fours:0,sixes:0},
+
+{name:"Player20",runs:4,balls:6,fours:0,sixes:0},
+{name:"Player21",runs:3,balls:5,fours:0,sixes:0},
+{name:"Player22",runs:2,balls:4,fours:0,sixes:0}
+
+]
+
+function loadPlayers(){
+
+let html=""
+
+players.forEach(p=>{
+
+let sr=(p.runs/p.balls*100).toFixed(1)
+
+html+=`<tr onclick="show('${p.name}',${p.runs},${p.balls},${p.fours},${p.sixes},${sr})">
+
+<td>${p.name}</td>
+<td>${p.runs}</td>
+<td>${p.balls}</td>
+<td>${sr}</td>
+
+</tr>`
+
+})
+
+document.getElementById("playerTable").innerHTML=html
+
+}
+
+function show(n,r,b,f,s,sr){
 
 document.getElementById("popup").style.display="flex"
 
-document.getElementById("playerData").innerHTML=
-"<h2>"+name+"</h2>"+
-"Runs: "+runs+"<br>"+
-"Balls: "+balls+"<br>"+
-"4s: "+fours+"<br>"+
-"6s: "+sixes
+document.getElementById("pdata").innerHTML=
+
+"<h2>"+n+"</h2>"+
+"Runs: "+r+"<br>"+
+"Balls: "+b+"<br>"+
+"4s: "+f+"<br>"+
+"6s: "+s+"<br>"+
+"Strike Rate: "+sr
 
 }
 
-function closePopup(){
+function closeP(){
+
 document.getElementById("popup").style.display="none"
+
 }
+
+window.onload=loadPlayers
 
 </script>
 
@@ -200,103 +277,48 @@ document.getElementById("popup").style.display="none"
 
 <nav>
 
-<button onclick="openTab('home')">Home</button>
-<button onclick="openTab('live')">Live</button>
-<button onclick="openTab('matches')">Matches</button>
-<button onclick="openTab('players')">Players</button>
-<button onclick="openTab('points')">Points</button>
-<button onclick="openTab('scorecard')">Scorecard</button>
-<button onclick="openTab('gallery')">Gallery</button>
+<button onclick="tab('home')">Home</button>
+<button onclick="tab('live')">Live</button>
+<button onclick="tab('players')">Players</button>
+<button onclick="tab('points')">Points</button>
+<button onclick="tab('mvp')">MVP</button>
+<button onclick="tab('gallery')">Gallery</button>
+<button onclick="tab('season2026')">Season 2026</button>
 
 </nav>
 
-<!-- HOME -->
-
 <section id="home" class="active">
 
-<div class="hero">
-<h1>PCL 2024</h1>
-</div>
+<div class="hero">PCL 2024</div>
 
-<div class="card-grid">
+<div class="grid">
 
-<div class="card">
-<h3>Location</h3>
-Pura Historical Stadium<br>Darbhanga
-</div>
-
-<div class="card">
-<h3>Date</h3>
-18 Apr – 20 Apr 2024
-</div>
-
-<div class="card">
-<h3>Matches</h3>
-3
-</div>
+<div class="card">Location<br>Pura Historical Stadium</div>
+<div class="card">Dates<br>18 Apr – 20 Apr 2024</div>
+<div class="card">Teams<br>Adnan XI vs Nehal XI</div>
+<div class="card">Matches<br>3</div>
 
 </div>
 
 </section>
-
-<!-- LIVE -->
 
 <section id="live">
 
 <h2>Live Score</h2>
 
-<div class="live-box" id="liveScore">
-0/0 (0 ov)
+<div class="liveBox" id="score">0/0 (0.0 ov)</div>
+
+<div class="controls">
+
+<button onclick="run(1)">1</button>
+<button onclick="run(2)">2</button>
+<button onclick="run(4)">4</button>
+<button onclick="run(6)">6</button>
+<button onclick="wicket()">W</button>
+
 </div>
 
-<br>
-
-<button onclick="run(1)">+1</button>
-<button onclick="run(2)">+2</button>
-<button onclick="run(4)">+4</button>
-<button onclick="run(6)">+6</button>
-<button onclick="wicket()">Wicket</button>
-<button onclick="over()">Over</button>
-
 </section>
-
-<!-- MATCHES -->
-
-<section id="matches">
-
-<h2>Match Results</h2>
-
-<table>
-
-<tr>
-<th>Date</th>
-<th>Match</th>
-<th>Result</th>
-</tr>
-
-<tr>
-<td>18 Apr</td>
-<td>Nehal XI vs Adnan XI</td>
-<td>Nehal XI won</td>
-</tr>
-
-<tr>
-<td>19 Apr</td>
-<td>Adnan XI vs Nehal XI</td>
-<td>Adnan XI won</td>
-</tr>
-
-<tr>
-<td>20 Apr</td>
-<td>Final</td>
-<td>Nehal XI won</td>
-</tr>
-
-</table>
-
-</section>
-
-<!-- PLAYERS -->
 
 <section id="players">
 
@@ -305,35 +327,17 @@ Pura Historical Stadium<br>Darbhanga
 <table>
 
 <tr>
-<th>Player</th>
+<th>Name</th>
 <th>Runs</th>
+<th>Balls</th>
+<th>SR</th>
 </tr>
 
-<tr onclick="player('Mahfuz Siddqui',178,88,9,18)">
-<td>Mahfuz Siddqui</td>
-<td>178</td>
-</tr>
-
-<tr onclick="player('Shanu Sidd',84,38,5,9)">
-<td>Shanu Sidd</td>
-<td>84</td>
-</tr>
-
-<tr onclick="player('Md Hassan',80,41,2,10)">
-<td>Md Hassan</td>
-<td>80</td>
-</tr>
-
-<tr onclick="player('Afzal Sajjad',44,37,5,2)">
-<td>Afzal Sajjad</td>
-<td>44</td>
-</tr>
+<tbody id="playerTable"></tbody>
 
 </table>
 
 </section>
-
-<!-- POINTS -->
 
 <section id="points">
 
@@ -343,9 +347,9 @@ Pura Historical Stadium<br>Darbhanga
 
 <tr>
 <th>Team</th>
-<th>Matches</th>
-<th>Wins</th>
-<th>Points</th>
+<th>M</th>
+<th>W</th>
+<th>P</th>
 </tr>
 
 <tr>
@@ -366,43 +370,39 @@ Pura Historical Stadium<br>Darbhanga
 
 </section>
 
-<!-- SCORECARD -->
+<section id="mvp">
 
-<section id="scorecard">
-
-<h2>Final Match Scorecard</h2>
+<h2>MVP Leaderboard</h2>
 
 <table>
 
 <tr>
+<th>Rank</th>
 <th>Player</th>
-<th>Runs</th>
-<th>Balls</th>
+<th>Score</th>
 </tr>
 
 <tr>
+<td>1</td>
 <td>Mahfuz Siddqui</td>
-<td>94</td>
-<td>46</td>
+<td>21.48</td>
 </tr>
 
 <tr>
-<td>Shanu Sidd</td>
-<td>54</td>
-<td>18</td>
-</tr>
-
-<tr>
+<td>2</td>
 <td>Md Hassan</td>
-<td>29</td>
-<td>13</td>
+<td>12.56</td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>Afzal Sajjad</td>
+<td>12.33</td>
 </tr>
 
 </table>
 
 </section>
-
-<!-- GALLERY -->
 
 <section id="gallery">
 
@@ -410,20 +410,35 @@ Pura Historical Stadium<br>Darbhanga
 
 <div class="gallery">
 
-<img src="https://images.unsplash.com/photo-1624880357913-a8539238245b">
 <img src="https://images.unsplash.com/photo-1587280501635-68a0e82cd5ff">
+<img src="https://images.unsplash.com/photo-1624880357913-a8539238245b">
 <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b">
-<img src="https://images.unsplash.com/photo-1505842465776-3d90f616310f">
 
 </div>
 
 </section>
 
-<!-- PLAYER POPUP -->
+<section id="season2026">
 
-<div id="popup" class="popup" onclick="closePopup()">
+<h2>PCL 2026</h2>
 
-<div class="popup-content" id="playerData"></div>
+<div class="card">
+
+Upcoming Season
+
+<br><br>
+
+Player Registration  
+Live Matches  
+Auction System  
+
+</div>
+
+</section>
+
+<div class="popup" id="popup" onclick="closeP()">
+
+<div class="popupContent" id="pdata"></div>
 
 </div>
 
