@@ -1,188 +1,210 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pura Cricket League</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Pura Cricket League | Pro Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --secondary: #1e293b;
+            --accent: #10b981;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+        body { margin: 0; font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--text); }
+        header { background: var(--secondary); color: white; padding: 25px; text-align: center; font-size: 28px; font-weight: 800; }
+        
+        nav { display: flex; justify-content: center; gap: 12px; padding: 15px; background: white; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow-x: auto; }
+        nav button { border: none; background: #f1f5f9; padding: 10px 20px; border-radius: 50px; cursor: pointer; font-weight: 600; white-space: nowrap; }
+        nav button.active-btn { background: var(--primary); color: white; }
 
-<style>
+        section { display: none; padding: 30px 20px; max-width: 1000px; margin: auto; animation: fadeIn 0.4s ease; }
+        .active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-body{
-margin:0;
-font-family:Poppins;
-background:url("https://images.unsplash.com/photo-1508098682722-e99c643e7f0b") no-repeat center center fixed;
-background-size:cover;
-color:#222;
-}
+        /* Match History Styling */
+        .match-card { background: white; border-radius: 15px; padding: 20px; margin-bottom: 20px; border-left: 6px solid var(--primary); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .match-header { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px; font-weight: bold; color: #64748b; }
+        .match-teams { display: flex; align-items: center; justify-content: space-around; font-size: 1.2rem; font-weight: 700; }
+        .vs-badge { background: #f1f5f9; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; color: var(--primary); }
 
-.overlay{
-background:rgba(255,255,255,0.9);
-min-height:100vh;
-}
+        /* Timer & Form */
+        .timer-box { background: var(--secondary); color: white; padding: 30px; border-radius: 20px; text-align: center; margin-bottom: 30px; }
+        .timer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 20px; }
+        .time-unit { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; }
+        .time-unit big { font-size: 2rem; display: block; font-weight: 800; color: var(--accent); }
 
-header{
-background:white;
-padding:18px;
-text-align:center;
-font-size:26px;
-font-weight:700;
-box-shadow:0 2px 10px rgba(0,0,0,.1);
-}
+        .reg-form { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; }
+        .form-group input, .form-group select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        .submit-btn { width: 100%; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 1rem; }
 
-nav{
-display:flex;
-justify-content:center;
-gap:10px;
-flex-wrap:wrap;
-padding:10px;
-background:white;
-}
-
-nav button{
-border:none;
-background:#eef2f8;
-padding:10px 16px;
-border-radius:6px;
-cursor:pointer;
-font-weight:600;
-}
-
-section{
-display:none;
-padding:30px;
-max-width:1100px;
-margin:auto;
-}
-
-.active{display:block;}
-
-.card{
-background:white;
-padding:20px;
-border-radius:10px;
-margin-top:15px;
-box-shadow:0 3px 10px rgba(0,0,0,.08);
-}
-
-.liveBox{
-background:black;
-color:#00ff88;
-padding:20px;
-font-size:30px;
-border-radius:10px;
-text-align:center;
-}
-
-button.action{
-margin:5px;
-padding:8px 14px;
-border:none;
-border-radius:6px;
-background:#2b7cff;
-color:white;
-cursor:pointer;
-}
-
-</style>
-
-<script>
-
-function tab(t){
-document.querySelectorAll("section").forEach(s=>s.classList.remove("active"))
-document.getElementById(t).classList.add("active")
-}
-
-let score=0,wickets=0,balls=0
-
-function run(r){score+=r;balls++;update()}
-function wicket(){wickets++;balls++;update()}
-
-function update(){
-let o=Math.floor(balls/6)+"."+balls%6
-document.getElementById("score").innerHTML=score+"/"+wickets+" ("+o+" ov)"
-}
-
-</script>
-
+        /* Live Tracker & Tables */
+        .score-display { font-size: 50px; font-weight: 800; color: var(--accent); text-align: center; }
+        .table-container { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #f8fafc; }
+    </style>
 </head>
-
 <body>
 
-<div class="overlay">
-
-<header> PURA CRICKET LEAGUE</header>
+<header>🏏 PURA CRICKET LEAGUE</header>
 
 <nav>
-<button onclick="tab('home')">Home</button>
-<button onclick="tab('matches')">Matches</button>
-<button onclick="tab('live')">Live</button>
+    <button onclick="tab('home', this)" class="active-btn">Match History</button>
+    <button onclick="tab('live', this)">Live Score</button>
+    <button onclick="tab('players', this)">Player Stats</button>
+    <button onclick="tab('season2026', this)">Season 2026</button>
 </nav>
 
-<!-- HOME -->
 <section id="home" class="active">
+    <h2 style="text-align: center; margin-bottom: 30px;">Tournament Match Logs</h2>
+    
+    <div class="match-card">
+        <div class="match-header"><span>MATCH #1</span> <span>18 APR 2024</span></div>
+        <div class="match-teams">
+            <div>Adnan XI <br> <small>142/6 (10 ov)</small></div>
+            <div class="vs-badge">VS</div>
+            <div style="color:var(--primary)">Nehal XI <br> <small>145/3 (9.2 ov)</small></div>
+        </div>
+        <p style="text-align:center; margin-top:15px; font-size:0.9rem; color:var(--accent);">Result: Nehal XI won by 7 wickets</p>
+    </div>
 
-<div class="card">
-<h2>PCL 2024</h2>
-<p>📍 Pura Historical Stadium, Darbhanga</p>
-<p>📅 18 Apr – 20 Apr 2024</p>
-</div>
+    <div class="match-card">
+        <div class="match-header"><span>MATCH #2</span> <span>19 APR 2024</span></div>
+        <div class="match-teams">
+            <div style="color:var(--primary)">Adnan XI <br> <small>168/4 (10 ov)</small></div>
+            <div class="vs-badge">VS</div>
+            <div>Nehal XI <br> <small>120/10 (8.5 ov)</small></div>
+        </div>
+        <p style="text-align:center; margin-top:15px; font-size:0.9rem; color:var(--accent);">Result: Adnan XI won by 48 runs</p>
+    </div>
 
+    <div class="match-card">
+        <div class="match-header"><span>MATCH #3 (FINAL)</span> <span>20 APR 2024</span></div>
+        <div class="match-teams">
+            <div>Adnan XI <br> <small>135/8 (10 ov)</small></div>
+            <div class="vs-badge">VS</div>
+            <div style="color:var(--primary)">Nehal XI <br> <small>138/5 (9.4 ov)</small></div>
+        </div>
+        <p style="text-align:center; margin-top:15px; font-size:0.9rem; color:var(--accent);">Result: Nehal XI won by 5 wickets</p>
+    </div>
 </section>
 
-<!-- MATCHES -->
-<section id="matches">
-
-<h2>Match Details</h2>
-
-<div class="card">
-<h3>Match 1 (18 Apr 2024)</h3>
-<p>Nehal XI vs Adnan XI</p>
-<p>Nehal XI: 88/5</p>
-<p>Adnan XI: 54/8</p>
-<p><b>Winner: Nehal XI (34 runs)</b></p>
-<p>Top Players: Wasim (33), Mahfuz (32)</p>
-</div>
-
-<div class="card">
-<h3>Match 2 (19 Apr 2024)</h3>
-<p>Adnan XI vs Nehal XI</p>
-<p>Adnan XI: 112/3</p>
-<p>Nehal XI: 85/8</p>
-<p><b>Winner: Adnan XI (27 runs)</b></p>
-<p>Top Players: Mahfuz (52), Hassan (28)</p>
-</div>
-
-<div class="card">
-<h3>Final (20 Apr 2024)</h3>
-<p>Adnan XI: 134/3</p>
-<p>Nehal XI: 139/5</p>
-<p><b>Winner: Nehal XI</b></p>
-<p>Top Players: Mahfuz (94), Shanu (54)</p>
-</div>
-
-</section>
-
-<!-- LIVE -->
 <section id="live">
-
-<h2>Live Score</h2>
-
-<div class="liveBox" id="score">0/0 (0.0 ov)</div>
-
-<br>
-
-<button class="action" onclick="run(1)">+1</button>
-<button class="action" onclick="run(4)">+4</button>
-<button class="action" onclick="run(6)">+6</button>
-<button class="action" onclick="wicket()">Wicket</button>
-
+    <div class="timer-box" style="background:var(--secondary)">
+        <div class="score-display" id="mainScore">0/0</div>
+        <p id="oversDisplay">0.0 Overs</p>
+        <div style="display:flex; justify-content:center; gap:10px; margin-top:20px;">
+            <button onclick="addRun(1)" style="padding:10px 20px; border-radius:5px; border:none; cursor:pointer;">+1 Run</button>
+            <button onclick="addRun(4)" style="padding:10px 20px; border-radius:5px; border:none; cursor:pointer; background:var(--accent); color:white;">+4 Runs</button>
+            <button onclick="addRun(6)" style="padding:10px 20px; border-radius:5px; border:none; cursor:pointer; background:var(--primary); color:white;">+6 Runs</button>
+            <button onclick="addWicket()" style="padding:10px 20px; border-radius:5px; border:none; cursor:pointer; background:var(--danger); color:white;">Wicket</button>
+        </div>
+    </div>
 </section>
 
-</div>
+<section id="players">
+    <div class="table-container">
+        <table>
+            <thead><tr><th>Player</th><th>Runs</th><th>Balls</th><th>SR</th></tr></thead>
+            <tbody id="playerTableBody"></tbody>
+        </table>
+    </div>
+</section>
+
+<section id="season2026">
+    <div class="timer-box">
+        <h3>PCL SEASON 2026 BEGINS IN</h3>
+        <div class="timer-grid">
+            <div class="time-unit"><big id="days">00</big>Days</div>
+            <div class="time-unit"><big id="hours">00</big>Hrs</div>
+            <div class="time-unit"><big id="mins">00</big>Mins</div>
+            <div class="time-unit"><big id="secs">00</big>Secs</div>
+        </div>
+    </div>
+
+    <div class="reg-form">
+        <h2 style="margin-top:0">Player Registration</h2>
+        <p style="color:#666; margin-bottom:20px;">Fill the form to participate in Season 2026 Auction.</p>
+        <form onsubmit="alert('Registration Successful, Boss!'); return false;">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" placeholder="Enter your name" required>
+            </div>
+            <div class="form-group">
+                <label>Player Role</label>
+                <select>
+                    <option>All Rounder</option>
+                    <option>Batsman</option>
+                    <option>Bowler</option>
+                    <option>Wicket Keeper</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Contact Number</label>
+                <input type="tel" placeholder="Mobile Number" required>
+            </div>
+            <button type="submit" class="submit-btn">Register for PCL 2026</button>
+        </form>
+    </div>
+</section>
+
+<script>
+    // Tab Logic
+    function tab(id, btn) {
+        document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
+        document.querySelectorAll("nav button").forEach(b => b.classList.remove("active-btn"));
+        document.getElementById(id).classList.add("active");
+        btn.classList.add("active-btn");
+    }
+
+    // Live Score State
+    let s=0, w=0, b=0;
+    function addRun(r){ s+=r; b++; updateScore(); }
+    function addWicket(){ if(w<10){ w++; b++; updateScore(); } }
+    function updateScore(){
+        document.getElementById("mainScore").innerText = s + "/" + w;
+        document.getElementById("oversDisplay").innerText = Math.floor(b/6) + "." + (b%6) + " Overs";
+    }
+
+    // Countdown Timer Logic
+    const targetDate = new Date("April 18, 2026 10:00:00").getTime();
+    setInterval(() => {
+        const now = new Date().getTime();
+        const diff = targetDate - now;
+        
+        document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+        document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        document.getElementById("mins").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        document.getElementById("secs").innerText = Math.floor((diff % (1000 * 60)) / 1000);
+    }, 1000);
+
+    // Player Data
+    const players = [
+        {name:"Mahfuz Siddqui",runs:178,balls:88},
+        {name:"Shanu Sidd",runs:84,balls:38},
+        {name:"Md Hassan",runs:80,balls:41},
+        {name:"Afzal Sajjad",runs:44,balls:37}
+    ];
+
+    function loadPlayers() {
+        let h = "";
+        players.forEach(p => {
+            h += `<tr><td>${p.name}</td><td>${p.runs}</td><td>${p.balls}</td><td>${(p.runs/p.balls*100).toFixed(1)}</td></tr>`;
+        });
+        document.getElementById("playerTableBody").innerHTML = h;
+    }
+
+    window.onload = loadPlayers;
+</script>
 
 </body>
 </html>
-```
