@@ -321,6 +321,81 @@
                 { name: "Farid Mahmood", wkts: 6, econ: 14.43 },  
                 { name: "Wasim", wkts: 5, econ: 12.25 },  
                 { name: "Afzal Sajjad", wkts: 4, econ: 6.00 }  
+                <script>
+    // PDF aur Screenshots se extract kiya hua 22 Players ka real data
+    const playersData = {
+        nehalXI: [
+            { name: "Wasim", role: "Right-arm Fast / All-Rounder", runs: 33, wkts: 5, sr: 194.1 },
+            { name: "Md Hassan", role: "Right-arm Fast / All-Rounder", runs: 80, wkts: 3, sr: 200.0 },
+            { name: "Shanu Sidd", role: "Left-arm Medium / Batsman", runs: 84, wkts: 1, sr: 300.0 },
+            { name: "Nehal Siddiqui (C)", role: "Captain / Batsman", runs: 14, wkts: 0, sr: 133.3 },
+            { name: "Bablu", role: "Right-arm Fast / Bowler", runs: 33, wkts: 3, sr: 207.6 },
+            { name: "Atif Ayub", role: "Fielder / Batsman", runs: 10, wkts: 0, sr: 110.0 },
+            { name: "Ejaj", role: "Right-arm Fast", runs: 1, wkts: 1, sr: 20.0 },
+            { name: "Afsar", role: "Batsman", runs: 7, wkts: 0, sr: 175.0 },
+            { name: "Jasim", role: "Lower Order", runs: 4, wkts: 0, sr: 57.1 },
+            { name: "Saddam", role: "Bowler", runs: 1, wkts: 0, sr: 50.0 },
+            { name: "Akram", role: "Right-arm Off Break", runs: 0, wkts: 2, sr: 0.0 }
+        ],
+        adnanXI: [
+            { name: "Mahfuz Siddiqui", role: "MVP / All-Rounder", runs: 178, wkts: 2, sr: 204.3 },
+            { name: "Adnan (C)", role: "Captain / All-Rounder", runs: 30, wkts: 0, sr: 176.5 },
+            { name: "Afzal Sajjad", role: "Right-arm Fast / All-Rounder", runs: 44, wkts: 4, sr: 173.3 },
+            { name: "Farid Mahmood", role: "Left-arm Medium / Lead Bowler", runs: 0, wkts: 6, sr: 0.0 },
+            { name: "Yasir", role: "Batsman", runs: 12, wkts: 0, sr: 100.0 },
+            { name: "Adil Ayub", role: "Batsman", runs: 9, wkts: 0, sr: 70.0 },
+            { name: "Akram (Adnan XI)", role: "Batsman", runs: 7, wkts: 0, sr: 100.0 },
+            { name: "Sarfarj", role: "Bowler", runs: 0, wkts: 0, sr: 0.0 },
+            { name: "Raja", role: "Bowler", runs: 0, wkts: 0, sr: 0.0 },
+            { name: "Md Ali", role: "Bowler", runs: 0, wkts: 0, sr: 0.0 },
+            { name: "Tauqeer", role: "Wicket Keeper", runs: 0, wkts: 0, sr: 0.0 }
+        ]
+    };
+
+    function renderPlayers() {
+        const nehalGrid = document.getElementById('nehal-grid');
+        const adnanGrid = document.getElementById('adnan-grid');
+
+        // Render Nehal XI
+        nehalGrid.innerHTML = playersData.nehalXI.map(p => `
+            <div class="player-card">
+                <div class="player-header"></div>
+                <div class="player-img-placeholder">${p.name.charAt(0)}</div>
+                <div class="player-info">
+                    <h3>${p.name}</h3>
+                    <p>${p.role}</p>
+                </div>
+                <div class="quick-stats">
+                    <div class="stat-box"><span class="stat-val">${p.runs}</span><span class="stat-lab">Runs</span></div>
+                    <div class="stat-box"><span class="stat-val">${p.wkts}</span><span class="stat-lab">Wkts</span></div>
+                    <div class="stat-box"><span class="stat-val">${p.sr}</span><span class="stat-lab">S/R</span></div>
+                </div>
+            </div>
+        `).join('');
+
+        // Render Adnan XI
+        adnanGrid.innerHTML = playersData.adnanXI.map(p => `
+            <div class="player-card" style="border-top: 3px solid #ef4444;">
+                <div class="player-header" style="background: linear-gradient(45deg, #7f1d1d, #000);"></div>
+                <div class="player-img-placeholder">${p.name.charAt(0)}</div>
+                <div class="player-info">
+                    <h3>${p.name}</h3>
+                    <p>${p.role}</p>
+                </div>
+                <div class="quick-stats">
+                    <div class="stat-box"><span class="stat-val">${p.runs}</span><span class="stat-lab">Runs</span></div>
+                    <div class="stat-box"><span class="stat-val">${p.wkts}</span><span class="stat-lab">Wkts</span></div>
+                    <div class="stat-box"><span class="stat-val">${p.sr}</span><span class="stat-lab">S/R</span></div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    window.onload = renderPlayers;
+</script>
+
+</body>
+</html>
             ]  
         }  
     };  
