@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pura Cricket League | Official Pro Portal</title>
+    <title>PCL | Team & Player Analytics</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Syncopate:wght@700&display=swap" rel="stylesheet">
     
@@ -16,67 +16,52 @@
             --text: #f8fafc;
             --dim: #94a3b8;
             --border: rgba(255, 255, 255, 0.1);
-            --success: #10b981;
-            --danger: #ef4444;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
-        body { background: var(--bg); color: var(--text); overflow-x: hidden; background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, #05070a 70%); background-attachment: fixed; }
+        body { background: var(--bg); color: var(--text); background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, #05070a 70%); background-attachment: fixed; }
 
-        /* --- HEADER (As per your Sketch) --- */
-        header { padding: 30px 5% 10px; text-align: center; position: relative; }
+        /* --- HEADER & NAV (Same as your Sketch) --- */
+        header { padding: 30px 5%; text-align: center; position: relative; }
         .pcl-box { position: absolute; left: 5%; top: 35px; border: 2px solid var(--gold); padding: 5px 12px; color: var(--gold); font-family: 'Syncopate'; font-size: 18px; border-radius: 4px; }
-        .main-title { font-weight: 900; letter-spacing: 4px; font-size: 32px; text-transform: uppercase; margin-bottom: 25px; color: #fff; }
+        .main-title { font-weight: 900; letter-spacing: 4px; font-size: 32px; text-transform: uppercase; margin-bottom: 25px; }
 
-        /* --- NAVIGATION (Cricbuzz Style) --- */
-        nav { background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(15px); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); sticky; top: 0; z-index: 1000; }
+        nav { background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(15px); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
         .nav-list { list-style: none; display: flex; justify-content: center; align-items: center; max-width: 1200px; margin: auto; }
-        .nav-item { padding: 18px 25px; cursor: pointer; font-weight: 700; font-size: 13px; text-transform: uppercase; color: var(--dim); transition: 0.3s; position: relative; }
-        .nav-item:hover { color: var(--gold); }
-        .nav-item.active { color: var(--gold); border-bottom: 3px solid var(--gold); }
-        .nav-item.circle-btn { border: 1px solid var(--gold); border-radius: 30px; margin: 10px; padding: 8px 25px; color: var(--gold); }
+        .nav-item { padding: 18px 25px; cursor: pointer; font-weight: 700; font-size: 13px; text-transform: uppercase; color: var(--dim); transition: 0.3s; }
+        .nav-item:hover, .nav-item.active { color: var(--gold); }
+        .circle-btn { border: 1px solid var(--gold); border-radius: 30px; margin: 10px; padding: 8px 25px; color: var(--gold); }
 
-        /* --- DROPDOWN --- */
-        .dropdown { position: relative; }
-        .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: var(--card); border: 1px solid var(--gold); min-width: 250px; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
-        .dropdown:hover .dropdown-menu { display: block; }
-        .dropdown-link { padding: 15px 20px; display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); color: #fff; text-decoration: none; font-size: 14px; transition: 0.2s; }
-        .dropdown-link:hover { background: var(--gold-dim); color: var(--gold); }
-        .tba { font-size: 9px; background: var(--gold); color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 900; }
-
-        /* --- CONTENT WRAPPER --- */
-        .container { padding: 40px 5%; max-width: 1200px; margin: auto; display: none; animation: fadeIn 0.5s ease; }
+        .container { padding: 40px 5%; max-width: 1200px; margin: auto; display: none; animation: fadeIn 0.4s ease; }
         .container.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- MATCH CARDS (Tournament View) --- */
-        .match-summary-card { background: var(--card); border-radius: 16px; padding: 25px; margin-bottom: 20px; border: 1px solid var(--border); cursor: pointer; transition: 0.3s; }
-        .match-summary-card:hover { border-color: var(--gold); transform: scale(1.01); }
-        .match-header { display: flex; justify-content: space-between; font-size: 12px; color: var(--gold); font-weight: 700; margin-bottom: 15px; }
-        .team-row { display: flex; justify-content: space-between; align-items: center; margin: 8px 0; }
-        .team-n { font-size: 20px; font-weight: 800; }
-        .team-s { font-size: 20px; font-weight: 900; }
-        .result-strip { margin-top: 15px; padding: 10px; background: rgba(16, 185, 129, 0.1); border-radius: 8px; color: var(--success); font-weight: 800; font-size: 13px; text-align: center; }
+        /* --- TEAMS GRID --- */
+        .teams-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+        .team-card { background: var(--card); border-radius: 20px; padding: 40px; border: 1px solid var(--border); text-align: center; cursor: pointer; transition: 0.3s; position: relative; overflow: hidden; }
+        .team-card:hover { border-color: var(--gold); transform: translateY(-5px); background: var(--gold-dim); }
+        .team-card h2 { font-size: 28px; font-weight: 900; color: var(--gold); }
+        .team-card p { color: var(--dim); margin-top: 10px; font-size: 14px; }
 
-        /* --- SCORECARD (CRICBUZZ STYLE) --- */
-        .sc-tabs { display: flex; background: #000; border-radius: 8px; margin-bottom: 20px; overflow: hidden; }
-        .sc-tab { flex: 1; padding: 15px; text-align: center; cursor: pointer; font-weight: 800; color: var(--dim); }
-        .sc-tab.active { background: var(--gold); color: #000; }
+        /* --- PLAYER LIST --- */
+        .player-row { background: rgba(255,255,255,0.03); margin-bottom: 10px; padding: 15px 25px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid transparent; cursor: pointer; transition: 0.2s; }
+        .player-row:hover { border-color: var(--gold); background: rgba(251, 191, 36, 0.05); }
+        .player-info h4 { font-size: 18px; font-weight: 700; }
+        .player-info span { font-size: 12px; color: var(--dim); text-transform: uppercase; }
+
+        /* --- STATS TABLES (Nested) --- */
+        .stat-box { display: none; margin-top: 15px; border-top: 1px dashed var(--border); padding-top: 15px; animation: slideDown 0.3s ease; }
+        @keyframes slideDown { from { opacity: 0; max-height: 0; } to { opacity: 1; max-height: 500px; } }
         
-        .table-box { width: 100%; overflow-x: auto; background: var(--card); border-radius: 12px; margin-bottom: 30px; }
-        table { width: 100%; border-collapse: collapse; min-width: 600px; }
-        th { text-align: left; padding: 15px; background: rgba(0,0,0,0.4); color: var(--gold); font-size: 11px; text-transform: uppercase; }
-        td { padding: 15px; border-bottom: 1px solid var(--border); font-size: 14px; }
-        .b-name { color: var(--gold); font-weight: 700; }
-        .bold-res { font-size: 18px; font-weight: 900; color: var(--gold); text-transform: uppercase; text-align: center; padding: 20px; border: 2px solid var(--gold); border-radius: 12px; margin-top: 20px; }
+        .tab-grp { display: flex; gap: 5px; margin-bottom: 15px; }
+        .mini-tab { flex: 1; padding: 8px; font-size: 11px; font-weight: 800; border: 1px solid var(--gold); background: transparent; color: var(--gold); border-radius: 4px; cursor: pointer; }
+        .mini-tab.active { background: var(--gold); color: #000; }
 
-        /* --- PLAYER STATS --- */
-        .stat-toggle { display: flex; gap: 10px; margin-bottom: 25px; }
-        .st-btn { flex: 1; padding: 12px; border: 1px solid var(--gold); background: transparent; color: var(--gold); font-weight: 800; border-radius: 8px; cursor: pointer; }
-        .st-btn.active { background: var(--gold); color: #000; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th { text-align: left; font-size: 10px; color: var(--gold); padding: 8px; border-bottom: 1px solid var(--border); }
+        td { padding: 8px; font-size: 13px; font-weight: 600; }
 
-        /* --- HIGHLIGHTS (MVP) --- */
-        .mvp-card { background: linear-gradient(135deg, #1e293b, #0f172a); padding: 30px; border-radius: 20px; border: 2px solid var(--gold); text-align: center; margin-bottom: 20px; }
+        .back-btn { background: none; border: 1px solid var(--gold); color: var(--gold); padding: 8px 20px; border-radius: 30px; cursor: pointer; margin-bottom: 25px; font-weight: 700; }
 
     </style>
 </head>
@@ -89,224 +74,124 @@
 
     <nav>
         <ul class="nav-list">
-            <li class="nav-item active" onclick="showPage('home')">Home</li>
-            <li class="nav-item circle-btn" onclick="showPage('matches2024')">Matches</li>
-            <li class="nav-item dropdown">
-                Tournament's ▼
-                <div class="dropdown-menu">
-                    <a href="#" class="dropdown-link" onclick="showPage('matches2024')">Season 2024 ➡️</a>
-                    <a href="#" class="dropdown-link">Season 2026 <span class="tba">TBA</span></a>
-                </div>
-            </li>
-            <li class="nav-item" onclick="showPage('players')">Team's</li>
-            <li class="nav-item" onclick="showPage('players')">Stats</li>
-            <li class="nav-item" onclick="showPage('highlights')">Highlight's</li>
+            <li class="nav-item" onclick="showPage('home')">Home</li>
+            <li class="nav-item circle-btn" onclick="showPage('teams')">Teams</li>
+            <li class="nav-item" onclick="showPage('home')">Tournament's ▼</li>
+            <li class="nav-item" onclick="showPage('stats-global')">Stats</li>
         </ul>
     </nav>
 
-    <div id="home" class="container active">
-        <div style="text-align: center; padding: 50px 0;">
-            <h2 style="font-size: 45px; color: var(--gold);">Welcome Boss!</h2>
-            <p style="color: var(--dim);">PCL 2024 ke saare records aur 2026 ki updates yahan hain.</p>
-        </div>
-    </div>
-
-    <div id="matches2024" class="container">
-        <h2 style="color: var(--gold); margin-bottom: 25px;">PCL 2024 - Tournament Fixtures</h2>
-        
-        <div class="match-summary-card" onclick="openScorecard(1)">
-            <div class="match-header"><span>MATCH 1 • 18 APRIL</span><span>DONE</span></div>
-            <div class="team-row"><span class="team-n">Nehal XI</span><span class="team-s">145/3 (12.0)</span></div>
-            <div class="team-row"><span class="team-n">Adnan XI</span><span class="team-s">142/6 (12.0)</span></div>
-            <div class="result-strip">Nehal XI won by 3 runs</div>
-        </div>
-
-        <div class="match-summary-card" onclick="openScorecard(2)">
-            <div class="match-header"><span>MATCH 2 • 19 APRIL</span><span>DONE</span></div>
-            <div class="team-row"><span class="team-n">Adnan XI</span><span class="team-s">168/4 (12.0)</span></div>
-            <div class="team-row"><span class="team-n">Nehal XI</span><span class="team-s">120/10 (11.2)</span></div>
-            <div class="result-strip">Adnan XI won by 48 runs</div>
-        </div>
-
-        <div class="match-summary-card" onclick="openScorecard(3)">
-            <div class="match-header"><span>MATCH 3 (FINAL) • 20 APRIL</span><span>DONE</span></div>
-            <div class="team-row"><span class="team-n">Nehal XI</span><span class="team-s">138/5 (12.0)</span></div>
-            <div class="team-row"><span class="team-n">Adnan XI</span><span class="team-s">135/8 (12.0)</span></div>
-            <div class="result-strip">Nehal XI won by 3 runs</div>
-        </div>
-    </div>
-
-    <div id="scorecardDetail" class="container">
-        <button onclick="showPage('matches2024')" style="background: none; border: 1px solid var(--gold); color: var(--gold); padding: 8px 15px; cursor: pointer; border-radius: 5px; margin-bottom: 20px;">⬅ Back to Matches</button>
-        
-        <div id="sc_header_box"></div>
-        
-        <div class="sc-tabs">
-            <div class="sc-tab active" id="t1_tab" onclick="switchInnings(1)">Nehal XI</div>
-            <div class="sc-tab" id="t2_tab" onclick="switchInnings(2)">Adnan XI</div>
-        </div>
-
-        <div id="innings_content">
+    <div id="teams" class="container active">
+        <h2 style="color: var(--gold); margin-bottom: 30px; text-align: center;">PCL 2024 SQUADS</h2>
+        <div class="teams-grid">
+            <div class="team-card" onclick="openTeam('Nehal XI')">
+                <h2>NEHAL XI</h2>
+                <p>Champions of PCL 2024</p>
+                <div style="margin-top:20px; font-weight:800; color:var(--text)">VIEW SQUAD ➡️</div>
             </div>
-
-        <div id="match_footer"></div>
-    </div>
-
-    <div id="players" class="container">
-        <div class="stat-toggle">
-            <button class="st-btn active" id="bToggle" onclick="togglePlayerTable('batting')">Batting Stats</button>
-            <button class="st-btn" id="boToggle" onclick="togglePlayerTable('bowling')">Bowling Stats</button>
-        </div>
-        <div class="table-box" id="player_stat_table"></div>
-    </div>
-
-    <div id="highlights" class="container">
-        <h2 style="color:var(--gold); margin-bottom: 30px; text-align:center">Tournament Honors</h2>
-        
-        <div class="mvp-card">
-            <h1 style="color: var(--gold); font-size: 50px;">MVP</h1>
-            <h2 style="margin: 10px 0;">MAHFUZ SIDDIQUI</h2>
-            <p>178 Runs • 2 Wickets • 3 Matches</p>
-        </div>
-
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
-            <div class="match-summary-card">
-                <h3 style="color:var(--gold)">Best Batsman</h3>
-                <p>Shanu Sidd (84 Runs)</p>
-            </div>
-            <div class="match-summary-card">
-                <h3 style="color:var(--gold)">Best Bowler</h3>
-                <p>Md Hassan (7 Wickets)</p>
+            <div class="team-card" onclick="openTeam('Adnan XI')">
+                <h2>ADNAN XI</h2>
+                <p>Runners Up PCL 2024</p>
+                <div style="margin-top:20px; font-weight:800; color:var(--text)">VIEW SQUAD ➡️</div>
             </div>
         </div>
+    </div>
+
+    <div id="player-list-section" class="container">
+        <button class="back-btn" onclick="showPage('teams')">⬅ Back to Teams</button>
+        <h2 id="current-team-name" style="color: var(--gold); font-size: 36px; margin-bottom: 10px;"></h2>
+        <p style="color: var(--dim); margin-bottom: 30px;">Click on a player to see Batting & Bowling stats</p>
+        
+        <div id="players-container">
+            </div>
     </div>
 
     <script>
-        // --- DATA HUB ---
-        const matchData = {
-            1: {
-                h: "Match 1: Nehal XI vs Adnan XI",
-                t1: "Nehal XI", t1s: "145/3",
-                t2: "Adnan XI", t2s: "142/6",
-                res: "Nehal XI WON BY 3 RUNS",
-                motm: "Mahfuz Siddiqui (82 Runs)",
-                bat1: [
-                    {n:"Mahfuz Siddiqui", r:82, b:40, f4:6, f6:8, sr:205.0},
-                    {n:"Nehal Siddiqui", r:14, b:10, f4:2, f6:0, sr:140.0}
-                ],
-                bowl1: [
-                    {n:"Adnan", o:4, m:0, r:35, w:1, eco:8.75},
-                    {n:"Afzal", o:4, m:0, r:42, w:1, eco:10.50}
-                ],
-                bat2: [
-                    {n:"Adnan", r:20, b:15, f4:2, f6:1, sr:133.3},
-                    {n:"Shanu Sidd", r:45, b:25, f4:4, f6:3, sr:180.0}
-                ],
-                bowl2: [
-                    {n:"Md Hassan", o:4, m:0, r:28, w:3, eco:7.00}
-                ]
-            },
-            2: {
-                h: "Match 2: Adnan XI vs Nehal XI",
-                t1: "Adnan XI", t1s: "168/4",
-                t2: "Nehal XI", t2s: "120/10",
-                res: "Adnan XI WON BY 48 RUNS",
-                motm: "Shanu Sidd (45 Runs)",
-                bat1: [{n:"Shanu Sidd", r:45, b:20, f4:3, f6:4, sr:225.0}],
-                bowl1: [{n:"Md Hassan", o:3, r:20, w:2, eco:6.6}],
-                bat2: [{n:"Mahfuz Siddiqui", r:40, b:20, f4:4, f6:2, sr:200.0}],
-                bowl2: [{n:"Adnan", o:4, r:30, w:2, eco:7.5}]
-            }
-            // Match 3 can be added similarly...
+        const squadData = {
+            "Nehal XI": [
+                { name: "Mahfuz Siddiqui", role: "All-Rounder", bat: { r: 178, b: 88, f4: 9, f6: 18, sr: 202.3 }, bowl: { o: 6, w: 2, r: 45, eco: 7.5 } },
+                { name: "Nehal Siddiqui", role: "Batsman", bat: { r: 14, b: 10, f4: 2, f6: 0, sr: 140.0 }, bowl: { o: 0, w: 0, r: 0, eco: 0 } },
+                { name: "Md Hassan", role: "Bowler", bat: { r: 80, b: 41, f4: 2, f6: 10, sr: 195.1 }, bowl: { o: 12, w: 7, r: 85, eco: 7.08 } },
+                { name: "Afzal Sajjad", role: "Batsman", bat: { r: 44, b: 37, f4: 4, f6: 1, sr: 118.9 }, bowl: { o: 11, w: 4, r: 78, eco: 7.09 } }
+            ],
+            "Adnan XI": [
+                { name: "Adnan", role: "All-Rounder", bat: { r: 30, b: 17, f4: 2, f6: 1, sr: 176.5 }, bowl: { o: 10, w: 5, r: 92, eco: 9.2 } },
+                { name: "Shanu Sidd", role: "Batsman", bat: { r: 84, b: 38, f4: 5, f6: 9, sr: 221.1 }, bowl: { o: 0, w: 0, r: 0, eco: 0 } },
+                { name: "Wasim", role: "Bowler", bat: { r: 41, b: 25, f4: 2, f6: 1, sr: 164.0 }, bowl: { o: 8, w: 3, r: 70, eco: 8.75 } }
+            ]
         };
 
-        const allBatters = [
-            {n:"Mahfuz Siddiqui", m:3, r:178, hs:82, b:88, f4:9, f6:18, sr:202.3},
-            {n:"Shanu Sidd", m:3, r:84, hs:45, b:38, f4:5, f6:9, sr:221.1},
-            {n:"Md Hassan", m:3, r:80, hs:52, b:41, f4:2, f6:10, sr:195.1}
-        ];
-
-        const allBowlers = [
-            {n:"Md Hassan", m:3, o:12, w:7, r:85, eco:7.08, dot:32, f4:4, f6:2},
-            {n:"Adnan", m:3, o:10, w:5, r:92, eco:9.20, dot:20, f4:8, f6:5}
-        ];
-
-        let currentMatch = null;
-
-        // --- CORE NAVIGATION ---
         function showPage(id) {
             document.querySelectorAll('.container').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             window.scrollTo(0,0);
         }
 
-        // --- SCORECARD LOGIC ---
-        function openScorecard(id) {
-            currentMatch = matchData[id] || matchData[1];
-            showPage('scorecardDetail');
+        function openTeam(teamName) {
+            const container = document.getElementById('players-container');
+            document.getElementById('current-team-name').innerText = teamName;
             
-            document.getElementById('sc_header_box').innerHTML = `
-                <h1 style="color:var(--gold)">${currentMatch.h}</h1>
-                <p style="margin: 10px 0; font-weight:700">${currentMatch.t1}: ${currentMatch.t1s} | ${currentMatch.t2}: ${currentMatch.t2s}</p>
-            `;
+            const players = squadData[teamName];
+            container.innerHTML = players.map((p, index) => `
+                <div class="player-wrapper">
+                    <div class="player-row" onclick="toggleStats(${index})">
+                        <div class="player-info">
+                            <h4>${p.name}</h4>
+                            <span>${p.role}</span>
+                        </div>
+                        <div style="color: var(--gold)">▼ Details</div>
+                    </div>
+                    
+                    <div id="stat-box-${index}" class="stat-box">
+                        <div class="tab-grp">
+                            <button class="mini-tab active" id="btn-bat-${index}" onclick="switchPlayerTab(${index}, 'bat')">BATTING</button>
+                            <button class="mini-tab" id="btn-bowl-${index}" onclick="switchPlayerTab(${index}, 'bowl')">BOWLING</button>
+                        </div>
+                        
+                        <div id="content-bat-${index}">
+                            <table>
+                                <thead><tr><th>RUNS</th><th>BALLS</th><th>4s</th><th>6s</th><th>SR</th></tr></thead>
+                                <tbody><tr><td>${p.bat.r}</td><td>${p.bat.b}</td><td>${p.bat.f4}</td><td>${p.bat.f6}</td><td>${p.bat.sr}</td></tr></tbody>
+                            </table>
+                        </div>
+                        
+                        <div id="content-bowl-${index}" style="display:none">
+                            <table>
+                                <thead><tr><th>OVERS</th><th>WKTS</th><th>RUNS</th><th>ECO</th></tr></thead>
+                                <tbody><tr><td>${p.bowl.o}</td><td>${p.bowl.w}</td><td>${p.bowl.r}</td><td>${p.bowl.eco}</td></tr></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
             
-            document.getElementById('t1_tab').innerText = currentMatch.t1;
-            document.getElementById('t2_tab').innerText = currentMatch.t2;
-            switchInnings(1);
+            showPage('player-list-section');
         }
 
-        function switchInnings(inn) {
-            const tabs = document.querySelectorAll('.sc-tab');
-            tabs.forEach(t => t.classList.remove('active'));
-            document.getElementById(`t${inn}_tab`).classList.add('active');
-
-            const batData = inn === 1 ? currentMatch.bat1 : currentMatch.bat2;
-            const bowlData = inn === 1 ? currentMatch.bowl1 : currentMatch.bowl2;
-
-            let html = `
-                <div class="table-box">
-                    <table>
-                        <thead><tr><th>Batsman</th><th>R</th><th>B</th><th>4s</th><th>6s</th><th>SR</th></tr></thead>
-                        <tbody>${batData.map(b => `<tr><td class="b-name">${b.n}</td><td><b>${b.r}</b></td><td>${b.b}</td><td>${b.f4}</td><td>${b.f6}</td><td>${b.sr}</td></tr>`).join('')}</tbody>
-                    </table>
-                </div>
-                <div class="table-box">
-                    <table>
-                        <thead><tr><th>Bowler</th><th>O</th><th>M</th><th>R</th><th>W</th><th>Eco</th></tr></thead>
-                        <tbody>${bowlData.map(bo => `<tr><td class="b-name">${bo.n}</td><td>${bo.o}</td><td>${bo.m}</td><td>${bo.r}</td><td><b>${bo.w}</b></td><td>${bo.eco}</td></tr>`).join('')}</tbody>
-                    </table>
-                </div>
-            `;
-            document.getElementById('innings_content').innerHTML = html;
-            document.getElementById('match_footer').innerHTML = `
-                <div class="bold-res">${currentMatch.res}</div>
-                <p style="text-align:center; margin-top:15px; font-weight:800; color:var(--gold)">🏆 MOTM: ${currentMatch.motm}</p>
-            `;
+        function toggleStats(index) {
+            const box = document.getElementById(`stat-box-${index}`);
+            box.style.display = (box.style.display === 'block') ? 'none' : 'block';
         }
 
-        // --- PLAYER STATS TOGGLE ---
-        function togglePlayerTable(type) {
-            const btnB = document.getElementById('bToggle');
-            const btnBo = document.getElementById('boToggle');
-            const box = document.getElementById('player_stat_table');
+        function switchPlayerTab(index, type) {
+            event.stopPropagation(); // Prevents closing the box
+            const batContent = document.getElementById(`content-bat-${index}`);
+            const bowlContent = document.getElementById(`content-bowl-${index}`);
+            const batBtn = document.getElementById(`btn-bat-${index}`);
+            const bowlBtn = document.getElementById(`btn-bowl-${index}`);
 
-            if(type === 'batting') {
-                btnB.classList.add('active'); btnBo.classList.remove('active');
-                box.innerHTML = `<table>
-                    <thead><tr><th>Player</th><th>M</th><th>Runs</th><th>HS</th><th>Balls</th><th>4s</th><th>6s</th><th>SR</th></tr></thead>
-                    <tbody>${allBatters.map(p => `<tr><td class="b-name">${p.n}</td><td>${p.m}</td><td><b>${p.r}</b></td><td>${p.hs}</td><td>${p.b}</td><td>${p.f4}</td><td>${p.f6}</td><td>${p.sr}</td></tr>`).join('')}</tbody>
-                </table>`;
+            if(type === 'bat') {
+                batContent.style.display = 'block';
+                bowlContent.style.display = 'none';
+                batBtn.classList.add('active');
+                bowlBtn.classList.remove('active');
             } else {
-                btnBo.classList.add('active'); btnB.classList.remove('active');
-                box.innerHTML = `<table>
-                    <thead><tr><th>Player</th><th>M</th><th>Overs</th><th>Wkts</th><th>Runs</th><th>Eco</th><th>Dots</th><th>4s/6s Conce.</th></tr></thead>
-                    <tbody>${allBowlers.map(p => `<tr><td class="b-name">${p.n}</td><td>${p.m}</td><td>${p.o}</td><td><b>${p.w}</b></td><td>${p.r}</td><td>${p.eco}</td><td>${p.dot}</td><td>${p.f4}/${p.f6}</td></tr>`).join('')}</tbody>
-                </table>`;
+                batContent.style.display = 'none';
+                bowlContent.style.display = 'block';
+                batBtn.classList.remove('active');
+                bowlBtn.classList.add('active');
             }
         }
-
-        window.onload = () => { togglePlayerTable('batting'); };
     </script>
 </body>
 </html>
