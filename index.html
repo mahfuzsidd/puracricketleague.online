@@ -1,445 +1,130 @@
-<!DOCTYPE html>  <html lang="en">  
-<head>  
-    <meta charset="UTF-8">  
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-    <title>Pura Cricket League | Official Digital Archive</title>  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Syncopate:wght@700&family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">  
-  
-<style>  
-    /* --- CSS ARCHITECTURE (2000+ Lines Level) --- */  
-    :root {  
-        --bg-body: #020617;  
-        --ipl-blue: #061e5c;  
-        --ipl-accent: #004ba0;  
-        --gold: #fbbf24;  
-        --gold-glow: rgba(251, 191, 36, 0.4);  
-        --card-dark: #0f172a;  
-        --glass: rgba(255, 255, 255, 0.03);  
-        --border: rgba(255, 255, 255, 0.08);  
-        --success: #10b981;  
-        --text-main: #f8fafc;  
-        --text-dim: #94a3b8;  
-    }  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pura Cricket League | Official Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap');
+        body { font-family: 'Poppins', sans-serif; background: #0b0f1a; color: white; scroll-behavior: smooth; }
+        .glass-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; }
+        .nav-active { color: #38bdf8; border-bottom: 2px solid #38bdf8; }
+        .gradient-text { background: linear-gradient(90deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .owner-signature { font-family: 'Georgia', serif; font-style: italic; color: #38bdf8; }
+    </style>
+</head>
+<body>
 
-    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }  
-    body {   
-        background: var(--bg-body);   
-        color: var(--text-main);   
-        font-family: 'Inter', sans-serif;  
-        overflow-x: hidden;  
-        line-height: 1.6;  
-    }  
+    <nav class="sticky top-0 z-50 bg-[#0b0f1a]/95 border-b border-white/5 px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+            <div class="w-10 h-10 bg-sky-500 rounded-lg flex items-center justify-center font-bold text-xl">P</div>
+            <h1 class="text-xl font-800 tracking-tighter uppercase hidden sm:block">Pura <span class="text-sky-400">Cricket</span></h1>
+        </div>
+        <div class="flex gap-6 text-xs md:text-sm font-medium">
+            <a href="#" onclick="showSection('home')" class="nav-link nav-active">HOME</a>
+            <a href="#" onclick="showSection('stats')" class="nav-link text-gray-400 hover:text-white transition">STATS</a>
+            <a href="#" onclick="showSection('admin')" class="nav-link text-yellow-500/80 hover:text-yellow-400"><i class="fas fa-crown mr-1"></i>ADMIN</a>
+        </div>
+    </nav>
 
-    /* Scrollbar Design */  
-    ::-webkit-scrollbar { width: 8px; }  
-    ::-webkit-scrollbar-track { background: #000; }  
-    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }  
+    <main class="max-w-6xl mx-auto p-4 md:p-10">
+        
+        <section id="home-section" class="space-y-12">
+            <div class="text-center py-12">
+                <span class="bg-sky-500/10 text-sky-400 text-xs font-bold px-4 py-2 rounded-full border border-sky-500/20">OFFICIAL DIGITAL ARCHIVE</span>
+                <h2 class="text-5xl md:text-7xl font-black mt-6 mb-4">REWRITING <br><span class="gradient-text">HISTORY.</span></h2>
+                <p class="text-gray-500 max-w-xl mx-auto">Welcome to the Pura Cricket League (PCL) command center. Track player performance, live scores, and tournament legends.</p>
+            </div>
 
-    /* --- HEADER & BOX LOGO --- */  
-    header {   
-        background: #000;   
-        padding: 20px 6%;   
-        display: flex;   
-        justify-content: space-between;   
-        align-items: center;   
-        border-bottom: 1px solid var(--border);  
-        position: relative;  
-        z-index: 1000;  
-    }  
-
-    .pcl-box-logo {   
-        border: 3px solid var(--gold);   
-        padding: 8px 18px;   
-        font-family: 'Syncopate';   
-        color: var(--gold);   
-        font-weight: 700;   
-        font-size: 24px;  
-        box-shadow: 0 0 15px var(--gold-glow);  
-        text-transform: uppercase;  
-    }  
-
-    .header-title {  
-        font-family: 'Outfit';  
-        font-weight: 900;  
-        font-size: 35px;  
-        letter-spacing: 4px;  
-        background: linear-gradient(135deg, #fff 0%, var(--gold) 100%);  
-        -webkit-background-clip: text;  
-        -webkit-text-fill-color: transparent;  
-    }  
-
-    /* --- MEGA NAVIGATION --- */  
-    nav {   
-        background: var(--ipl-blue);   
-        position: sticky;   
-        top: 0;   
-        z-index: 999;   
-        display: flex;   
-        justify-content: center;  
-        border-bottom: 4px solid var(--gold);  
-    }  
-
-    .nav-links { list-style: none; display: flex; }  
-    .nav-link {   
-        padding: 20px 30px;   
-        color: #fff;   
-        text-transform: uppercase;   
-        font-weight: 800;   
-        font-size: 13px;   
-        cursor: pointer;   
-        transition: all 0.3s;  
-        position: relative;  
-    }  
-
-    .nav-link:hover { background: var(--ipl-accent); color: var(--gold); }  
-    .nav-link.active { background: var(--ipl-accent); border-bottom: 4px solid #fff; }  
-
-    /* Dropdown Style */  
-    .dropdown-menu {   
-        display: none;   
-        position: absolute;   
-        top: 100%;   
-        left: 0;   
-        background: #fff;   
-        min-width: 280px;   
-        box-shadow: 0 20px 40px rgba(0,0,0,0.5);   
-    }  
-
-    .nav-link:hover .dropdown-menu { display: block; }  
-    .drop-item {   
-        padding: 15px 25px;   
-        color: #000;   
-        text-decoration: none;   
-        display: block;   
-        font-size: 13px;   
-        border-bottom: 1px solid #eee;  
-        transition: 0.2s;  
-    }  
-    .drop-item:hover { background: #f8fafc; color: var(--ipl-blue); padding-left: 35px; }  
-
-    /* --- SECTIONS --- */  
-    .section { display: none; padding: 50px 6%; animation: sectionFade 0.6s ease; }  
-    .section.active { display: block; }  
-    @keyframes sectionFade { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }  
-
-    /* --- PLAYER PROFILE CARDS --- */  
-    .player-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }  
-    .profile-card {   
-        background: var(--card-dark);   
-        border-radius: 20px;   
-        overflow: hidden;   
-        border: 1px solid var(--border);   
-        transition: 0.4s;  
-        position: relative;  
-    }  
-    .profile-card:hover { border-color: var(--gold); transform: translateY(-10px); }  
-    .profile-header { height: 150px; background: linear-gradient(to bottom, var(--ipl-blue), #000); padding: 30px; }  
-    .player-avatar {   
-        width: 100px; height: 100px; background: var(--gold); border-radius: 50%;   
-        margin-top: -50px; border: 5px solid var(--card-dark); margin-left: 30px;  
-        display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 40px; color: #000;  
-    }  
-    .stats-strip { display: flex; justify-content: space-around; padding: 20px; background: rgba(0,0,0,0.3); border-top: 1px solid var(--border); }  
-    .stat-item { text-align: center; }  
-    .stat-val { display: block; font-size: 20px; font-weight: 800; color: var(--gold); }  
-    .stat-label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; }  
-
-    /* --- FOOTER (IPLT20.com Clone) --- */  
-    footer { background: #000; padding: 100px 6% 50px; border-top: 1px solid var(--border); margin-top: 100px; }  
-    .f-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 50px; margin-bottom: 50px; }  
-    .f-col h3 { color: var(--gold); font-size: 14px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 30px; }  
-    .f-col ul { list-style: none; }  
-    .f-col ul li { color: var(--text-dim); margin-bottom: 15px; font-size: 14px; transition: 0.3s; cursor: pointer; }  
-    .f-col ul li:hover { color: #fff; padding-left: 5px; }  
-    .f-bottom { padding-top: 40px; border-top: 1px solid #1e293b; display: flex; justify-content: space-between; align-items: center; color: #475569; font-size: 12px; }  
-
-</style>
-
-</head>  
-<body>  <header>  
-    <div class="pcl-box-logo">PCL</div>  
-    <h1 class="header-title">PURA CRICKET LEAGUE</h1>  
-    <div style="text-align: right">  
-        <p style="font-size: 10px; color: var(--gold); font-weight: 800">OFFICIAL PARTNER</p>  
-        <p style="font-size: 14px; font-weight: 700">SEASON 2024 ARCHIVE</p>  
-    </div>  
-</header>  
-
-<nav>  
-    <ul class="nav-links">  
-        <li class="nav-link active" onclick="navTo('home')">Home</li>  
-        <li class="nav-link">  
-            Tournament ▼  
-            <div class="dropdown-menu">  
-                <a href="#" class="drop-item" onclick="navTo('matches')">Season 2024 - Full Fixtures</a>  
-                <a href="#" class="drop-item">Season 2025 - Hall of Fame</a>  
-                <a href="#" class="drop-item">Season 2026 - Registrations</a>  
-            </div>  
-        </li>  
-        <li class="nav-link" onclick="navTo('players')">Player Profiles</li>  
-        <li class="nav-link" onclick="navTo('stats')">Leaderboards</li>  
-        <li class="nav-link" onclick="navTo('mvp')">MVP Race</li>  
-    </ul>  
-</nav>  
-
-<div id="home" class="section active">  
-    <div style="background: url('https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&q=80&w=2000') center/cover; padding: 120px 60px; border-radius: 30px; position: relative; overflow: hidden; border: 1px solid var(--gold);">  
-        <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.7)"></div>  
-        <div style="position: relative; z-index: 1;">  
-            <h2 style="font-size: 70px; font-family: 'Outfit'; font-weight: 900; line-height: 1.1;">REWRITING <br><span style="color: var(--gold)">HISTORY.</span></h2>  
-            <p style="margin: 20px 0 40px; font-size: 20px; color: var(--text-dim); max-width: 600px;">Pura Cricket League ka sabse bada data archive ab aapke hath mein hai. 2024 ke har chauke aur chhakke ka hisab yahan milega.</p>  
-            <button onclick="navTo('matches')" style="padding: 18px 40px; background: var(--gold); border: none; font-weight: 800; border-radius: 5px; cursor: pointer; color: #000;">EXPLORE MATCHES</button>  
-        </div>  
-    </div>  
-</div>  
-
-<div id="players" class="section">  
-    <h2 style="font-size: 40px; color: var(--gold); margin-bottom: 40px; text-align: center;">PCL PLAYER ARCHIVES</h2>  
-    <div class="player-grid">  
-          
-        <div class="profile-card">  
-            <div class="profile-header">  
-                <h3 style="font-size: 24px;">MAHFUZ SIDDIQUI</h3>  
-                <p style="font-size: 11px; color: var(--gold)">ADNAN XI | ALL-ROUNDER</p>  
-            </div>  
-            <div class="player-avatar">MS</div>  
-            <div style="padding: 30px;">  
-                <p style="font-size: 13px; color: var(--text-dim); margin-bottom: 20px;">Ranked #1 MVP in Season 2024. Highest run-scorer in the Grand Final with a massive 94 off 46 balls.</p>  
-                <div class="stats-strip">  
-                    <div class="stat-item"><span class="stat-val">178</span><span class="stat-label">Runs</span></div>  
-                    <div class="stat-item"><span class="stat-val">204.3</span><span class="stat-label">SR</span></div>  
-                    <div class="stat-item"><span class="stat-val">2</span><span class="stat-label">Wkts</span></div>  
-                </div>  
-            </div>  
-        </div>  
-
-        <div class="profile-card">  
-            <div class="profile-header">  
-                <h3 style="font-size: 24px;">MD HASSAN</h3>  
-                <p style="font-size: 11px; color: var(--gold)">NEHAL XI | BOWLER</p>  
-            </div>  
-            <div class="player-avatar">MH</div>  
-            <div style="padding: 30px;">  
-                <p style="font-size: 13px; color: var(--text-dim); margin-bottom: 20px;">The spin wizard of PCL. Rank 2 in MVP leaderboard. Crucial 29* in the final match to clinch the title.</p>  
-                <div class="stats-strip">  
-                    <div class="stat-item"><span class="stat-val">80</span><span class="stat-label">Runs</span></div>  
-                    <div class="stat-item"><span class="stat-val">7</span><span class="stat-label">Wkts</span></div>  
-                    <div class="stat-item"><span class="stat-val">7.08</span><span class="stat-label">Eco</span></div>  
-                </div>  
-            </div>  
-        </div>  
-
-        <div class="profile-card">  
-            <div class="profile-header">  
-                <h3 style="font-size: 24px;">SHANU SIDD</h3>  
-                <p style="font-size: 11px; color: var(--gold)">NEHAL XI | BATSMAN</p>  
-            </div>  
-            <div class="player-avatar">SS</div>  
-            <div style="padding: 30px;">  
-                <p style="font-size: 13px; color: var(--text-dim); margin-bottom: 20px;">Fastest fifty in the Final (18 balls). Known for a lethal 300.0 strike rate under pressure.</p>  
-                <div class="stats-strip">  
-                    <div class="stat-item"><span class="stat-val">84</span><span class="stat-label">Runs</span></div>  
-                    <div class="stat-item"><span class="stat-val">300.0</span><span class="stat-label">SR</span></div>  
-                    <div class="stat-item"><span class="stat-val">6</span><span class="stat-label">6s</span></div>  
-                </div>  
-            </div>  
-        </div>  
-
-    </div>  
-</div>  
-
-<div id="matches" class="section">  
-    <h2 style="color: var(--gold); margin-bottom: 30px;">SEASON 2024 MATCH RECORDS</h2>  
-    <div id="match-container">  
-        </div>  
-</div>  
-
-<footer>  
-    <div class="f-grid">  
-        <div class="f-col">  
-            <div class="pcl-box-logo" style="display:inline-block; margin-bottom:20px; font-size:18px;">PCL</div>  
-            <p style="font-size: 13px; color: var(--text-dim);">Official Digital Platform for Pura Cricket League. Dedicated to the spirit of local cricket excellence.</p>  
-        </div>  
-        <div class="f-col">  
-            <h3>TEAMS</h3>  
-            <ul>  
-                <li>Nehal XI (Champions)</li>  
-                <li>Adnan XI (Runners Up)</li>  
-                <li>Saddam XI</li>  
-                <li>Ejaj XI</li>  
-            </ul>  
-        </div>  
-        <div class="f-col">  
-            <h3>ABOUT</h3>  
-            <ul>  
-                <li>Tournament History</li>  
-                <li>Code of Conduct</li>  
-                <li>Privacy Policy</li>  
-                <li>Contact Us</li>  
-            </ul>  
-        </div>  
-        <div class="f-col">  
-            <h3>CONTACT</h3>  
-            <ul>  
-                <li style="color: var(--gold)">Email: contact@puracricketleague.online</li>  
-                <li>Location: Pura Stadium, Bihar</li>  
-                <li>WhatsApp: +91 [ARCHIVED]</li>  
-            </ul>  
-        </div>  
-    </div>  
-    <div class="f-bottom">  
-        <p>Copyright © 2024 Pura Cricket League. All Rights Reserved.</p>  
-        <p>Developed with Love for Bihar Cricket.</p>  
-    </div>  
-</footer>  
-
-<script>  
-    // --- MASTER DATA HUB ---  
-    const PCL_DATABASE = {  
-        matches: [  
-            {  
-                id: "F1",   
-                name: "Grand Final: Nehal XI vs Adnan XI",  
-                date: "20-Apr-2024",  
-                venue: "Pura Stadium",  
-                winner: "NEHAL XI",  
-                result: "Nehal XI won by 5 wickets",  
-                inn1: { team: "ADNAN XI", score: "134/3", overs: "12.0", mainBat: "Mahfuz 94(46)" },  
-                inn2: { team: "NEHAL XI", score: "139/5", overs: "10.1", mainBat: "Shanu 54(18)" }  
-            },  
-            {  
-                id: "S1",   
-                name: "Super League: Adnan XI vs Nehal XI",  
-                date: "19-Apr-2024",  
-                winner: "ADNAN XI",  
-                result: "Adnan XI won by 27 runs",  
-                inn1: { team: "ADNAN XI", score: "112/3", overs: "10.0", mainBat: "Mahfuz 52(24)" },  
-                inn2: { team: "NEHAL XI", score: "85/8", overs: "10.0", mainBat: "Hassan 28(14)" }  
-            }  
-        ],  
-        leaderboards: {  
-            bowling: [  
-                { name: "Farid Mahmood", wkts: 6, econ: 14.43 },  
-                { name: "Wasim", wkts: 5, econ: 12.25 },  
-                { name: "Afzal Sajjad", wkts: 4, econ: 6.00 }  
-                <script>
-    // PDF aur Screenshots se extract kiya hua 22 Players ka real data
-    const playersData = {
-        nehalXI: [
-            { name: "Wasim", role: "Right-arm Fast / All-Rounder", runs: 33, wkts: 5, sr: 194.1 },
-            { name: "Md Hassan", role: "Right-arm Fast / All-Rounder", runs: 80, wkts: 3, sr: 200.0 },
-            { name: "Shanu Sidd", role: "Left-arm Medium / Batsman", runs: 84, wkts: 1, sr: 300.0 },
-            { name: "Nehal Siddiqui (C)", role: "Captain / Batsman", runs: 14, wkts: 0, sr: 133.3 },
-            { name: "Bablu", role: "Right-arm Fast / Bowler", runs: 33, wkts: 3, sr: 207.6 },
-            { name: "Atif Ayub", role: "Fielder / Batsman", runs: 10, wkts: 0, sr: 110.0 },
-            { name: "Ejaj", role: "Right-arm Fast", runs: 1, wkts: 1, sr: 20.0 },
-            { name: "Afsar", role: "Batsman", runs: 7, wkts: 0, sr: 175.0 },
-            { name: "Jasim", role: "Lower Order", runs: 4, wkts: 0, sr: 57.1 },
-            { name: "Saddam", role: "Bowler", runs: 1, wkts: 0, sr: 50.0 },
-            { name: "Akram", role: "Right-arm Off Break", runs: 0, wkts: 2, sr: 0.0 }
-        ],
-        adnanXI: [
-            { name: "Mahfuz Siddiqui", role: "MVP / All-Rounder", runs: 178, wkts: 2, sr: 204.3 },
-            { name: "Adnan (C)", role: "Captain / All-Rounder", runs: 30, wkts: 0, sr: 176.5 },
-            { name: "Afzal Sajjad", role: "Right-arm Fast / All-Rounder", runs: 44, wkts: 4, sr: 173.3 },
-            { name: "Farid Mahmood", role: "Left-arm Medium / Lead Bowler", runs: 0, wkts: 6, sr: 0.0 },
-            { name: "Yasir", role: "Batsman", runs: 12, wkts: 0, sr: 100.0 },
-            { name: "Adil Ayub", role: "Batsman", runs: 9, wkts: 0, sr: 70.0 },
-            { name: "Akram (Adnan XI)", role: "Batsman", runs: 7, wkts: 0, sr: 100.0 },
-            { name: "Sarfarj", role: "Bowler", runs: 0, wkts: 0, sr: 0.0 },
-            { name: "Raja", role: "Bowler", runs: 0, wkts: 0, sr: 0.0 },
-            { name: "Md Ali", role: "Bowler", runs: 0, wkts: 0, sr: 0.0 },
-            { name: "Tauqeer", role: "Wicket Keeper", runs: 0, wkts: 0, sr: 0.0 }
-        ]
-    };
-
-    function renderPlayers() {
-        const nehalGrid = document.getElementById('nehal-grid');
-        const adnanGrid = document.getElementById('adnan-grid');
-
-        // Render Nehal XI
-        nehalGrid.innerHTML = playersData.nehalXI.map(p => `
-            <div class="player-card">
-                <div class="player-header"></div>
-                <div class="player-img-placeholder">${p.name.charAt(0)}</div>
-                <div class="player-info">
-                    <h3>${p.name}</h3>
-                    <p>${p.role}</p>
+            <div class="glass-card p-1 md:p-8 flex flex-col md:flex-row items-center gap-8 overflow-hidden relative">
+                <div class="absolute top-0 right-0 p-4 bg-sky-500 text-black font-bold text-xs rounded-bl-xl uppercase">Season MVP</div>
+                <div class="w-full md:w-1/3 h-64 bg-slate-800 rounded-xl flex items-center justify-center overflow-hidden">
+                    <i class="fas fa-user text-8xl text-slate-700"></i>
                 </div>
-                <div class="quick-stats">
-                    <div class="stat-box"><span class="stat-val">${p.runs}</span><span class="stat-lab">Runs</span></div>
-                    <div class="stat-box"><span class="stat-val">${p.wkts}</span><span class="stat-lab">Wkts</span></div>
-                    <div class="stat-box"><span class="stat-val">${p.sr}</span><span class="stat-lab">S/R</span></div>
+                <div class="flex-1 p-6">
+                    <h3 class="text-3xl font-bold mb-1">Mahfuz Siddiqui</h3>
+                    <p class="text-sky-400 font-semibold mb-4 italic">All-Rounder | Captain</p>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="bg-white/5 p-3 rounded-lg text-center">
+                            <p class="text-xs text-gray-400">RUNS</p>
+                            <p class="text-xl font-bold text-white">178</p>
+                        </div>
+                        <div class="bg-white/5 p-3 rounded-lg text-center">
+                            <p class="text-xs text-gray-400">S/R</p>
+                            <p class="text-xl font-bold text-white">204.3</p>
+                        </div>
+                        <div class="bg-white/5 p-3 rounded-lg text-center">
+                            <p class="text-xs text-gray-400">WKTS</p>
+                            <p class="text-xl font-bold text-white">02</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        `).join('');
+        </section>
 
-        // Render Adnan XI
-        adnanGrid.innerHTML = playersData.adnanXI.map(p => `
-            <div class="player-card" style="border-top: 3px solid #ef4444;">
-                <div class="player-header" style="background: linear-gradient(45deg, #7f1d1d, #000);"></div>
-                <div class="player-img-placeholder">${p.name.charAt(0)}</div>
-                <div class="player-info">
-                    <h3>${p.name}</h3>
-                    <p>${p.role}</p>
-                </div>
-                <div class="quick-stats">
-                    <div class="stat-box"><span class="stat-val">${p.runs}</span><span class="stat-lab">Runs</span></div>
-                    <div class="stat-box"><span class="stat-val">${p.wkts}</span><span class="stat-lab">Wkts</span></div>
-                    <div class="stat-box"><span class="stat-val">${p.sr}</span><span class="stat-lab">S/R</span></div>
+        <section id="admin-section" class="hidden glass-card p-8 border-yellow-500/20">
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                <i class="fas fa-shield-alt text-yellow-500"></i> Admin Console
+            </h2>
+            <div class="space-y-4 max-w-md">
+                <label class="text-sm text-gray-400">Update Match Live Score</label>
+                <input type="text" id="score-input" placeholder="e.g. 152/3 (18.4)" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl focus:outline-none focus:border-sky-500 transition">
+                <button onclick="updateScore()" class="bg-sky-500 hover:bg-sky-600 text-black font-bold w-full py-4 rounded-xl transition shadow-lg shadow-sky-500/20">
+                    UPDATE LIVE FEED
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="mt-32 border-t border-white/5 bg-black/20 pt-16 pb-8 px-6">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="text-center md:text-left">
+                <h3 class="text-2xl font-bold tracking-tighter uppercase mb-2">PURA <span class="text-sky-400">CRICKET</span></h3>
+                <p class="text-gray-500 text-sm max-w-xs">Connecting players and fans through real-time data and premium cricket experiences in Bihar.</p>
+            </div>
+            
+            <div class="text-center md:text-right">
+                <p class="text-gray-400 text-sm mb-2">Developed & Managed by</p>
+                <h4 class="text-xl font-bold owner-signature tracking-wide uppercase">Mahfuz Siddiqui</h4>
+                <div class="flex justify-center md:justify-end gap-4 mt-4 text-gray-400">
+                    <a href="#" class="hover:text-sky-400"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="hover:text-sky-400"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#" class="hover:text-sky-500"><i class="fas fa-envelope"></i></a>
                 </div>
             </div>
-        `).join('');
-    }
+        </div>
 
-    window.onload = renderPlayers;
-</script>
+        <div class="max-w-6xl mx-auto mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-[10px] text-gray-600 uppercase tracking-[2px]">
+            <p>&copy; 2026 Pura Cricket League. All Rights Reserved.</p>
+            <p class="mt-2 md:mt-0">Owner & Founder: <span class="text-gray-400">Mahfuz Siddiqui</span></p>
+        </div>
+    </footer>
 
+    <script>
+        function showSection(sectionId) {
+            const sections = ['home', 'admin'];
+            sections.forEach(s => {
+                document.getElementById(s + '-section').classList.add('hidden');
+            });
+            document.getElementById(sectionId + '-section').classList.remove('hidden');
+            
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('nav-active');
+                link.classList.add('text-gray-400');
+            });
+            event.currentTarget.classList.add('nav-active');
+            event.currentTarget.classList.remove('text-gray-400');
+        }
+
+        function updateScore() {
+            const score = document.getElementById('score-input').value;
+            if(score) {
+                alert("Match status updated to: " + score);
+            }
+        }
+    </script>
 </body>
 </html>
-            ]  
-        }  
-    };  
-
-    // --- NAVIGATION ENGINE ---  
-    function navTo(pageId) {  
-        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));  
-        document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));  
-          
-        document.getElementById(pageId).classList.add('active');  
-        event.currentTarget.classList.add('active');  
-        window.scrollTo({ top: 0, behavior: 'smooth' });  
-    }  
-
-    // --- DYNAMIC RENDERER ---  
-    function renderMatches() {  
-        const container = document.getElementById('match-container');  
-        container.innerHTML = PCL_DATABASE.matches.map(m => `  
-            <div style="background: var(--card-dark); border-radius: 15px; border-left: 5px solid var(--gold); padding: 30px; margin-bottom: 25px;">  
-                <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--gold); font-weight: 800; margin-bottom: 20px;">  
-                    <span>${m.name.toUpperCase()}</span>  
-                    <span>${m.date}</span>  
-                </div>  
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">  
-                    <span style="font-size: 24px; font-weight: 900;">${m.inn1.team}</span>  
-                    <span style="font-size: 24px; font-weight: 900; color: var(--text-dim);">${m.inn1.score}</span>  
-                </div>  
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">  
-                    <span style="font-size: 24px; font-weight: 900;">${m.inn2.team}</span>  
-                    <span style="font-size: 24px; font-weight: 900;">${m.inn2.score}</span>  
-                </div>  
-                <div style="background: rgba(16, 185, 129, 0.1); color: var(--success); padding: 12px; border-radius: 5px; font-weight: 800; font-size: 13px; text-align: center;">  
-                    ${m.result.toUpperCase()}  
-                </div>  
-            </div>  
-        `).join('');  
-    }  
-
-    // Initialize  
-    window.onload = () => {  
-        renderMatches();  
-        console.log("PCL Master System Initialized... All PDF data synced.");  
-    };  
-</script>
-
-</body>  
-</html>  
