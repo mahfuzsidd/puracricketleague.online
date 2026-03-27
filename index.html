@@ -3,81 +3,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pura Cricket League | Official Platform</title>
+    <title>Pura Cricket League | Official Portal (KKR Theme)</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap');
-        body { font-family: 'Poppins', sans-serif; background: #0b0f1a; color: white; scroll-behavior: smooth; }
-        .glass-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; }
-        .nav-active { color: #38bdf8; border-bottom: 2px solid #38bdf8; }
-        .gradient-text { background: linear-gradient(90deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .owner-signature { font-family: 'Georgia', serif; font-style: italic; color: #38bdf8; }
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&display=swap');
+        
+        :root {
+            --kkr-gold: #D4AF37;
+            --kkr-black: #050505;
+            --kkr-purple: #2E0854; /* Optional hint of purple like KKR */
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--kkr-black);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* GOLDEN GRADIENT TEXT */
+        .gold-grad {
+            background: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* KKR STYLE SIDE MENU */
+        #side-menu {
+            transform: translateX(100%);
+            transition: all 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+            background: rgba(5, 5, 5, 0.98);
+        }
+
+        #side-menu.active {
+            transform: translateX(0);
+        }
+
+        .menu-item {
+            font-size: 3rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            transition: 0.3s;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .menu-item:hover {
+            padding-left: 20px;
+            color: var(--kkr-gold);
+        }
+
+        /* CUSTOM BUTTONS */
+        .kkr-btn {
+            border: 1px solid var(--kkr-gold);
+            padding: 10px 25px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+            transition: 0.4s;
+        }
+
+        .kkr-btn:hover {
+            background: var(--kkr-gold);
+            color: black;
+        }
+
+        /* SKEWED GRID FOR NEWS */
+        .news-card {
+            clip-path: polygon(0 0, 100% 0, 95% 100%, 0% 100%);
+            transition: 0.5s;
+        }
+
+        .news-card:hover {
+            transform: scale(1.02);
+        }
+
+        /* ANIMATIONS */
+        @keyframes gold-shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .shimmer {
+            background: linear-gradient(90deg, #1a1a1a 25%, #D4AF37 50%, #1a1a1a 75%);
+            background-size: 200% 100%;
+            animation: gold-shimmer 3s infinite linear;
+        }
     </style>
 </head>
 <body>
 
-    <nav class="sticky top-0 z-50 bg-[#0b0f1a]/95 border-b border-white/5 px-6 py-4 flex justify-between items-center">
-        <div class="flex items-center gap-2">
-            <div class="w-10 h-10 bg-sky-500 rounded-lg flex items-center justify-center font-bold text-xl">P</div>
-            <h1 class="text-xl font-800 tracking-tighter uppercase hidden sm:block">Pura <span class="text-sky-400">Cricket</span></h1>
-        </div>
-        <div class="flex gap-6 text-xs md:text-sm font-medium">
-            <a href="#" onclick="showSection('home')" class="nav-link nav-active">HOME</a>
-            <a href="#" onclick="showSection('stats')" class="nav-link text-gray-400 hover:text-white transition">STATS</a>
-            <a href="#" onclick="showSection('admin')" class="nav-link text-yellow-500/80 hover:text-yellow-400"><i class="fas fa-crown mr-1"></i>ADMIN</a>
-        </div>
-    </nav>
-
-    <main class="max-w-6xl mx-auto p-4 md:p-10">
+    <div id="side-menu" class="fixed inset-0 z-[100] flex flex-col p-10 justify-center">
+        <button onclick="toggleMenu()" class="absolute top-10 right-10 text-4xl text-gold hover:rotate-90 transition-all">
+            <i class="fas fa-times text-[var(--kkr-gold)]"></i>
+        </button>
         
-        <section id="home-section" class="space-y-12">
-            <div class="text-center py-12">
-                <span class="bg-sky-500/10 text-sky-400 text-xs font-bold px-4 py-2 rounded-full border border-sky-500/20">OFFICIAL DIGITAL ARCHIVE</span>
-                <h2 class="text-5xl md:text-7xl font-black mt-6 mb-4">REWRITING <br><span class="gradient-text">HISTORY.</span></h2>
-                <p class="text-gray-500 max-w-xl mx-auto">Welcome to the Pura Cricket League (PCL) command center. Track player performance, live scores, and tournament legends.</p>
-            </div>
+        <nav class="flex flex-col space-y-4">
+            <div class="menu-item" onclick="toggleMenu()">HOME</div>
+            <div class="menu-item" onclick="toggleMenu()">THE SQUAD</div>
+            <div class="menu-item" onclick="toggleMenu()">SCHEDULE</div>
+            <div class="menu-item" onclick="toggleMenu()">GALLERY</div>
+            <div class="menu-item" onclick="toggleMenu()">PCL SHOP</div>
+            <div class="menu-item text-xl mt-10 text-gray-500">Contact: mahfuz@puracricket.com</div>
+        </nav>
+    </div>
 
-            <div class="glass-card p-1 md:p-8 flex flex-col md:flex-row items-center gap-8 overflow-hidden relative">
-                <div class="absolute top-0 right-0 p-4 bg-sky-500 text-black font-bold text-xs rounded-bl-xl uppercase">Season MVP</div>
-                <div class="w-full md:w-1/3 h-64 bg-slate-800 rounded-xl flex items-center justify-center overflow-hidden">
-                    <i class="fas fa-user text-8xl text-slate-700"></i>
+    <header class="fixed top-0 w-full z-50 px-6 py-4 flex justify-between items-center border-b border-white/10 bg-black/50 backdrop-blur-md">
+        <div class="flex items-center gap-4">
+            <img src="https://www.kkr.in/static-assets/images/css_images/logo.png?v=5.1" class="h-14 brightness-150" alt="Logo">
+            <span class="text-2xl font-black gold-grad tracking-tighter">PCL OFFICIAL</span>
+        </div>
+
+        <div class="flex items-center gap-8">
+            <a href="#" class="hidden md:block hover:text-[var(--kkr-gold)] font-bold transition">TICKETS</a>
+            <a href="#" class="hidden md:block hover:text-[var(--kkr-gold)] font-bold transition">FAN ZONE</a>
+            <button onclick="toggleMenu()" class="text-2xl w-12 h-12 flex items-center justify-center border border-[var(--kkr-gold)] rounded-full hover:bg-[var(--kkr-gold)] hover:text-black transition">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <section class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1531415074968-036ba1b575da?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center opacity-40"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black"></div>
+        
+        <div class="relative z-10 text-center space-y-6 px-4">
+            <h1 class="text-6xl md:text-9xl font-black italic gold-grad uppercase tracking-tighter">PURA CRICKET</h1>
+            <p class="text-xl md:text-2xl font-light tracking-[10px] uppercase">Strength • Unity • Glory</p>
+            <div class="flex gap-4 justify-center pt-8">
+                <button class="kkr-btn bg-[var(--kkr-gold)] text-black">Latest News</button>
+                <button class="kkr-btn">Watch Live</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 px-6 max-w-7xl mx-auto">
+        <h2 class="text-4xl font-black mb-12 border-l-8 border-[var(--kkr-gold)] pl-4 uppercase">Latest Buzz</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="news-card bg-zinc-900 overflow-hidden group">
+                <div class="h-64 bg-slate-800 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1540747913346-19e3ad643121?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" alt="news">
                 </div>
-                <div class="flex-1 p-6">
-                    <h3 class="text-3xl font-bold mb-1">Mahfuz Siddiqui</h3>
-                    <p class="text-sky-400 font-semibold mb-4 italic">All-Rounder | Captain</p>
-                    <div class="grid grid-cols-3 gap-4">
-                        <div class="bg-white/5 p-3 rounded-lg text-center">
-                            <p class="text-xs text-gray-400">RUNS</p>
-                            <p class="text-xl font-bold text-white">178</p>
-                        </div>
-                        <div class="bg-white/5 p-3 rounded-lg text-center">
-                            <p class="text-xs text-gray-400">S/R</p>
-                            <p class="text-xl font-bold text-white">204.3</p>
-                        </div>
-                        <div class="bg-white/5 p-3 rounded-lg text-center">
-                            <p class="text-xs text-gray-400">WKTS</p>
-                            <p class="text-xl font-bold text-white">02</p>
-                        </div>
-                    </div>
+                <div class="p-6">
+                    <span class="text-[var(--kkr-gold)] text-xs font-bold uppercase tracking-widest">Team Update</span>
+                    <h3 class="text-xl font-bold mt-2">Mahfuz Siddiqui Leads PCL into Season 2026</h3>
+                    <p class="text-gray-400 mt-4 text-sm">Everything you need to know about the upcoming auction and team structures...</p>
                 </div>
             </div>
-        </section>
-
-        <section id="admin-section" class="hidden glass-card p-8 border-yellow-500/20">
-            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
-                <i class="fas fa-shield-alt text-yellow-500"></i> Admin Console
-            </h2>
-            <div class="space-y-4 max-w-md">
-                <label class="text-sm text-gray-400">Update Match Live Score</label>
-                <input type="text" id="score-input" placeholder="e.g. 152/3 (18.4)" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl focus:outline-none focus:border-sky-500 transition">
-                <button onclick="updateScore()" class="bg-sky-500 hover:bg-sky-600 text-black font-bold w-full py-4 rounded-xl transition shadow-lg shadow-sky-500/20">
-                    UPDATE LIVE FEED
-                </button>
             </div>
-        </section>
+    </section>
 
-    </main>
+    <footer class="bg-[#050505] border-t border-[var(--kkr-gold)]/20 pt-20 pb-10">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div class="col-span-1 md:col-span-2">
+                <h3 class="text-3xl font-black gold-grad mb-6 uppercase">Pura Cricket League</h3>
+                <p class="text-gray-500 leading-relaxed max-w-md">
+                    The official digital home of PCL. Stay updated with the latest scores, news, and exclusive content from the heart of Bihar's cricket scene.
+                </p>
+            </div>
+            
+            <div>
+                <h4 class="font-bold mb-6 text-[var(--kkr-gold)] uppercase tracking-widest text-sm">Follow the League</h4>
+                <div class="flex gap-6 text-2xl">
+                    <a href="https://instagram.com/mahfuz_siddiqui" class="hover:text-[var(--kkr-gold)] transition"><i class="fab fa-instagram"></i></a>
+                    <a href="https://wa.me/919999999999" class="hover:text-[var(--kkr-gold)] transition"><i class="fab fa-whatsapp"></i></a>
+                    <a href="mailto:mahfuz@puracricket.com" class="hover:text-[var(--kkr-gold)] transition"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="font-bold mb-2 text-gray-400 text-xs uppercase tracking-widest">Founder & Owner</h4>
+                <p class="text-2xl font-black gold-grad tracking-widest italic uppercase">Mahfuz Siddiqui</p>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between text-[10px] text-gray-600 tracking-[3px] uppercase">
+            <p>&copy; 2026 Pura Cricket League. All Rights Reserved.</p>
+            <p>Designed for Champions by <span class="text-white">Mahfuz Siddiqui</span></p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('side-menu');
+            menu.classList.toggle('active');
+            
+            // Disable scroll when menu is open
+            if(menu.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Change header background on scroll
+        window.onscroll = function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.classList.add('bg-black');
+                header.classList.remove('bg-black/50');
+            } else {
+                header.classList.add('bg-black/50');
+                header.classList.remove('bg-black');
+            }
+        };
+    </script>
+</body>
 </footer>
 
     <footer class="mt-32 border-t border-white/5 bg-black/20 pt-16 pb-8 px-6">
