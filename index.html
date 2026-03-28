@@ -1,60 +1,173 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCL | Pura Cricket League Official</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Oswald:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/papaparse/5.3.0/papaparse.min.js"></script>
 
-<script>
-    // Apni Google Sheet ka 'Publish to Web' wala CSV link yahan dalein
-    const sheetURL = "AAPKA_GOOGLE_SHEET_CSV_LINK_YAHAN_DALEIN";
-
-    function loadData(selectedYear) {
-        const container = document.getElementById('data-container');
-        const mainTitle = document.getElementById('main-title');
-        
-        container.style.display = 'block';
-        mainTitle.innerText = "PCL " + selectedYear;
-        container.innerHTML = "<p>Fetching Live Data from Google Sheets...</p>";
-
-        // PapaParse use karke Sheet load karna
-        Papa.parse(sheetURL, {
-            download: true,
-            header: true,
-            complete: function(results) {
-                let data = results.data;
-                // Filter data based on Year (2024 or 2026)
-                let filteredData = data.filter(row => row.Year == selectedYear);
-                
-                displayStats(filteredData, selectedYear);
-            }
-        });
-    }
-
-    function displayStats(data, year) {
-        const container = document.getElementById('data-container');
-        if(data.length === 0) {
-            container.innerHTML = `<p>No data found for ${year} yet.</p>`;
-            return;
+    <style>
+        :root {
+            --dark-green: #00231d;
+            --gold: #d4af37;
+            --gold-gradient: linear-gradient(45deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            --white: #ffffff;
         }
 
-        let tableHTML = `
-            <h3 style="color:var(--gold); margin-bottom:15px;">Live Statistics: ${year}</h3>
-            <table style="width:100%; border-collapse: collapse; color: white;">
-                <tr style="background: var(--gold); color: var(--dark-green);">
-                    <th>Team</th><th>Match</th><th>Score</th><th>Winner</th>
-                </tr>
-        `;
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
 
-        data.forEach(row => {
-            tableHTML += `
-                <style> td, th { padding: 10px; border: 1px solid rgba(212,175,55,0.3); } </style>
-                <tr>
-                    <td>${row.Team}</td>
-                    <td>${row.Match}</td>
-                    <td>${row.Score}</td>
-                    <td>${row.Winner}</td>
-                </tr>
-            `;
-        });
+        body {
+            background-color: var(--dark-green);
+            background-image: radial-gradient(circle at center, #003d32 0%, #00231d 100%);
+            color: var(--white);
+            min-height: 100vh;
+        }
 
-        tableHTML += `</table>`;
-        container.innerHTML = tableHTML;
-        window.scrollTo({ top: 500, behavior: 'smooth' });
-    }
-</script>
+        /* Navbar Styling */
+        header {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--gold);
+            position: sticky; top: 0; z-index: 1000;
+        }
+
+        .nav-container {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 5%; max-width: 1400px; margin: auto;
+        }
+
+        .pcl-logo {
+            font-family: 'Oswald', sans-serif; font-size: 26px; color: var(--dark-green);
+            background: var(--gold-gradient); padding: 5px 15px; border-radius: 4px;
+            font-weight: 800; text-decoration: none; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .nav-links { display: flex; list-style: none; gap: 20px; }
+        .nav-links a { color: var(--white); text-decoration: none; font-weight: 600; text-transform: uppercase; font-size: 13px; transition: 0.3s; }
+        .nav-links a:hover { color: var(--gold); }
+
+        /* Dropdown */
+        .dropdown { position: relative; cursor: pointer; }
+        .dropdown-menu {
+            display: none; position: absolute; top: 100%; left: 0;
+            background: #00352e; min-width: 160px; border: 1px solid var(--gold);
+        }
+        .dropdown-menu a { display: block; padding: 12px; border-bottom: 1px solid rgba(212,175,55,0.1); }
+        .dropdown:hover .dropdown-menu { display: block; }
+
+        /* Main Section */
+        .hero { height: 40vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .hero h1 { font-family: 'Oswald', sans-serif; font-size: 3.5rem; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* Data Table Styling */
+        .dynamic-view { max-width: 1100px; margin: 20px auto; padding: 20px; background: rgba(255, 255, 255, 0.03); border-radius: 10px; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { background: var(--gold); color: var(--dark-green); padding: 12px; text-align: left; }
+        td { padding: 12px; border: 1px solid rgba(212, 175, 55, 0.2); }
+        tr:nth-child(even) { background: rgba(255,255,255,0.05); }
+
+        /* Footer */
+        footer { background: #000; padding: 40px 20px; text-align: center; border-top: 3px solid var(--gold); margin-top: 50px; }
+        .social-container { display: flex; justify-content: center; gap: 30px; margin: 20px 0; }
+        .social-container a { font-size: 28px; color: var(--white); transition: 0.3s; }
+        .social-container a:hover { color: var(--gold); transform: translateY(-5px); }
+        .gold-text { color: var(--gold); font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="nav-container">
+            <a href="#" class="pcl-logo">PCL</a>
+            <ul class="nav-links">
+                <li><a href="#" onclick="location.reload()">HOME</a></li>
+                <li class="dropdown">
+                    <a>TOURNAMENTS <i class="fas fa-caret-down"></i></a>
+                    <div class="dropdown-menu">
+                        <a href="#" onclick="fetchSheetData('2024')">2024 Edition</a>
+                        <a href="#" onclick="fetchSheetData('2026')">2026 Edition</a>
+                    </div>
+                </li>
+                <li><a href="#">TEAMS</a></li>
+                <li><a href="#">MATCHES</a></li>
+                <li><a href="#">STATS</a></li>
+                <li><a href="#contact">CONTACT</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1 id="display-title">PURA CRICKET LEAGUE</h1>
+            <p id="status-msg" style="color:var(--gold)">Select a season to view live stats</p>
+        </section>
+
+        <div id="data-container" class="dynamic-view" style="display:none;"></div>
+    </main>
+
+    <footer id="contact">
+        <h2 class="gold-text">PCL OFFICIAL</h2>
+        <div class="social-container">
+            <a href="https://instagram.com/mahfuzsidd" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://wa.me/919507352847" target="_blank"><i class="fab fa-whatsapp"></i></a>
+            <a href="mailto:mahfuzsiddique4way@gmail.com"><i class="fas fa-envelope"></i></a>
+        </div>
+        <p>&copy; 2026 <span class="gold-text">Pura Cricket League</span>. Managed by Mahfuz Siddiqui.</p>
+    </footer>
+
+    <script>
+        // Yahan apni 'Publish to Web' wali CSV link dalein
+        const sheetCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT197e4VfWf0uE0_XWz8iV-G-q6h6Q-Y-Z5OQ/pub?output=csv"; 
+
+        function fetchSheetData(year) {
+            const container = document.getElementById('data-container');
+            const status = document.getElementById('status-msg');
+            const title = document.getElementById('display-title');
+
+            status.innerText = "Loading " + year + " Data...";
+            container.style.display = 'block';
+
+            Papa.parse(sheetCSV, {
+                download: true,
+                header: true,
+                complete: function(results) {
+                    const allData = results.data;
+                    // Filter by Year column in your sheet
+                    const filtered = allData.filter(row => row.Year == year || row.year == year);
+                    
+                    if(filtered.length > 0) {
+                        renderTable(filtered, year);
+                        status.innerText = "Data Updated Live";
+                        title.innerText = "PCL " + year;
+                    } else {
+                        container.innerHTML = "<p>No data found for this year in Google Sheets.</p>";
+                    }
+                }
+            });
+        }
+
+        function renderTable(data, year) {
+            const container = document.getElementById('data-container');
+            let headers = Object.keys(data[0]);
+            
+            let html = `<h3>Season Statistics - ${year}</h3><table><tr>`;
+            headers.forEach(h => html += `<th>${h.toUpperCase()}</th>`);
+            html += `</tr>`;
+
+            data.forEach(row => {
+                html += `<tr>`;
+                headers.forEach(h => html += `<td>${row[h] || '-'}</td>`);
+                html += `</tr>`;
+            });
+
+            html += `</table>`;
+            container.innerHTML = html;
+            window.scrollTo({ top: 350, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
