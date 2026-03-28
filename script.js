@@ -16,3 +16,4 @@ window.addEventListener("load", () => {
 
 document.body.style.opacity = "0";
 document.body.style.transition = "0.5s";
+
