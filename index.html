@@ -1,222 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pura Cricket League</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pura Cricket League | PCL</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
-<header>
-<h1>PURA CRICKET LEAGUE (PCL)</h1>
-</header>
+    <header>
+        <nav class="navbar">
+            <div class="logo">PCL</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#" onclick="showHome()">HOME</a></li>
+                <li class="dropdown">
+                    <a href="#">TOURNAMENTS <i class="fas fa-caret-down"></i></a>
+                    <div class="dropdown-content">
+                        <a href="#" onclick="loadData('2024')">2024</a>
+                        <a href="#" onclick="loadData('2026')">2026</a>
+                    </div>
+                </li>
+                <li><a href="#">TEAMS</a></li>
+                <li><a href="#">MATCHES</a></li>
+                <li><a href="#">STATS</a></li>
+                <li><a href="#">GALLERY</a></li>
+                <li class="dropdown">
+                    <a href="#" class="contact-btn">CONTACT <i class="fas fa-caret-down"></i></a>
+                    <div class="dropdown-content">
+                        <a href="https://instagram.com/mahfuzsidd" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
+                        <a href="https://wa.me/919507352847" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                        <a href="mailto:mahfuzsiddique4way@gmail.com"><i class="far fa-envelope"></i> Email</a>
+                    </div>
+                </li>
+            </ul>
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
 
-<nav>
-<a href="index.html">Home</a>
-<a href="#tournaments">Tournaments</a>
-<a href="teams/teamA.html">Teams</a>
-<a href="matches/upcoming.html">Matches</a>
-<a href="stats/batting.html">Stats</a>
-<a href="gallery/index.html">Gallery</a>
-<a href="#contact">Contact</a>
-</nav>
+    <main id="main-content">
+        <section class="hero">
+            <h1>PURA CRICKET LEAGUE</h1>
+            <p>Experience the Glory of Cricket</p>
+            <div class="divider"></div>
+        </section>
+        
+        <div id="dynamic-container" class="container">
+            <h3>Welcome to PCL Official Portal</h3>
+            <p>Select a tournament year to view automated data.</p>
+        </div>
+    </main>
 
-<section id="tournaments">
-<h2>Tournaments</h2>
-<div class="buttons">
-<a href="tournaments/2024/index.html">2024</a>
-<a href="tournaments/2026/index.html">2026</a>
-</div>
-</section>
+    <footer>
+        <p>&copy; 2026 Pura Cricket League (PCL). All Rights Reserved | Designed for Performance</p>
+    </footer>
 
-<section id="contact">
-<h2>Contact</h2>
-<div class="buttons">
-<a href="https://instagram.com/mahfuzsidd" target="_blank">Instagram</a>
-<a href="https://wa.me/919507352847" target="_blank">WhatsApp</a>
-<a href="mailto:mahfuzsiddique4way@gmail.com">Email</a>
-</div>
-</section>
-
-<footer>
-<p>© 2026 Pura Cricket League. All Rights Reserved.</p>
-</footer>
-
-</body>
-</html>
-
-/* ================= style.css ================= */
-body {
-margin: 0;
-font-family: Arial;
-background: #0b3d2e;
-color: white;
-}
-
-header {
-background: gold;
-color: black;
-padding: 15px;
-text-align: center;
-}
-
-nav {
-display: flex;
-flex-wrap: wrap;
-justify-content: center;
-background: #02291f;
-}
-
-nav a {
-color: white;
-padding: 10px 15px;
-text-decoration: none;
-}
-
-nav a:hover {
-background: gold;
-color: black;
-}
-
-section {
-padding: 20px;
-text-align: center;
-}
-
-.buttons a {
-display: inline-block;
-margin: 10px;
-padding: 10px 20px;
-background: gold;
-color: black;
-text-decoration: none;
-border-radius: 5px;
-}
-
-footer {
-background: #02291f;
-text-align: center;
-padding: 10px;
-position: fixed;
-bottom: 0;
-width: 100%;
-}
-
-@media (max-width: 600px) {
-nav {
-flex-direction: column;
-}
-}
-
-/* ================= tournaments/2024/index.html ================= */
-<!DOCTYPE html>
-<html>
-<head>
-<title>2024 Tournament</title>
-<link rel="stylesheet" href="../../style.css">
-</head>
-<body>
-<h1>2024 Tournament Data</h1>
-<p>Data yaha add karna hai</p>
-</body>
-</html>
-
-/* ================= tournaments/2026/index.html ================= */
-<!DOCTYPE html>
-<html>
-<head>
-<title>2026 Tournament</title>
-<link rel="stylesheet" href="../../style.css">
-</head>
-<body>
-<h1>2026 Tournament Data</h1>
-<p>Data yaha add karna hai</p>
-</body>
-</html>
-
-/* ================= teams/teamA.html ================= */
-<!DOCTYPE html>
-<html>
-<head>
-<title>Team A</title>
-<link rel="stylesheet" href="../style.css">
-</head>
-<body>
-<h1>Team A</h1>
-<p>Players add karo</p>
-</body>
-</html>
-
-/* ================= teams/teamB.html ================= */
-<!DOCTYPE html>
-<html>
-<head>
-<title>Team B</title>
-<link rel="stylesheet" href="../style.css">
-</head>
-<body>
-<h1>Team B</h1>
-<p>Players add karo</p>
-</body>
-</html>
-
-/* ================= matches/upcoming.html ================= */
-<!DOCTYPE html>
-<html>
-<head>
-<title>Upcoming Matches</title>
-<link rel="stylesheet" href="../style.css">
-</head>
-<body>
-<h1>Upcoming Matches</h1>
-</body>
-</html>
-
-/* ================= matches/past.html ================= */
-<!DOCTYPE html>
-<html>
-<head>
-<title>Past Matches</title>
-<link rel="stylesheet" href="../style.css">
-</head>
-<body>
-<h1>Past Matches</h1>
-</body>
-</html>
-
-/* ================= stats/batting.html ================= */
-<!DOCTYPE html>
-<html>
-<head>
-<title>Batting Stats</title>
-<link rel="stylesheet" href="../style.css">
-</head>
-<body>
-<h1>Batting Stats</h1>
-</body>
-</html>
-
-/* ================= stats/bowling.html ================= */
-<!DOCTYPE html>
-<html>
-<head>
-<title>Bowling Stats</title>
-<link rel="stylesheet" href="../style.css">
-</head>
-<body>
-<h1>Bowling Stats</h1>
-</body>
-</html>
-
-/* ================= gallery/index.html ================= */
-<!DOCTYPE html>
-<html>
-<head>
-<title>Gallery</title>
-<link rel="stylesheet" href="../style.css">
-</head>
-<body>
-<h1>Gallery</h1>
+    <script src="script.js"></script>
 </body>
 </html>
