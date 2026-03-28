@@ -1,226 +1,222 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pura Cricket League | Official Portal (KKR Theme)</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&display=swap');
-        
-        :root {
-            --kkr-gold: #D4AF37;
-            --kkr-black: #050505;
-            --kkr-purple: #2E0854; /* Optional hint of purple like KKR */
-        }
-
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: var(--kkr-black);
-            color: white;
-            overflow-x: hidden;
-        }
-
-        /* GOLDEN GRADIENT TEXT */
-        .gold-grad {
-            background: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* KKR STYLE SIDE MENU */
-        #side-menu {
-            transform: translateX(100%);
-            transition: all 0.6s cubic-bezier(0.77, 0, 0.175, 1);
-            background: rgba(5, 5, 5, 0.98);
-        }
-
-        #side-menu.active {
-            transform: translateX(0);
-        }
-
-        .menu-item {
-            font-size: 3rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            transition: 0.3s;
-            cursor: pointer;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
-        }
-
-        .menu-item:hover {
-            padding-left: 20px;
-            color: var(--kkr-gold);
-        }
-
-        /* CUSTOM BUTTONS */
-        .kkr-btn {
-            border: 1px solid var(--kkr-gold);
-            padding: 10px 25px;
-            text-transform: uppercase;
-            font-weight: 700;
-            letter-spacing: 2px;
-            position: relative;
-            overflow: hidden;
-            transition: 0.4s;
-        }
-
-        .kkr-btn:hover {
-            background: var(--kkr-gold);
-            color: black;
-        }
-
-        /* SKEWED GRID FOR NEWS */
-        .news-card {
-            clip-path: polygon(0 0, 100% 0, 95% 100%, 0% 100%);
-            transition: 0.5s;
-        }
-
-        .news-card:hover {
-            transform: scale(1.02);
-        }
-
-        /* ANIMATIONS */
-        @keyframes gold-shimmer {
-            0% { background-position: -200% center; }
-            100% { background-position: 200% center; }
-        }
-
-        .shimmer {
-            background: linear-gradient(90deg, #1a1a1a 25%, #D4AF37 50%, #1a1a1a 75%);
-            background-size: 200% 100%;
-            animation: gold-shimmer 3s infinite linear;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pura Cricket League</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div id="side-menu" class="fixed inset-0 z-[100] flex flex-col p-10 justify-center">
-        <button onclick="toggleMenu()" class="absolute top-10 right-10 text-4xl text-gold hover:rotate-90 transition-all">
-            <i class="fas fa-times text-[var(--kkr-gold)]"></i>
-        </button>
-        
-        <nav class="flex flex-col space-y-4">
-            <div class="menu-item" onclick="toggleMenu()">HOME</div>
-            <div class="menu-item" onclick="toggleMenu()">THE SQUAD</div>
-            <div class="menu-item" onclick="toggleMenu()">SCHEDULE</div>
-            <div class="menu-item" onclick="toggleMenu()">GALLERY</div>
-            <div class="menu-item" onclick="toggleMenu()">PCL SHOP</div>
-            <div class="menu-item text-xl mt-10 text-gray-500">Contact: mahfuzsiddique4way@gmail.com</div>
-        </nav>
-    </div>
+<header>
+<h1>PURA CRICKET LEAGUE (PCL)</h1>
+</header>
 
-    <header class="fixed top-0 w-full z-50 px-6 py-4 flex justify-between items-center border-b border-white/10 bg-black/50 backdrop-blur-md">
-        <div class="flex items-center gap-4">
-            <img src="https://www.kkr.in/static-assets/images/css_images/logo.png?v=5.1" class="h-14 brightness-150" alt="Logo">
-            <span class="text-2xl font-black gold-grad tracking-tighter">PCL OFFICIAL</span>
-        </div>
+<nav>
+<a href="index.html">Home</a>
+<a href="#tournaments">Tournaments</a>
+<a href="teams/teamA.html">Teams</a>
+<a href="matches/upcoming.html">Matches</a>
+<a href="stats/batting.html">Stats</a>
+<a href="gallery/index.html">Gallery</a>
+<a href="#contact">Contact</a>
+</nav>
 
-        <div class="flex items-center gap-8">
-            <a href="#" class="hidden md:block hover:text-[var(--kkr-gold)] font-bold transition">TICKETS</a>
-            <a href="#" class="hidden md:block hover:text-[var(--kkr-gold)] font-bold transition">FAN ZONE</a>
-            <button onclick="toggleMenu()" class="text-2xl w-12 h-12 flex items-center justify-center border border-[var(--kkr-gold)] rounded-full hover:bg-[var(--kkr-gold)] hover:text-black transition">
-                <i class="fas fa-bars"></i>
-            </button>
-        </div>
-    </header>
-
-    <section class="relative h-screen flex items-center justify-center overflow-hidden">
-        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1531415074968-036ba1b575da?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center opacity-40"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black"></div>
-        
-        <div class="relative z-10 text-center space-y-6 px-4">
-            <h1 class="text-6xl md:text-9xl font-black italic gold-grad uppercase tracking-tighter">PURA CRICKET</h1>
-            <p class="text-xl md:text-2xl font-light tracking-[10px] uppercase">Strength • Unity • Glory</p>
-            <div class="flex gap-4 justify-center pt-8">
-                <button class="kkr-btn bg-[var(--kkr-gold)] text-black">Latest News</button>
-                <button class="kkr-btn">Watch Live</button>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-20 px-6 max-w-7xl mx-auto">
-        <h2 class="text-4xl font-black mb-12 border-l-8 border-[var(--kkr-gold)] pl-4 uppercase">Latest Buzz</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="news-card bg-zinc-900 overflow-hidden group">
-                <div class="h-64 bg-slate-800 overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1540747913346-19e3ad643121?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" alt="news">
-                </div>
-                <div class="p-6">
-                    <span class="text-[var(--kkr-gold)] text-xs font-bold uppercase tracking-widest">Team Update</span>
-                    <h3 class="text-xl font-bold mt-2">Mahfuz Siddiqui Leads PCL into Season 2024</h3>
-                    <p class="text-gray-400 mt-4 text-sm">Everything you need to know about the upcoming auction and team structures...</p>
-                </div>
-            </div>
-            </div>
-    </section>
-
-    <footer class="bg-[#050505] border-t border-[var(--kkr-gold)]/20 pt-20 pb-10">
-        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
-            <div class="col-span-1 md:col-span-2">
-                <h3 class="text-3xl font-black gold-grad mb-6 uppercase">Pura Cricket League</h3>
-                <p class="text-gray-500 leading-relaxed max-w-md">
-                    The official digital home of PCL. Stay updated with the latest scores, news, and exclusive content from the heart of Bihar's cricket scene.
-                </p>
-            </div>
-            
-            <div>
-                <h4 class="font-bold mb-6 text-[var(--kkr-gold)] uppercase tracking-widest text-sm">Follow the League</h4>
-                <div class="flex gap-6 text-2xl">
-                    <a href="https://instagram.com/mahfuzsidd" class="hover:text-[var(--kkr-gold)] transition"><i class="fab fa-instagram"></i></a>
-                    <a href="https://wa.me/919507352847" class="hover:text-[var(--kkr-gold)] transition"><i class="fab fa-whatsapp"></i></a>
-                    <div class="flex items-center gap-4">
-    <a href="mailto:mahfuzsiddique4way@gmail.com?subject=Enquiry%20from%20PCL%20Website&body=Hi%20Mahfuz," 
-       class="group flex items-center gap-3 transition duration-300">
-        
-        <div class="w-12 h-12 flex items-center justify-center border border-[var(--kkr-gold)] rounded-full group-hover:bg-[var(--kkr-gold)] transition-all duration-300">
-            <i class="fas fa-envelope text-[var(--kkr-gold)] group-hover:text-black text-xl"></i>
-        </div>
-
-        <div class="hidden md:block text-left">
-            <p class="text-[10px] text-gray-500 uppercase tracking-widest">Official Mail</p>
-            <p class="text-sm font-bold hover:text-[var(--kkr-gold)] transition">mahfuzsiddique4way@gmail.com</p>
-        </div>
-    </a>
+<section id="tournaments">
+<h2>Tournaments</h2>
+<div class="buttons">
+<a href="tournaments/2024/index.html">2024</a>
+<a href="tournaments/2026/index.html">2026</a>
 </div>
-            </div>
+</section>
 
-            <div>
-                <h4 class="font-bold mb-2 text-gray-400 text-xs uppercase tracking-widest">Founder & Owner</h4>
-                <p class="text-2xl font-black gold-grad tracking-widest italic uppercase">Mahfuz Siddiqui</p>
-            </div>
-        </div>
+<section id="contact">
+<h2>Contact</h2>
+<div class="buttons">
+<a href="https://instagram.com/mahfuzsidd" target="_blank">Instagram</a>
+<a href="https://wa.me/919507352847" target="_blank">WhatsApp</a>
+<a href="mailto:mahfuzsiddique4way@gmail.com">Email</a>
+</div>
+</section>
 
-        <div class="max-w-7xl mx-auto px-6 mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between text-[10px] text-gray-600 tracking-[3px] uppercase">
-            <p>&copy; 2026 Pura Cricket League. All Rights Reserved.</p>
-            <p>Designed for Champions by <span class="text-white">Mahfuz Siddiqui</span></p>
-        </div>
-    </footer>
+<footer>
+<p>© 2026 Pura Cricket League. All Rights Reserved.</p>
+</footer>
 
-    <script>
-        function toggleMenu() {
-            const menu = document.getElementById('side-menu');
-            menu.classList.toggle('active');
-            
-            // Disable scroll when menu is open
-            if(menu.classList.contains('active')) {
-                document.body.style.overflow = 'hidden';
-            } else {
-                document.body.style.overflow = 'auto';
-            }
-        }
-
-        // Change header background on scroll
-        window.onscroll = function() {
-            const header = document.querySelector('header');
-            if (window.scrollY > 100) {
-                header.classList.add('bg-black');
-                header.classList.remove('bg-black/50');
-            } else {
-                header.classList.add('bg-black/50');
-                header.classList.remove('bg-black');
-            }
-        };
-    </script>
 </body>
+</html>
+
+/* ================= style.css ================= */
+body {
+margin: 0;
+font-family: Arial;
+background: #0b3d2e;
+color: white;
+}
+
+header {
+background: gold;
+color: black;
+padding: 15px;
+text-align: center;
+}
+
+nav {
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+background: #02291f;
+}
+
+nav a {
+color: white;
+padding: 10px 15px;
+text-decoration: none;
+}
+
+nav a:hover {
+background: gold;
+color: black;
+}
+
+section {
+padding: 20px;
+text-align: center;
+}
+
+.buttons a {
+display: inline-block;
+margin: 10px;
+padding: 10px 20px;
+background: gold;
+color: black;
+text-decoration: none;
+border-radius: 5px;
+}
+
+footer {
+background: #02291f;
+text-align: center;
+padding: 10px;
+position: fixed;
+bottom: 0;
+width: 100%;
+}
+
+@media (max-width: 600px) {
+nav {
+flex-direction: column;
+}
+}
+
+/* ================= tournaments/2024/index.html ================= */
+<!DOCTYPE html>
+<html>
+<head>
+<title>2024 Tournament</title>
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<h1>2024 Tournament Data</h1>
+<p>Data yaha add karna hai</p>
+</body>
+</html>
+
+/* ================= tournaments/2026/index.html ================= */
+<!DOCTYPE html>
+<html>
+<head>
+<title>2026 Tournament</title>
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<h1>2026 Tournament Data</h1>
+<p>Data yaha add karna hai</p>
+</body>
+</html>
+
+/* ================= teams/teamA.html ================= */
+<!DOCTYPE html>
+<html>
+<head>
+<title>Team A</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<h1>Team A</h1>
+<p>Players add karo</p>
+</body>
+</html>
+
+/* ================= teams/teamB.html ================= */
+<!DOCTYPE html>
+<html>
+<head>
+<title>Team B</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<h1>Team B</h1>
+<p>Players add karo</p>
+</body>
+</html>
+
+/* ================= matches/upcoming.html ================= */
+<!DOCTYPE html>
+<html>
+<head>
+<title>Upcoming Matches</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<h1>Upcoming Matches</h1>
+</body>
+</html>
+
+/* ================= matches/past.html ================= */
+<!DOCTYPE html>
+<html>
+<head>
+<title>Past Matches</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<h1>Past Matches</h1>
+</body>
+</html>
+
+/* ================= stats/batting.html ================= */
+<!DOCTYPE html>
+<html>
+<head>
+<title>Batting Stats</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<h1>Batting Stats</h1>
+</body>
+</html>
+
+/* ================= stats/bowling.html ================= */
+<!DOCTYPE html>
+<html>
+<head>
+<title>Bowling Stats</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<h1>Bowling Stats</h1>
+</body>
+</html>
+
+/* ================= gallery/index.html ================= */
+<!DOCTYPE html>
+<html>
+<head>
+<title>Gallery</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<h1>Gallery</h1>
+</body>
+</html>
