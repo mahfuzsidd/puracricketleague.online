@@ -3,171 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PCL | Pura Cricket League Official</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Oswald:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/papaparse/5.3.0/papaparse.min.js"></script>
-
+    <title>PURA CRICKET LEAGUE | Master Analytics Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root {
-            --dark-green: #00231d;
-            --gold: #d4af37;
-            --gold-gradient: linear-gradient(45deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
-            --white: #ffffff;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-
-        body {
-            background-color: var(--dark-green);
-            background-image: radial-gradient(circle at center, #003d32 0%, #00231d 100%);
-            color: var(--white);
-            min-height: 100vh;
-        }
-
-        /* Navbar Styling */
-        header {
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(10px);
-            border-bottom: 2px solid var(--gold);
-            position: sticky; top: 0; z-index: 1000;
-        }
-
-        .nav-container {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 12px 5%; max-width: 1400px; margin: auto;
-        }
-
-        .pcl-logo {
-            font-family: 'Oswald', sans-serif; font-size: 26px; color: var(--dark-green);
-            background: var(--gold-gradient); padding: 5px 15px; border-radius: 4px;
-            font-weight: 800; text-decoration: none; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
-        }
-
-        .nav-links { display: flex; list-style: none; gap: 20px; }
-        .nav-links a { color: var(--white); text-decoration: none; font-weight: 600; text-transform: uppercase; font-size: 13px; transition: 0.3s; }
-        .nav-links a:hover { color: var(--gold); }
-
-        /* Dropdown */
-        .dropdown { position: relative; cursor: pointer; }
-        .dropdown-menu {
-            display: none; position: absolute; top: 100%; left: 0;
-            background: #00352e; min-width: 160px; border: 1px solid var(--gold);
-        }
-        .dropdown-menu a { display: block; padding: 12px; border-bottom: 1px solid rgba(212,175,55,0.1); }
-        .dropdown:hover .dropdown-menu { display: block; }
-
-        /* Main Section */
-        .hero { height: 40vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-        .hero h1 { font-family: 'Oswald', sans-serif; font-size: 3.5rem; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
-        /* Data Table Styling */
-        .dynamic-view { max-width: 1100px; margin: 20px auto; padding: 20px; background: rgba(255, 255, 255, 0.03); border-radius: 10px; overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th { background: var(--gold); color: var(--dark-green); padding: 12px; text-align: left; }
-        td { padding: 12px; border: 1px solid rgba(212, 175, 55, 0.2); }
-        tr:nth-child(even) { background: rgba(255,255,255,0.05); }
-
-        /* Footer */
-        footer { background: #000; padding: 40px 20px; text-align: center; border-top: 3px solid var(--gold); margin-top: 50px; }
-        .social-container { display: flex; justify-content: center; gap: 30px; margin: 20px 0; }
-        .social-container a { font-size: 28px; color: var(--white); transition: 0.3s; }
-        .social-container a:hover { color: var(--gold); transform: translateY(-5px); }
-        .gold-text { color: var(--gold); font-weight: bold; }
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto+Condensed:wght@400;700&display=swap');
+        body { background-color: #0b0e14; color: #e2e8f0; font-family: 'Roboto Condensed', sans-serif; }
+        .oswald { font-family: 'Oswald', sans-serif; }
+        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .btn-nav { transition: all 0.3s ease; border: 1px solid rgba(56, 189, 248, 0.3); }
+        .btn-nav:hover { background: #0ea5e9; color: black; transform: translateY(-2px); }
+        .active-section { display: block !important; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        th { background-color: #1e293b; color: #38bdf8; text-transform: uppercase; font-size: 0.8rem; padding: 12px; text-align: left; }
+        td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.95rem; }
+        tr:hover { background: rgba(56, 189, 248, 0.05); }
+        .highlight-row { background: rgba(56, 189, 248, 0.1); border-left: 4px solid #38bdf8; }
     </style>
 </head>
-<body>
+<body class="p-4 md:p-8">
 
-    <header>
-        <nav class="nav-container">
-            <a href="#" class="pcl-logo">PCL</a>
-            <ul class="nav-links">
-                <li><a href="#" onclick="location.reload()">HOME</a></li>
-                <li class="dropdown">
-                    <a>TOURNAMENTS <i class="fas fa-caret-down"></i></a>
-                    <div class="dropdown-menu">
-                        <a href="#" onclick="fetchSheetData('2024')">2024 Edition</a>
-                        <a href="#" onclick="fetchSheetData('2026')">2026 Edition</a>
-                    </div>
-                </li>
-                <li><a href="#">TEAMS</a></li>
-                <li><a href="#">MATCHES</a></li>
-                <li><a href="#">STATS</a></li>
-                <li><a href="#contact">CONTACT</a></li>
-            </ul>
-        </nav>
+    <header class="max-w-7xl mx-auto text-center mb-10">
+        <h1 class="oswald text-5xl md:text-7xl font-bold tracking-tighter text-white uppercase italic">
+            PURA CRICKET <span class="text-sky-500">LEAGUE</span>
+        </h1>
+        <p class="text-slate-400 mt-2 tracking-widest uppercase">Official 2024-26 Tournament Analytics Dashboard</p>
     </header>
 
-    <main>
-        <section class="hero">
-            <h1 id="display-title">PURA CRICKET LEAGUE</h1>
-            <p id="status-msg" style="color:var(--gold)">Select a season to view live stats</p>
+    <div class="max-w-7xl mx-auto flex flex-wrap justify-center gap-3 mb-12">
+        <button onclick="showSection('batting')" class="btn-nav px-6 py-3 rounded-full font-bold uppercase text-sm glass">Batting Leaderboard</button>
+        <button onclick="showSection('bowling')" class="btn-nav px-6 py-3 rounded-full font-bold uppercase text-sm glass">Bowling Leaderboard</button>
+        <button onclick="showSection('fielding')" class="btn-nav px-6 py-3 rounded-full font-bold uppercase text-sm glass">Fielding Leaderboard</button>
+        <button onclick="showSection('mvp')" class="btn-nav px-6 py-3 rounded-full font-bold uppercase text-sm glass">MVP Rankings</button>
+        <button onclick="showSection('matches')" class="btn-nav px-6 py-3 rounded-full font-bold uppercase text-sm glass">Match Summaries</button>
+    </div>
+
+    <div class="max-w-7xl mx-auto">
+        
+        <section id="batting" class="hidden glass p-6 rounded-3xl active-section">
+            <h2 class="oswald text-3xl mb-6 text-sky-400 italic underline">BATTING LEADERBOARD (Top Performers)</h2>
+            <div class="overflow-x-auto">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Rank</th><th>Player</th><th>Team</th><th>Mat</th><th>Runs</th><th>HS</th><th>Avg</th><th>SR</th><th>4s</th><th>6s</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="highlight-row">
+                            <td>1</td><td>Mahfuz Siddqui</td><td>ADNAN XI</td><td>3</td><td>178</td><td>94</td><td>89.00</td><td>202.27</td><td>9</td><td>18</td>
+                        </tr>
+                        <tr>
+                            <td>2</td><td>Shanu Sidd</td><td>NEHAL XI</td><td>3</td><td>84</td><td>54</td><td>28.00</td><td>221.05</td><td>5</td><td>9</td>
+                        </tr>
+                        <tr>
+                            <td>3</td><td>Md Hassan</td><td>NEHAL XI</td><td>3</td><td>80</td><td>29</td><td>40.00</td><td>195.12</td><td>2</td><td>10</td>
+                        </tr>
+                        <tr>
+                            <td>4</td><td>Afzal Sajjad</td><td>ADNAN XI</td><td>3</td><td>44</td><td>26</td><td>22.00</td><td>118.92</td><td>5</td><td>2</td>
+                        </tr>
+                        <tr>
+                            <td>5</td><td>Wasim</td><td>NEHAL XI</td><td>3</td><td>41</td><td>33</td><td>13.67</td><td>164.00</td><td>3</td><td>3</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </section>
 
-        <div id="data-container" class="dynamic-view" style="display:none;"></div>
-    </main>
+        <section id="bowling" class="hidden glass p-6 rounded-3xl">
+            <h2 class="oswald text-3xl mb-6 text-emerald-400 italic underline">BOWLING LEADERBOARD (Wicket Takers)</h2>
+            <div class="overflow-x-auto">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Rank</th><th>Player</th><th>Overs</th><th>Runs</th><th>Wkts</th><th>Best</th><th>Eco</th><th>Avg</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>Farid Mahmood</td><td>7.0</td><td>101</td><td>6</td><td>2/16</td><td>14.43</td><td>16.83</td></tr>
+                        <tr><td>2</td><td>Wasim</td><td>4.0</td><td>49</td><td>5</td><td>3/20</td><td>12.25</td><td>9.80</td></tr>
+                        <tr><td>3</td><td>Afzal Sajjad</td><td>5.0</td><td>30</td><td>4</td><td>3/4</td><td>6.00</td><td>7.50</td></tr>
+                        <tr class="highlight-row"><td>4</td><td>Bablu</td><td>1.0</td><td>1</td><td>3</td><td>3/1</td><td>1.00</td><td>0.33</td></tr>
+                        <tr><td>5</td><td>Md Hassan</td><td>6.0</td><td>54</td><td>3</td><td>2/18</td><td>9.00</td><td>18.00</td></tr>
+                        <tr><td>6</td><td>Mahfuz Siddqui</td><td>7.0</td><td>66</td><td>2</td><td>2/21</td><td>9.43</td><td>33.00</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
 
-    <footer id="contact">
-        <h2 class="gold-text">PCL OFFICIAL</h2>
-        <div class="social-container">
-            <a href="https://instagram.com/mahfuzsidd" target="_blank"><i class="fab fa-instagram"></i></a>
-            <a href="https://wa.me/919507352847" target="_blank"><i class="fab fa-whatsapp"></i></a>
-            <a href="mailto:mahfuzsiddique4way@gmail.com"><i class="fas fa-envelope"></i></a>
-        </div>
-        <p>&copy; 2026 <span class="gold-text">Pura Cricket League</span>. Managed by Mahfuz Siddiqui.</p>
-    </footer>
+        <section id="fielding" class="hidden glass p-6 rounded-3xl">
+            <h2 class="oswald text-3xl mb-6 text-orange-400 italic underline">FIELDING LEADERBOARD</h2>
+            <div class="overflow-x-auto">
+                <table>
+                    <thead>
+                        <tr><th>Rank</th><th>Player Name</th><th>Team</th><th>Mat</th><th>Catches</th><th>Run Outs</th><th>Total Dismissals</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>Adnan</td><td>ADNAN XI</td><td>3</td><td>1</td><td>1</td><td>2</td></tr>
+                        <tr><td>2</td><td>Mahfuz Siddqui</td><td>ADNAN XI</td><td>3</td><td>2</td><td>0</td><td>2</td></tr>
+                        <tr><td>3</td><td>Atif Ayub</td><td>NEHAL XI</td><td>3</td><td>2</td><td>0</td><td>2</td></tr>
+                        <tr><td>4</td><td>Yasir</td><td>ADNAN XI</td><td>3</td><td>2</td><td>0</td><td>2</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="mvp" class="hidden glass p-6 rounded-3xl">
+            <h2 class="oswald text-3xl mb-6 text-purple-400 italic underline">MOST VALUABLE PLAYER (MVP) RANKINGS</h2>
+            <div class="overflow-x-auto">
+                <table>
+                    <thead>
+                        <tr><th>Rank</th><th>Player</th><th>Team</th><th>Batting Pts</th><th>Bowling Pts</th><th>Fielding Pts</th><th>Total Points</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr class="highlight-row">
+                            <td>1</td><td>Mahfuz Siddqui</td><td>ADNAN XI</td><td>18.090</td><td>2.947</td><td>0.448</td><td>21.485</td>
+                        </tr>
+                        <tr><td>2</td><td>Md Hassan</td><td>NEHAL XI</td><td>8.092</td><td>4.474</td><td>0.000</td><td>12.566</td></tr>
+                        <tr><td>3</td><td>Afzal Sajjad</td><td>ADNAN XI</td><td>4.400</td><td>6.812</td><td>1.120</td><td>12.332</td></tr>
+                        <tr><td>4</td><td>Wasim</td><td>NEHAL XI</td><td>4.116</td><td>6.593</td><td>0.280</td><td>10.989</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="matches" class="hidden glass p-6 rounded-3xl">
+            <h2 class="oswald text-3xl mb-6 text-yellow-400 italic underline">MATCH HISTORY (Ball-by-Ball Summary)</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-slate-800/50 p-4 rounded-xl border border-yellow-500/20">
+                    <h3 class="font-bold text-xl text-yellow-500">FINAL: ADNAN XI vs NEHAL XI</h3>
+                    <p class="text-sm text-slate-400">Date: 20-04-2024</p>
+                    <p class="mt-2">Adnan XI: 134/3 (Mahfuz 94)</p>
+                    <p>Nehal XI: 139/5 (Shanu 54)</p>
+                    <p class="text-emerald-400 font-bold mt-2">Result: NEHAL XI won by 5 wickets</p>
+                </div>
+                <div class="bg-slate-800/50 p-4 rounded-xl border border-yellow-500/20">
+                    <h3 class="font-bold text-xl text-yellow-500">SUPER LEAGUE: ADNAN XI vs NEHAL XI</h3>
+                    <p class="text-sm text-slate-400">Date: 19-04-2024</p>
+                    <p class="mt-2">Adnan XI: 112/3 (Mahfuz 52*)</p>
+                    <p>Nehal XI: 85/8 (Afzal 3 Wkts)</p>
+                    <p class="text-sky-400 font-bold mt-2">Result: ADNAN XI won by 27 runs</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
 
     <script>
-        // Yahan apni 'Publish to Web' wali CSV link dalein
-        const sheetCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT197e4VfWf0uE0_XWz8iV-G-q6h6Q-Y-Z5OQ/pub?output=csv"; 
-
-        function fetchSheetData(year) {
-            const container = document.getElementById('data-container');
-            const status = document.getElementById('status-msg');
-            const title = document.getElementById('display-title');
-
-            status.innerText = "Loading " + year + " Data...";
-            container.style.display = 'block';
-
-            Papa.parse(sheetCSV, {
-                download: true,
-                header: true,
-                complete: function(results) {
-                    const allData = results.data;
-                    // Filter by Year column in your sheet
-                    const filtered = allData.filter(row => row.Year == year || row.year == year);
-                    
-                    if(filtered.length > 0) {
-                        renderTable(filtered, year);
-                        status.innerText = "Data Updated Live";
-                        title.innerText = "PCL " + year;
-                    } else {
-                        container.innerHTML = "<p>No data found for this year in Google Sheets.</p>";
-                    }
-                }
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = ['batting', 'bowling', 'fielding', 'mvp', 'matches'];
+            sections.forEach(id => {
+                document.getElementById(id).classList.remove('active-section');
+                document.getElementById(id).classList.add('hidden');
             });
-        }
-
-        function renderTable(data, year) {
-            const container = document.getElementById('data-container');
-            let headers = Object.keys(data[0]);
             
-            let html = `<h3>Season Statistics - ${year}</h3><table><tr>`;
-            headers.forEach(h => html += `<th>${h.toUpperCase()}</th>`);
-            html += `</tr>`;
+            // Show selected section
+            const active = document.getElementById(sectionId);
+            active.classList.remove('hidden');
+            active.classList.add('active-section');
 
-            data.forEach(row => {
-                html += `<tr>`;
-                headers.forEach(h => html += `<td>${row[h] || '-'}</td>`);
-                html += `</tr>`;
-            });
-
-            html += `</table>`;
-            container.innerHTML = html;
-            window.scrollTo({ top: 350, behavior: 'smooth' });
+            // Optional: Scroll to section
+            window.scrollTo({ top: document.querySelector('.max-w-7xl').offsetTop - 100, behavior: 'smooth' });
         }
     </script>
 </body>
 </html>
+
