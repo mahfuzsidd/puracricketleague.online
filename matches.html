@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PCL Matches | Match Center</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
     
     <style>
         /* --- CSS VARIABLES --- */
@@ -18,7 +17,7 @@
 
         body { font-family: 'Poppins', sans-serif; background: var(--bg-gray); margin: 0; }
 
-        /* --- HEADER (Same as Home) --- */
+        /* --- HEADER --- */
         header {
             background: var(--primary); padding: 10px 5%;
             display: flex; justify-content: space-between; align-items: center;
@@ -26,7 +25,9 @@
         }
         .logo { display: flex; align-items: center; gap: 10px; color: white; }
         .logo span { font-family: 'Bebas Neue'; font-size: 28px; letter-spacing: 2px; }
-        nav a { color: white; text-decoration: none; margin-left: 20px; font-size: 14px; transition: 0.3s; }
+        
+        nav { display: flex; align-items: center; }
+        nav a { color: white; text-decoration: none; margin-left: 20px; font-size: 14px; transition: 0.3s; font-weight: 600; }
         nav a:hover { color: var(--accent); }
 
         /* --- SECTION STYLING --- */
@@ -57,7 +58,6 @@
         .score-row { font-size: 24px; font-weight: 800; color: #333; margin: 10px 0; letter-spacing: 1px; }
         .result-text { font-size: 13px; color: #555; font-style: italic; margin-bottom: 15px; min-height: 20px; }
 
-        /* View Score Button */
         .live-btn {
             display: inline-block; background: var(--primary); color: white;
             padding: 10px 25px; border-radius: 50px; text-decoration: none;
@@ -66,7 +66,6 @@
         }
         .live-btn:hover { background: var(--accent); color: #000; transform: scale(1.05); }
 
-        /* Blinking Live Indicator */
         .live-badge {
             position: absolute; top: 15px; right: 15px; background: var(--live-red);
             color: white; padding: 3px 10px; border-radius: 5px; font-size: 10px;
@@ -74,6 +73,32 @@
         }
 
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+
+        /* 🔥 MOBILE RESPONSIVE FIX (Single Code Addition) */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 15px 5%;
+                gap: 15px;
+            }
+            .logo { margin-bottom: 5px; }
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 8px;
+            }
+            nav a {
+                margin: 0 4px;
+                font-size: 11px;
+                padding: 6px 10px;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 5px;
+                white-space: nowrap;
+            }
+            .section { padding: 20px 5%; }
+            .match-grid { grid-template-columns: 1fr; }
+            h2 { font-size: 24px; }
+        }
     </style>
 </head>
 <body>
@@ -106,42 +131,45 @@
 </div>
 
 <script>
-fetch("https://opensheet.elk.sh/1tUGjc1s7Qo8Zvn7jmn3PhUKmUk2hs7yF3OpZXXqiJSU/Matches")
-.then(res => res.json())
-.then(data => {
-    let live = "";
-    let upcoming = "";
-    let past = "";
+    const sheetURL = "https://opensheet.elk.sh/1tUGjc1s7Qo8Zvn7jmn3PhUKmUk2hs7yF3OpZXXqiJSU/Matches";
 
-    data.forEach(match => {
-        let isLive = match.Status === "Live";
-        
-        let card = `
-        <div class="match-card ${isLive ? 'live-card' : ''}">
-            ${isLive ? '<span class="live-badge">LIVE</span>' : ''}
-            <p class="match-date">${match.Date}</p>
-            <div class="teams-row">
-                <span>${match.Team1}</span>
-                <span class="vs-tag">VS</span>
-                <span>${match.Team2}</span>
+    fetch(sheetURL)
+    .then(res => res.json())
+    .then(data => {
+        let live = "";
+        let upcoming = "";
+        let past = "";
+
+        data.forEach(match => {
+            let isLive = (match.Status === "Live");
+            
+            let card = `
+            <div class="match-card ${isLive ? 'live-card' : ''}">
+                ${isLive ? '<span class="live-badge">LIVE</span>' : ''}
+                <p class="match-date">${match.Date}</p>
+                <div class="teams-row">
+                    <span>${match.Team1}</span>
+                    <span class="vs-tag">VS</span>
+                    <span>${match.Team2}</span>
+                </div>
+                <div class="score-row">${match.Score1 || '0'} - ${match.Score2 || '0'}</div>
+                <p class="result-text">${match.Result || ''}</p>
+                <a href="${match.Link || '#'}" target="_blank" class="live-btn">
+                    ${isLive ? 'Watch Live' : 'View Score'}
+                </a>
             </div>
-            <div class="score-row">${match.Score1 || '0'} - ${match.Score2 || '0'}</div>
-            <p class="result-text">${match.Result || ''}</p>
-            <a href="${match.Link || '#'}" target="_blank" class="live-btn">
-                ${isLive ? 'Watch Live' : 'View Score'}
-            </a>
-        </div>
-        `;
+            `;
 
-        if(match.Status === "Live") live += card;
-        else if(match.Status === "Upcoming") upcoming += card;
-        else if(match.Status === "Completed") past += card;
-    });
+            if(match.Status === "Live") live += card;
+            else if(match.Status === "Upcoming") upcoming += card;
+            else if(match.Status === "Completed") past += card;
+        });
 
-    document.getElementById("live-matches").innerHTML = live || "<p>No live matches currently.</p>";
-    document.getElementById("upcoming-matches").innerHTML = upcoming || "<p>No upcoming matches.</p>";
-    document.getElementById("past-matches").innerHTML = past || "<p>No past results found.</p>";
-});
+        document.getElementById("live-matches").innerHTML = live || "<p>No live matches currently.</p>";
+        document.getElementById("upcoming-matches").innerHTML = upcoming || "<p>No upcoming matches.</p>";
+        document.getElementById("past-matches").innerHTML = past || "<p>No past results found.</p>";
+    })
+    .catch(err => console.error("Error fetching matches:", err));
 </script>
 
 </body>
