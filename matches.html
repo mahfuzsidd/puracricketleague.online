@@ -1,0 +1,82 @@
+<header>
+
+<div class="logo">
+<img src="https://i.postimg.cc/wT4XCqmr/file-0000000092a8720882e7059a82d5a28f.png" height="50"><span>PCL</span>
+<span>PCL</span>
+</div>
+
+<nav>
+<a href="index.html">Home</a>
+<a href="matches.html">Matches</a>
+<a href="teams.html">Teams</a>
+<a href="points.html">Points Table</a>
+<a href="stats.html">Stats</a>
+<a href="gallery.html">Images</a>
+<a href="contact.html">Contact</a>
+</nav>
+
+</header>
+<!DOCTYPE html>
+<html>
+<head>
+<title>PCL Home</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<script>
+
+fetch("https://opensheet.elk.sh/1tUGjc1s7Qo8Zvn7jmn3PhUKmUk2hs7yF3OpZXXqiJSU/Matches")
+.then(res => res.json())
+.then(data => {
+
+let live = "";
+let upcoming = "";
+let past = "";
+
+data.forEach(match => {
+
+let card = `
+<div class="match-card">
+<p>${match.Date}</p>
+<h3>${match.Team1} vs ${match.Team2}</h3>
+<p>${match.Score1} - ${match.Score2}</p>
+<p>${match.Result}</p>
+
+<a href="${match.Link}" target="_blank" class="live-btn">
+View Score
+</a>
+</div>
+`;
+
+if(match.Status === "Live"){
+live += card;
+}
+
+if(match.Status === "Upcoming"){
+upcoming += card;
+}
+
+if(match.Status === "Completed"){
+past += card;
+}
+
+});
+
+document.getElementById("live-matches").innerHTML = live;
+document.getElementById("upcoming-matches").innerHTML = upcoming;
+document.getElementById("past-matches").innerHTML = past;
+
+});
+
+</script>
+
+<div class="section">
+    <h2 class="subject-bold" style="color: #ef4444;">🔴 Live Matches</h2>
+    <div id="live-matches" class="match-grid"></div>
+
+    <h2 class="subject-bold"> Upcoming Fixtures</h2>
+    <div id="upcoming-matches" class="match-grid"></div>
+
+    <h2 class="subject-bold" style="color: #6b7280;"> Past Results</h2>
+    <div id="past-matches" class="match-grid"></div>
+</div>
