@@ -24,6 +24,10 @@ header {
     background: var(--brand-blue);
     border-bottom: 5px solid var(--vibrant-gold);
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    /* Sticky header tak scroll karne par menu dikhta rahe */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 .logo {
@@ -42,6 +46,11 @@ header {
 }
 
 /* --- NAV --- */
+nav {
+    display: flex;
+    align-items: center;
+}
+
 nav a {
     margin: 0 15px;
     text-decoration: none;
@@ -54,6 +63,36 @@ nav a {
 
 nav a:hover {
     color: var(--vibrant-gold);
+}
+
+/* 🔥 MOBILE HEADER FIX - ISSE SARE LINKS DIKHENGE */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column; /* Logo upar, Nav neeche */
+        padding: 15px 10px;
+        height: auto;
+    }
+
+    .logo {
+        margin-bottom: 15px;
+    }
+
+    nav {
+        display: flex;
+        flex-wrap: wrap; /* Links multiple lines me adjust ho jayenge */
+        justify-content: center;
+        width: 100%;
+        gap: 8px;
+    }
+
+    nav a {
+        margin: 0 4px;
+        font-size: 12px;
+        padding: 6px 10px;
+        background: rgba(255, 255, 255, 0.1); /* Touch target improve karne ke liye */
+        border-radius: 5px;
+        white-space: nowrap;
+    }
 }
 
 /* --- BOLD SUBJECTS (Headings) --- */
@@ -107,6 +146,12 @@ nav a:hover {
 }
 
 /* --- TABLE (Stats & Points) --- */
+/* Table mobile fix - container overflow handle karega */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -145,264 +190,15 @@ footer {
     color: white;
     border-top: 4px solid var(--vibrant-gold);
     margin-top: 50px;
-}/* MATCH CARD TEXT IMPROVE */
+}
+
+/* MATCH CARD TEXT IMPROVE */
 .match-card{
-background: linear-gradient(135deg,#0f172a,#1e293b);
-padding:20px;
-margin:15px 0;
-border-radius:15px;
-border-left:4px solid gold;
-box-shadow:0 0 20px rgba(0,0,0,0.5);
-color:white;
-}
-
-/* DATE */
-.match-card p:first-child{
-color:#94a3b8;
-font-size:13px;
-margin-bottom:5px;
-}
-
-/* TEAM VS */
-.match-card h3{
-font-size:22px;
-font-weight:700;
-color:white;
-margin:5px 0;
-letter-spacing:1px;
-}
-
-/* SCORE */
-.match-card .score{
-font-size:20px;
-font-weight:bold;
-color:#22c55e; /* green */
-margin:8px 0;
-}
-
-/* RESULT */
-.match-card .result{
-font-size:14px;
-color:#facc15; /* gold */
-font-weight:500;
-}
-
-/* BUTTON */
-.live-btn{
-display:inline-block;
-margin-top:12px;
-padding:8px 16px;
-background: linear-gradient(to right,gold,#facc15);
-color:black;
-text-decoration:none;
-border-radius:6px;
-font-weight:bold;
-transition:0.3s;
-}
-
-.live-btn:hover{
-transform:scale(1.05);
-box-shadow:0 0 10px gold;
-}
-
-for(let team in teams){
-
-output += `
-<div style="margin-bottom:20px;">
-<h3 style="color:gold;">${team}</h3>
-
-<!-- 🔥 NEW FLEX CONTAINER -->
-<div style="display:flex; flex-wrap:wrap;">
-`;
-
-teams[team].forEach(p=>{
-
-let icon = "🏏";
-
-if(p.role === "Bowler") icon = "🎯";
-if(p.role === "Allrounder") icon = "⚡";
-if(p.role === "Wicketkeeper") icon = "🧤";
-if(p.role === "Captain") icon = "👑";
-if(p.role === "Batter") icon = "🏏";
-
-/* 🔥 NEW CLASS */
-let roleClass = (p.role || "").toLowerCase();
-
-output += `
-<div class="player-card ${roleClass}">
-  <div class="player-icon">${icon}</div>
-  <span>${p.player}</span>
-</div>
-`;
-
-});
-
-output += `
-</div>
-</div>
-`;
-
-}/* HERO */
-.hero {
-background: linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),
-url('https://images.unsplash.com/photo-1540747913346-19e32dc3e97e');
-background-size: cover;
-background-position: center;
-color: white;
-text-align: center;
-padding: 80px 20px;
-}
-
-.hero h1 {
-font-size: 40px;
-margin-bottom: 10px;
-}
-
-.hero p {
-font-size: 18px;
-margin-bottom: 20px;
-}
-
-.btn {
-background: gold;
-padding: 10px 20px;
-text-decoration: none;
-color: black;
-font-weight: bold;
-border-radius: 6px;
-}
-
-/* GRID */
-.grid-3 {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-gap: 15px;
-}
-
-.grid-2 {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-gap: 15px;
-}
-.whatsapp-float {
-position: fixed;
-bottom: 20px;
-right: 20px;
-background: #25D366;
-color: white;
-font-size: 22px;
-padding: 12px 15px;
-border-radius: 50%;
-text-decoration: none;
-box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-z-index: 999;
-transition: 0.3s;
-}
-
-.whatsapp-float:hover {
-transform: scale(1.1);
-}
-const sheetID = "1tUGjc1s7Qo8Zvn7jmn3PhUKmUk2hs7yF3OpZXXqiJSU";
-let globalPlayerData = [];
-
-// डेटा लोड करने का सबसे सुरक्षित तरीका
-Promise.all([
-    fetch(`https://opensheet.elk.sh/${sheetID}/Teams`).then(res => res.json()),
-    fetch(`https://opensheet.elk.sh/${sheetID}/Batting`).then(res => res.json()),
-    fetch(`https://opensheet.elk.sh/${sheetID}/Bowling`).then(res => res.json())
-]).then(([teams, batting, bowling]) => {
-    
-    // सभी डेटा को एक मास्टर लिस्ट में स्टोर करें
-    globalPlayerData = batting.map(b => {
-        let tInfo = teams.find(t => t.Player === b.Player || t.PLAYER === b.Player) || {};
-        let bowlInfo = bowling.find(bw => bw.Player === b.Player || bw.PLAYER === b.Player) || {};
-        
-        // पक्का करें कि रन और बाकी डेटा सही कीवर्ड से उठा रहा है
-        return {
-            name: b.Player || b.PLAYER,
-            role: tInfo.Role || tInfo.ROLE || "Player",
-            image: tInfo.Image || tInfo.IMAGE || "",
-            mat: b.Mat || b.MAT || "0",
-            inns: b.Inns || b.INNS || "0",
-            runs: b.Runs || b.RUNS || "0",
-            hs: b.HS || "0",
-            avg: b.Avg || b.AVG || "0",
-            sr: b.SR || "0",
-            no: b.NO || "0",
-            bf: b.BF || "0",
-            c100: b["100s"] || b["100"] || "0",
-            c50: b["50s"] || b["50"] || "0",
-            wkts: bowlInfo.Wkts || bowlInfo.WKTS || "0",
-            econ: bowlInfo.Econ || bowlInfo.ECON || "0"
-        };
-    });
-
-    // Batting Table
-    let batHtml = "";
-    batting.forEach(p => {
-        // यहाँ भी चेक लगा दिया है ताकि Runs सही दिखे
-        let runs = p.Runs || p.RUNS || 0;
-        batHtml += `<tr>
-            <td class="player-link" onclick="openPlayerModal('${p.Player || p.PLAYER}')">${p.Player || p.PLAYER}</td>
-            <td>${p.Mat || p.MAT || 0}</td>
-            <td>${p.Inns || p.INNS || 0}</td>
-            <td>${p.NO || 0}</td>
-            <td style="font-weight:bold; color:#d4af37;">${runs}</td>
-            <td>${p.HS || 0}</td>
-            <td>${p.Avg || p.AVG || 0}</td>
-            <td>${p.BF || 0}</td>
-            <td>${p.SR || 0}</td>
-            <td>${p["100s"] || p["100"] || 0}</td>
-            <td>${p["50s"] || p["50"] || 0}</td>
-            <td>${p["0s"] || 0}</td>
-            <td>${p["4s"] || 0}</td>
-            <td>${p["6s"] || 0}</td>
-        </tr>`;
-    });
-    document.getElementById("battingTable").innerHTML = batHtml;
-
-    // Bowling Table
-    let bowlHtml = "";
-    bowling.forEach(p => {
-        bowlHtml += `<tr>
-            <td class="player-link" onclick="openPlayerModal('${p.Player || p.PLAYER}')">${p.Player || p.PLAYER}</td>
-            <td>${p.Mat || 0}</td>
-            <td>${p.Inns || 0}</td>
-            <td>${p.Overs || 0}</td>
-            <td>${p.Mdns || 0}</td>
-            <td>${p.Runs || p.RUNS || 0}</td>
-            <td style="font-weight:bold; color:#d4af37;">${p.Wkts || p.WKTS || 0}</td>
-            <td>${p.Econ || 0}</td>
-            <td>${p["5w"] || 0}</td>
-            <td>${p["10w"] || 0}</td>
-        </tr>`;
-    });
-    document.getElementById("bowlingTable").innerHTML = bowlHtml;
-});
-
-function openPlayerModal(name) {
-    let p = globalPlayerData.find(x => x.name === name);
-    if(!p) return;
-
-    document.getElementById("mName").innerText = p.name;
-    document.getElementById("mRole").innerText = p.role;
-    document.getElementById("mImg").src = p.image || 'https://via.placeholder.com/300?text=No+Photo';
-
-    // कार्ड के अंदर रन और विकेट अब एकदम सही दिखेंगे
-    let statsHtml = `
-        <div class="stat-row"><b>Matches</b> <span>${p.mat}</span></div>
-        <div class="stat-row"><b>Runs</b> <span style="font-size:18px;">${p.runs}</span></div>
-        <div class="stat-row"><b>Avg</b> <span>${p.avg}</span></div>
-        <div class="stat-row"><b>S/R</b> <span>${p.sr}</span></div>
-        <div class="stat-row"><b>HS</b> <span>${p.hs}</span></div>
-        <div class="stat-row"><b>100s/50s</b> <span>${p.c100}/${p.c50}</span></div>
-        <div class="stat-row"><b>Wickets</b> <span>${p.wkts}</span></div>
-    `;
-    
-    document.getElementById("modalStatsList").innerHTML = statsHtml;
-    document.getElementById("statsModal").style.display = "block";
-}
-
-function closeStats() {
-    document.getElementById("statsModal").style.display = "none";
+    background: linear-gradient(135deg,#0f172a,#1e293b);
+    padding:20px;
+    margin:15px 0;
+    border-radius:15px;
+    border-left:4px solid gold;
+    box-shadow:0 0 20px rgba(0,0,0,0.5);
+    color:white;
 }
