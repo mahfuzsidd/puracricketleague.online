@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCL Matches | Match Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    
+    <style>
+        /* --- CSS VARIABLES --- */
+        :root {
+            --primary: #003366;
+            --accent: #d4af37;
+            --live-red: #ef4444;
+            --bg-gray: #f4f7f6;
+        }
+
+        body { font-family: 'Poppins', sans-serif; background: var(--bg-gray); margin: 0; }
+
+        /* --- HEADER (Same as Home) --- */
+        header {
+            background: var(--primary); padding: 10px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .logo { display: flex; align-items: center; gap: 10px; color: white; }
+        .logo span { font-family: 'Bebas Neue'; font-size: 28px; letter-spacing: 2px; }
+        nav a { color: white; text-decoration: none; margin-left: 20px; font-size: 14px; transition: 0.3s; }
+        nav a:hover { color: var(--accent); }
+
+        /* --- SECTION STYLING --- */
+        .section { padding: 40px 5%; max-width: 1200px; margin: auto; }
+        h2 { font-family: 'Bebas Neue'; font-size: 32px; margin-bottom: 25px; border-left: 5px solid var(--accent); padding-left: 15px; }
+
+        /* --- MATCH GRID --- */
+        .match-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; margin-bottom: 50px; }
+
+        /* --- MATCH CARD UI --- */
+        .match-card {
+            background: white; border-radius: 15px; padding: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            text-align: center; border-bottom: 4px solid #ddd;
+            transition: 0.3s ease; position: relative;
+        }
+        .match-card:hover { transform: translateY(-5px); }
+        .match-card.live-card { border-bottom-color: var(--live-red); }
+
+        .match-date { font-size: 12px; color: #666; font-weight: 600; margin-bottom: 10px; }
+        
+        .teams-row {
+            display: flex; justify-content: space-around; align-items: center;
+            margin: 15px 0; font-weight: 600; font-size: 18px; color: var(--primary);
+        }
+        .vs-tag { font-family: 'Bebas Neue'; color: var(--live-red); font-size: 20px; }
+
+        .score-row { font-size: 24px; font-weight: 800; color: #333; margin: 10px 0; letter-spacing: 1px; }
+        .result-text { font-size: 13px; color: #555; font-style: italic; margin-bottom: 15px; min-height: 20px; }
+
+        /* View Score Button */
+        .live-btn {
+            display: inline-block; background: var(--primary); color: white;
+            padding: 10px 25px; border-radius: 50px; text-decoration: none;
+            font-size: 14px; font-weight: 600; transition: 0.4s;
+            box-shadow: 0 4px 10px rgba(0,51,102,0.2);
+        }
+        .live-btn:hover { background: var(--accent); color: #000; transform: scale(1.05); }
+
+        /* Blinking Live Indicator */
+        .live-badge {
+            position: absolute; top: 15px; right: 15px; background: var(--live-red);
+            color: white; padding: 3px 10px; border-radius: 5px; font-size: 10px;
+            font-weight: bold; animation: blink 1s infinite;
+        }
+
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <img src="https://i.postimg.cc/wT4XCqmr/file-0000000092a8720882e7059a82d5a28f.png" height="50">
+        <span>PCL</span>
+    </div>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="matches.html">Matches</a>
+        <a href="teams.html">Teams</a>
+        <a href="points.html">Points Table</a>
+        <a href="stats.html">Stats</a>
+        <a href="gallery.html">Images</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+</header>
+
+<div class="section">
+    <h2 style="color: var(--live-red);">🔴 Live Matches</h2>
+    <div id="live-matches" class="match-grid"></div>
+
+    <h2 style="color: var(--primary);">📅 Upcoming Fixtures</h2>
+    <div id="upcoming-matches" class="match-grid"></div>
+
+    <h2 style="color: #6b7280;">🏁 Past Results</h2>
+    <div id="past-matches" class="match-grid"></div>
+</div>
+
+<script>
+fetch("https://opensheet.elk.sh/1tUGjc1s7Qo8Zvn7jmn3PhUKmUk2hs7yF3OpZXXqiJSU/Matches")
+.then(res => res.json())
+.then(data => {
+    let live = "";
+    let upcoming = "";
+    let past = "";
+
+    data.forEach(match => {
+        let isLive = match.Status === "Live";
+        
+        let card = `
+        <div class="match-card ${isLive ? 'live-card' : ''}">
+            ${isLive ? '<span class="live-badge">LIVE</span>' : ''}
+            <p class="match-date">${match.Date}</p>
+            <div class="teams-row">
+                <span>${match.Team1}</span>
+                <span class="vs-tag">VS</span>
+                <span>${match.Team2}</span>
+            </div>
+            <div class="score-row">${match.Score1 || '0'} - ${match.Score2 || '0'}</div>
+            <p class="result-text">${match.Result || ''}</p>
+            <a href="${match.Link || '#'}" target="_blank" class="live-btn">
+                ${isLive ? 'Watch Live' : 'View Score'}
+            </a>
+        </div>
+        `;
+
+        if(match.Status === "Live") live += card;
+        else if(match.Status === "Upcoming") upcoming += card;
+        else if(match.Status === "Completed") past += card;
+    });
+
+    document.getElementById("live-matches").innerHTML = live || "<p>No live matches currently.</p>";
+    document.getElementById("upcoming-matches").innerHTML = upcoming || "<p>No upcoming matches.</p>";
+    document.getElementById("past-matches").innerHTML = past || "<p>No past results found.</p>";
+});
+</script>
+
+</body>
+</html>
