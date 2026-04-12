@@ -202,3 +202,46 @@ footer {
     box-shadow:0 0 20px rgba(0,0,0,0.5);
     color:white;
 }
+
+/* --- GLOBAL MOBILE FIX (For All Pages) --- */
+@media (max-width: 768px) {
+    /* हेडर को सीधा (Column) करना */
+    header {
+        flex-direction: column !important;
+        padding: 15px 5% !important;
+        gap: 12px !important;
+        height: auto !important;
+    }
+
+    /* नेविगेशन लिंक्स को बटन स्टाइल में लाना */
+    nav {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 8px !important;
+    }
+
+    nav a {
+        margin: 0 4px !important;
+        font-size: 11px !important;
+        padding: 6px 12px !important;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 6px;
+        white-space: nowrap;
+        text-decoration: none;
+    }
+
+    /* ग्रिड सिस्टम को मोबाइल के लिए 1 कॉलम करना */
+    .match-grid, .grid-3, .grid-2 {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* सेक्शन की पैडिंग कम करना */
+    .section {
+        padding: 20px 4% !important;
+    }
+
+    /* फॉन्ट साइज थोड़े छोटे करना */
+    h1 { font-size: 28px !important; }
+    h2 { font-size: 24px !important; }
+}
