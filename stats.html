@@ -1,195 +1,253 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <link rel="stylesheet" href="assets/css/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PCL Stats 2026</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <title>PCL Stats Centre</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* टेबल में नाम का स्टाइल */
-        .player-link {
-            color: #003366;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: underline;
-        }
-        .player-link:hover { color: #d4af37; }
+        :root { --primary: #003366; --accent: #d4af37; --bg: #f9f9f9; --white: #ffffff; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg); color: #333; margin: 0; }
+        
+        .section { padding: 30px 15px; max-width: 1100px; margin: auto; }
+        h2.main-title { text-align: center; color: var(--primary); font-size: 32px; font-family: 'Bebas Neue'; letter-spacing: 1px; margin-bottom: 20px; }
 
-        /* --- Modal (Premium Card Style) --- */
-        .modal {
-            display: none; position: fixed; z-index: 1000;
-            left: 0; top: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); backdrop-filter: blur(5px);
+        .filter-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 30px; }
+        .btn-group { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+        
+        .btn { 
+            padding: 10px 18px; border: 1px solid #ddd; background: var(--white); color: var(--primary); 
+            border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 13px; transition: 0.3s;
+            text-transform: uppercase;
         }
-        .stats-card {
-            background: #fff; width: 95%; max-width: 500px;
-            margin: 5% auto; border-radius: 12px; overflow: hidden;
-            position: relative; font-family: 'Poppins', sans-serif;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        .card-header { background: #003366; color: white; padding: 15px; text-align: left; }
-        .card-header h2 { margin: 0; font-size: 24px; text-transform: uppercase; font-family: 'Bebas Neue'; letter-spacing: 1px; }
-        .card-header p { margin: 2px 0 0; color: gold; font-weight: bold; font-size: 14px; }
+        .btn.active { background: var(--primary); color: var(--white); border-color: var(--primary); box-shadow: 0 4px 10px rgba(0,51,102,0.2); }
+        
+        .hidden { display: none !important; }
 
-        .stats-body { display: flex; background: #f9f9f9; align-items: stretch; }
-        .stats-list { flex: 1.2; padding: 15px; background: #004080; color: white; }
-        .stat-row {
-            display: flex; justify-content: space-between;
-            padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 13px;
+        .table-container { 
+            background: #fff; border: 1px solid #eee; border-radius: 8px; 
+            margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden; 
         }
-        .stat-row b { text-transform: uppercase; color: #fff; }
-        .stat-row span { color: gold; font-weight: bold; }
+        .table-header { background: var(--primary); color: #fff; padding: 12px 20px; font-size: 16px; font-weight: 600; text-transform: uppercase; }
+        .scroll-x { width: 100%; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; min-width: 650px; }
+        th { background: #f4f6f8; color: #555; font-size: 11px; text-transform: uppercase; padding: 15px; text-align: left; border-bottom: 2px solid #eee; }
+        td { padding: 12px 15px; border-bottom: 1px solid #eee; font-size: 14px; }
+        tr:hover { background: #fcfcfc; }
+        .player-link { font-weight: 700; color: var(--primary); cursor: pointer; text-decoration: none; }
 
-        /* प्लेयर इमेज - कटेगी नहीं */
-        .player-side {
-            flex: 1; background: #fff; display: flex;
-            align-items: center; justify-content: center; padding: 10px;
+        .leaderboard-list { padding: 10px 15px 20px; max-height: 400px; overflow-y: auto; }
+        .leader-item { 
+            display: flex; justify-content: space-between; padding: 12px; 
+            border-bottom: 1px solid #eee; align-items: center; 
         }
-        .player-side img {
-            max-width: 100%; max-height: 100%; width: auto; height: auto;
-            object-fit: contain; display: block;
-        }
+        .p-info { display: flex; align-items: center; gap: 12px; }
+        .p-img-thumb { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; background: #eee; }
+        .p-name { color: var(--primary); font-weight: 700; cursor: pointer; font-size: 15px; }
+        .p-val { background: var(--primary); color: var(--accent); padding: 4px 12px; border-radius: 20px; font-weight: 800; font-size: 14px; }
 
-        .close-btn {
-            position: absolute; top: 5px; right: 15px;
-            color: white; font-size: 35px; cursor: pointer; z-index: 10;
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
+        .boxy-card { 
+            background: var(--white); width: 92%; max-width: 450px; margin: 12% auto; 
+            border: 3px solid var(--primary); position: relative; 
+            box-shadow: 10px 10px 0px var(--accent); animation: pop 0.3s ease;
         }
+        @keyframes pop { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .card-head { background: var(--primary); color: #fff; padding: 15px; text-align: center; }
+        .card-head h2 { font-family: 'Bebas Neue'; margin: 0; font-size: 26px; }
+
+        .close-btn { position: absolute; top: -45px; right: 0; color: white; font-size: 40px; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo">
-        <img src="https://i.postimg.cc/wT4XCqmr/file-0000000092a8720882e7059a82d5a28f.png" height="50">
-        <span>PCL</span>
-    </div>
+    <div class="logo"><img src="https://i.postimg.cc/wT4XCqmr/file-0000000092a8720882e7059a82d5a28f.png" height="50"><span>PCL</span></div>
     <nav>
-        <a href="index.html">Home</a>
-        <a href="matches.html">Matches</a>
-        <a href="teams.html">Teams</a>
-        <a href="points.html">Points Table</a>
-        <a href="stats.html">Stats</a>
-        <a href="gallery.html">Images</a>
-        <a href="contact.html">Contact</a>
+        <a href="index.html">Home</a><a href="matches.html">Matches</a><a href="teams.html">Teams</a>
+        <a href="points.html">Points Table</a><a href="stats.html">Stats</a><a href="gallery.html">Images</a><a href="contact.html">Contact</a>
     </nav>
 </header>
 
 <div class="section">
-    <h2>Batting Stats</h2>
-    <div style="overflow-x:auto;">
-        <table>
-            <thead>
-                <tr>
-                    <th>Player</th><th>Mat</th><th>Inns</th><th>NO</th><th>Runs</th><th>HS</th><th>Avg</th><th>BF</th><th>SR</th><th>100s</th><th>50s</th><th>0s</th><th>4s</th><th>6s</th>
-                </tr>
-            </thead>
-            <tbody id="battingTable"></tbody>
-        </table>
-    </div>
-
-    <h2>Bowling Stats</h2>
-    <div style="overflow-x:auto;">
-        <table>
-            <thead>
-                <tr>
-                    <th>Player</th><th>Mat</th><th>Inns</th><th>Overs</th><th>Mdns</th><th>Runs</th><th>Wkts</th><th>Econ</th><th>5w</th><th>10w</th>
-                </tr>
-            </thead>
-            <tbody id="bowlingTable"></tbody>
-        </table>
-    </div>
-</div>
-
-<div id="statsModal" class="modal" onclick="closeStats()">
-    <div class="stats-card" onclick="event.stopPropagation()">
-        <span class="close-btn" onclick="closeStats()">&times;</span>
-        <div class="card-header">
-            <h2 id="mName">PLAYER NAME</h2>
-            <p id="mRole">ROLE</p>
+    <h2 class="main-title">PCL STATS CENTRE</h2>
+    
+    <div class="filter-wrap">
+        <div class="btn-group" id="yearFilters">
+            <button class="btn active" onclick="setYear('Overall', this)">Overall</button>
+            <button class="btn" onclick="setYear('2026', this)">2026</button>
+            <button class="btn" onclick="setYear('2024', this)">2024</button>
         </div>
-        <div class="stats-body">
-            <div class="stats-list" id="mStats">
-                </div>
-            <div class="player-side">
-                <img id="mImg" src="" alt="Player">
+
+        <div class="btn-group">
+            <button class="btn active" id="btnFull" onclick="setMode('Full')">Full Stats</button>
+            <button class="btn" id="btnSumm" onclick="setMode('Summary')">Stat Summary</button>
+        </div>
+
+        <div id="summaryOptions" class="btn-group hidden">
+            <button class="btn" style="border-color:var(--accent)" onclick="openSummaryCard('Wickets')">Wickets Leaderboard</button>
+            <button class="btn" style="border-color:var(--accent)" onclick="openSummaryCard('Sixes')">Sixes Leaderboard</button>
+            <button class="btn" style="border-color:var(--accent)" onclick="openSummaryCard('Fours')">Fours Leaderboard</button>
+        </div>
+    </div>
+
+    <div id="fullStats">
+        <div class="table-container">
+            <div class="table-header">Batting Leaderboard</div>
+            <div class="scroll-x">
+                <table>
+                    <thead><tr><th>Player</th><th>Mat</th><th>Inns</th><th>Runs</th><th>HS</th><th>Avg</th><th>SR</th><th>100s</th><th>50s</th><th>6s</th></tr></thead>
+                    <tbody id="battingTable"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <div class="table-header">Bowling Leaderboard</div>
+            <div class="scroll-x">
+                <table>
+                    <thead><tr><th>Player</th><th>Mat</th><th>Inns</th><th>Overs</th><th>Mdns</th><th>Runs</th><th>Wkts</th><th>Econ</th><th>5w</th></tr></thead>
+                    <tbody id="bowlingTable"></tbody>
+                </table>
             </div>
         </div>
     </div>
 </div>
 
+<div id="mainModal" class="modal" onclick="closeStats()">
+    <div class="boxy-card" onclick="event.stopPropagation()">
+        <span class="close-btn" onclick="closeStats()">&times;</span>
+        <div class="card-head"><h2 id="modalTitle">TITLE</h2></div>
+        <div id="modalContent"></div>
+    </div>
+</div>
+
 <script>
 const sheetID = "1tUGjc1s7Qo8Zvn7jmn3PhUKmUk2hs7yF3OpZXXqiJSU";
-let masterBatting = [];
-let masterBowling = [];
-let masterTeams = [];
+let rawBatting = [], rawBowling = [], masterTeams = [];
+let currentYear = 'Overall';
 
-// तीनों डेटा एक साथ लोड करना जरूरी है ताकि इमेज मिल सके
 Promise.all([
-    fetch(`https://opensheet.elk.sh/${sheetID}/Batting`).then(res => res.json()),
-    fetch(`https://opensheet.elk.sh/${sheetID}/Bowling`).then(res => res.json()),
-    fetch(`https://opensheet.elk.sh/${sheetID}/Teams`).then(res => res.json())
-]).then(([battingData, bowlingData, teamsData]) => {
-    masterBatting = battingData;
-    masterBowling = bowlingData;
-    masterTeams = teamsData;
-
-    // रेंडर बैटिंग टेबल
-    let batOutput = "";
-    battingData.forEach(p => {
-        batOutput += `
-        <tr>
-            <td class="player-link" onclick="openPCLCard('${p.Player}')">${p.Player}</td>
-            <td>${p.Mat}</td><td>${p.Inns}</td><td>${p.NO}</td><td>${p.Runs}</td><td>${p.HS}</td>
-            <td>${p.Avg}</td><td>${p.BF}</td><td>${p.SR}</td><td>${p["100s"]}</td><td>${p["50s"]}</td>
-            <td>${p["0s"]}</td><td>${p["4s"]}</td><td>${p["6s"]}</td>
-        </tr>`;
-    });
-    document.getElementById("battingTable").innerHTML = batOutput;
-
-    // रेंडर बॉलिंग टेबल
-    let bowlOutput = "";
-    bowlingData.forEach(p => {
-        bowlOutput += `
-        <tr>
-            <td class="player-link" onclick="openPCLCard('${p.Player}')">${p.Player}</td>
-            <td>${p.Mat}</td><td>${p.Inns}</td><td>${p.Overs}</td><td>${p.Mdns}</td>
-            <td>${p.Runs}</td><td>${p.Wkts}</td><td>${p.Econ}</td><td>${p["5w"]}</td><td>${p["10w"]}</td>
-        </tr>`;
-    });
-    document.getElementById("bowlingTable").innerHTML = bowlOutput;
+    fetch(`https://opensheet.elk.sh/${sheetID}/Batting`).then(r => r.json()),
+    fetch(`https://opensheet.elk.sh/${sheetID}/Bowling`).then(r => r.json()),
+    fetch(`https://opensheet.elk.sh/${sheetID}/Teams`).then(r => r.json())
+]).then(([bat, bowl, teams]) => {
+    rawBatting = bat; rawBowling = bowl; masterTeams = teams;
+    refreshData();
 });
 
-function openPCLCard(playerName) {
-    // डेटा खोजें
-    const bat = masterBatting.find(p => p.Player === playerName) || {};
-    const bowl = masterBowling.find(p => p.Player === playerName) || {};
-    const team = masterTeams.find(p => p.Player === playerName || p.PLAYER === playerName) || {};
+function setYear(year, btn) {
+    currentYear = year;
+    document.querySelectorAll('#yearFilters .btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    refreshData();
+}
 
-    // नाम और रोल सेट करें
-    document.getElementById("mName").innerText = playerName;
-    document.getElementById("mRole").innerText = team.Role || team.ROLE || "PCL Player";
-    document.getElementById("mImg").src = team.Image || team.IMAGE || 'https://via.placeholder.com/300?text=No+Photo';
+function setMode(mode) {
+    document.getElementById('btnFull').classList.toggle('active', mode === 'Full');
+    document.getElementById('btnSumm').classList.toggle('active', mode === 'Summary');
+    document.getElementById('summaryOptions').classList.toggle('hidden', mode !== 'Summary');
+    document.getElementById('fullStats').classList.toggle('hidden', mode === 'Summary');
+}
 
-    // कार्ड के स्टेट्स तैयार करें (IPL Style)
-    let statsHtml = `
-        <div class="stat-row"><b>Matches</b> <span>${bat.Mat || bowl.Mat || 0}</span></div>
-        <div class="stat-row"><b>Runs</b> <span>${bat.Runs || 0}</span></div>
-        <div class="stat-row"><b>Avg</b> <span>${bat.Avg || 0}</span></div>
-        <div class="stat-row"><b>S/R</b> <span>${bat.SR || 0}</span></div>
-        <div class="stat-row"><b>HS</b> <span>${bat.HS || 0}</span></div>
-        <div class="stat-row"><b>Wickets</b> <span>${bowl.Wkts || 0}</span></div>
-        <div class="stat-row"><b>Econ</b> <span>${bowl.Econ || 0}</span></div>
+function refreshData() {
+    let bat = (currentYear === 'Overall') ? aggregateBatting(rawBatting) : rawBatting.filter(p => p.Year == currentYear);
+    let bowl = (currentYear === 'Overall') ? aggregateBowling(rawBowling) : rawBowling.filter(p => p.Year == currentYear);
+    renderTables(bat, bowl);
+}
+
+function openSummaryCard(type) {
+    let bat = (currentYear === 'Overall') ? aggregateBatting(rawBatting) : rawBatting.filter(p => p.Year == currentYear);
+    let bowl = (currentYear === 'Overall') ? aggregateBowling(rawBowling) : rawBowling.filter(p => p.Year == currentYear);
+    let content = "";
+    document.getElementById('modalTitle').innerText = `${currentYear} ${type}`;
+
+    let sortedData = [];
+    let key = "";
+
+    if(type === 'Wickets') {
+        key = 'Wkts';
+        sortedData = bowl.sort((a,b) => parseInt(b.Wkts||0) - parseInt(a.Wkts||0)).slice(0,10);
+    } else {
+        key = (type === 'Sixes') ? '6s' : '4s';
+        sortedData = bat.sort((a,b) => parseInt(b[key]||0) - parseInt(a[key]||0)).slice(0,10);
+    }
+
+    content = `<div class="leaderboard-list">`;
+    sortedData.forEach((p, i) => {
+        let t = masterTeams.find(x => x.Player === p.Player || x.PLAYER === p.Player) || {};
+        content += `<div class="leader-item">
+            <div class="p-info">
+                <img class="p-img-thumb" src="${t.Image || t.IMAGE || 'https://via.placeholder.com/50'}">
+                <span class="p-name" onclick="openPlayerProfile('${p.Player}')">${p.Player}</span>
+            </div>
+            <span class="p-val">${p[key] || 0}</span>
+        </div>`;
+    });
+    content += `</div>`;
+    
+    document.getElementById('modalContent').innerHTML = content;
+    document.getElementById('mainModal').style.display = "block";
+}
+
+function aggregateBatting(data) {
+    const res = {};
+    data.forEach(p => {
+        if (!res[p.Player]) res[p.Player] = { ...p, Mat:0, Inns:0, Runs:0, HS:0, BF:0, "100s":0, "50s":0, "6s":0, "4s":0 };
+        res[p.Player].Mat += parseInt(p.Mat || 0); res[p.Player].Inns += parseInt(p.Inns || 0);
+        res[p.Player].Runs += parseInt(p.Runs || 0); res[p.Player].HS = Math.max(res[p.Player].HS, parseInt(p.HS || 0));
+        res[p.Player].BF += parseInt(p.BF || 0); res[p.Player]["100s"] += parseInt(p["100s"] || 0);
+        res[p.Player]["50s"] += parseInt(p["50s"] || 0); res[p.Player]["6s"] += parseInt(p["6s"] || 0);
+        res[p.Player]["4s"] += parseInt(p["4s"] || 0);
+    });
+    return Object.values(res).map(p => { p.Avg = (p.Runs/(p.Inns||1)).toFixed(2); p.SR = ((p.Runs/(p.BF||1))*100).toFixed(2); return p; });
+}
+
+function aggregateBowling(data) {
+    const res = {};
+    data.forEach(p => {
+        if (!res[p.Player]) res[p.Player] = { ...p, Mat:0, Inns:0, Overs:0, Mdns:0, Runs:0, Wkts:0, "5w":0 };
+        res[p.Player].Mat += parseInt(p.Mat || 0); res[p.Player].Inns += parseInt(p.Inns || 0);
+        res[p.Player].Overs += parseFloat(p.Overs || 0); res[p.Player].Mdns += parseInt(p.Mdns || 0);
+        res[p.Player].Runs += parseInt(p.Runs || 0); res[p.Player].Wkts += parseInt(p.Wkts || 0);
+        res[p.Player]["5w"] += parseInt(p["5w"] || 0);
+    });
+    return Object.values(res).map(p => { p.Econ = (p.Runs/(p.Overs||1)).toFixed(2); return p; });
+}
+
+function renderTables(batting, bowling) {
+    let bHtml = "", boHtml = "";
+    batting.forEach(p => bHtml += `<tr><td class="player-link" onclick="openPlayerProfile('${p.Player}')">${p.Player}</td><td>${p.Mat}</td><td>${p.Inns}</td><td>${p.Runs}</td><td>${p.HS}</td><td>${p.Avg}</td><td>${p.SR}</td><td>${p['100s']}</td><td>${p['50s']}</td><td>${p['6s']}</td></tr>`);
+    bowling.forEach(p => boHtml += `<tr><td class="player-link" onclick="openPlayerProfile('${p.Player}')">${p.Player}</td><td>${p.Mat}</td><td>${p.Inns}</td><td>${p.Overs}</td><td>${p.Mdns}</td><td>${p.Runs}</td><td>${p.Wkts}</td><td>${p.Econ}</td><td>${p['5w']}</td></tr>`);
+    document.getElementById("battingTable").innerHTML = bHtml;
+    document.getElementById("bowlingTable").innerHTML = boHtml;
+}
+
+function openPlayerProfile(name) {
+    const bat = aggregateBatting(rawBatting).find(p => p.Player === name) || {};
+    const bowl = aggregateBowling(rawBowling).find(p => p.Player === name) || {};
+    const team = masterTeams.find(p => p.Player === name || p.PLAYER === name) || {};
+    
+    document.getElementById('modalTitle').innerText = name;
+    document.getElementById('modalContent').innerHTML = `
+        <div style="display:flex; align-items:center;">
+            <div style="flex:1.2; padding:20px; background:var(--primary); color:white;">
+                <p style="color:var(--accent); font-weight:bold; margin:0;">${team.Role || team.ROLE || "PCL PLAYER"}</p>
+                <div style="margin-top:10px; font-size:13px; line-height:1.8;">
+                    Runs: <b>${bat.Runs||0}</b> | Avg: <b>${bat.Avg||0}</b><br>
+                    Wkts: <b>${bowl.Wkts||0}</b> | Econ: <b>${bowl.Econ||0}</b>
+                </div>
+            </div>
+            <div style="flex:1; padding:10px; text-align:center;">
+                <img src="${team.Image||team.IMAGE||'https://via.placeholder.com/150'}" style="max-width:100%; filter: drop-shadow(4px 4px 0px var(--primary));">
+            </div>
+        </div>
     `;
-
-    document.getElementById("mStats").innerHTML = statsHtml;
-    document.getElementById("statsModal").style.display = "block";
+    document.getElementById('mainModal').style.display = "block";
 }
 
-function closeStats() {
-    document.getElementById("statsModal").style.display = "none";
-}
+function closeStats() { document.getElementById("mainModal").style.display = "none"; }
 </script>
-
 </body>
 </html>
