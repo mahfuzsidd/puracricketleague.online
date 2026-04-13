@@ -2,206 +2,252 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PCL Teams Hub</title>
     <link rel="stylesheet" href="assets/css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCL Stats Centre</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #003366; --accent: #d4af37; --bg: #f0f2f5; }
-        body { font-family: 'Poppins', sans-serif; background-color: var(--bg); margin: 0; padding: 0; }
+        :root { --primary: #003366; --accent: #d4af37; --bg: #f9f9f9; --white: #ffffff; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg); color: #333; margin: 0; }
+        
+        .section { padding: 30px 15px; max-width: 1100px; margin: auto; }
+        h2.main-title { text-align: center; color: var(--primary); font-size: 32px; font-family: 'Bebas Neue'; letter-spacing: 1px; margin-bottom: 20px; }
 
-        /* --- Section Styling --- */
-        .section { padding: 20px 10px; max-width: 1200px; margin: auto; }
-        .main-title { text-align: center; color: var(--primary); font-family: 'Bebas Neue'; font-size: 35px; letter-spacing: 1px; margin-bottom: 5px; }
-
-        /* --- Year Toggle Buttons --- */
-        .filter-container { text-align: center; margin-bottom: 25px; margin-top: 10px; }
-        .toggle-btn {
-            padding: 12px 20px; border: none; cursor: pointer; font-family: 'Bebas Neue';
-            font-size: 18px; letter-spacing: 1px; background: #fff; color: var(--primary);
-            transition: 0.3s; border: 1px solid var(--primary);
+        .filter-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 30px; }
+        .btn-group { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+        
+        .btn { 
+            padding: 10px 18px; border: 1px solid #ddd; background: var(--white); color: var(--primary); 
+            border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 13px; transition: 0.3s;
+            text-transform: uppercase;
         }
-        .toggle-btn.active { background: var(--primary); color: var(--accent); }
-        .left-btn { border-radius: 8px 0 0 8px; }
-        .right-btn { border-radius: 0 8px 8px 0; }
+        .btn.active { background: var(--primary); color: var(--white); border-color: var(--primary); box-shadow: 0 4px 10px rgba(0,51,102,0.2); }
+        
+        .hidden { display: none !important; }
 
-        /* --- Team Container Style --- */
-        .team-card-container {
-            background: #fff; border-radius: 15px; overflow: hidden;
-            margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            border: 1px solid #e0e0e0;
+        .table-container { 
+            background: #fff; border: 1px solid #eee; border-radius: 8px; 
+            margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden; 
         }
+        .table-header { background: var(--primary); color: #fff; padding: 12px 20px; font-size: 16px; font-weight: 600; text-transform: uppercase; }
+        .scroll-x { width: 100%; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; min-width: 650px; }
+        th { background: #f4f6f8; color: #555; font-size: 11px; text-transform: uppercase; padding: 15px; text-align: left; border-bottom: 2px solid #eee; }
+        td { padding: 12px 15px; border-bottom: 1px solid #eee; font-size: 14px; }
+        tr:hover { background: #fcfcfc; }
+        .player-link { font-weight: 700; color: var(--primary); cursor: pointer; text-decoration: none; }
 
-        .team-header {
-            background: var(--primary); color: #fff; padding: 12px;
-            text-align: center; font-family: 'Bebas Neue'; font-size: 24px;
-            letter-spacing: 1.5px; border-bottom: 3px solid var(--accent);
+        .leaderboard-list { padding: 10px 15px 20px; max-height: 400px; overflow-y: auto; }
+        .leader-item { 
+            display: flex; justify-content: space-between; padding: 12px; 
+            border-bottom: 1px solid #eee; align-items: center; 
         }
+        .p-info { display: flex; align-items: center; gap: 12px; }
+        .p-img-thumb { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; background: #eee; }
+        .p-name { color: var(--primary); font-weight: 700; cursor: pointer; font-size: 15px; }
+        .p-val { background: var(--primary); color: var(--accent); padding: 4px 12px; border-radius: 20px; font-weight: 800; font-size: 14px; }
 
-        /* --- Player Grid (3 Columns on Mobile) --- */
-        .teams-wrapper {
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); /* Mobile pe 3 column fix */
-            gap: 8px; 
-            padding: 12px;
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
+        .boxy-card { 
+            background: var(--white); width: 92%; max-width: 450px; margin: 12% auto; 
+            border: 3px solid var(--primary); position: relative; 
+            box-shadow: 10px 10px 0px var(--accent); animation: pop 0.3s ease;
         }
+        @keyframes pop { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .card-head { background: var(--primary); color: #fff; padding: 15px; text-align: center; }
+        .card-head h2 { font-family: 'Bebas Neue'; margin: 0; font-size: 26px; }
 
-        @media (min-width: 768px) {
-            .teams-wrapper { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; }
-        }
-
-        .player-card { text-align: center; transition: 0.3s; padding: 5px; cursor: pointer; }
-        .player-card:hover { transform: translateY(-3px); }
-
-        .profile-wrap {
-            position: relative; width: 100%; aspect-ratio: 1/1;
-            margin-bottom: 8px; border-radius: 50%; padding: 2px;
-            background: linear-gradient(45deg, var(--primary), var(--accent));
-        }
-
-        .profile-img {
-            width: 100%; height: 100%; border-radius: 50%;
-            object-fit: contain; background: #fff; display: block;
-        }
-
-        .player-name { 
-            font-size: 11px; font-weight: 700; color: var(--primary);
-            line-height: 1.2; height: 26px; overflow: hidden; display: flex; align-items: center; justify-content: center;
-        }
-        .player-role { font-size: 8px; color: #777; font-weight: 600; text-transform: uppercase; margin-top: 2px; }
-
-        /* --- Modal Styling --- */
-        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(4px); }
-        .stats-card { background: #fff; width: 90%; max-width: 400px; margin: 20% auto; border-radius: 15px; overflow: hidden; position: relative; border: 2px solid var(--primary); }
-        .stats-list { padding: 20px; background: var(--primary); color: white; }
-        .stat-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 14px; }
-        .stat-row span { color: var(--accent); font-weight: bold; }
-        .close-btn { position: absolute; top: 5px; right: 15px; color: white; font-size: 30px; cursor: pointer; }
+        .close-btn { position: absolute; top: -45px; right: 0; color: white; font-size: 40px; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo">
-        <img src="https://i.postimg.cc/wT4XCqmr/file-0000000092a8720882e7059a82d5a28f.png" height="50">
-        <span>PCL</span>
-    </div>
+    <div class="logo"><img src="https://i.postimg.cc/wT4XCqmr/file-0000000092a8720882e7059a82d5a28f.png" height="50"><span>PCL</span></div>
     <nav>
-        <a href="index.html">Home</a>
-        <a href="matches.html">Matches</a>
-        <a href="teams.html">Teams</a>
-        <a href="points.html">Points Table</a>
-        <a href="stats.html">Stats</a>
-        <a href="gallery.html">Images</a>
-        <a href="contact.html">Contact</a>
+        <a href="index.html">Home</a><a href="matches.html">Matches</a><a href="teams.html">Teams</a>
+        <a href="points.html">Points Table</a><a href="stats.html">Stats</a><a href="gallery.html">Images</a><a href="contact.html">Contact</a>
     </nav>
 </header>
 
 <div class="section">
-    <h2 class="main-title">PCL TEAMS HUB</h2>
+    <h2 class="main-title">PCL STATS CENTRE</h2>
     
-    <div class="filter-container">
-        <button class="toggle-btn left-btn" id="btn2024" onclick="filterByYear('2024')">PLAYED (2024)</button>
-        <button class="toggle-btn right-btn active" id="btn2026" onclick="filterByYear('2026')">PLAYING (2026)</button>
+    <div class="filter-wrap">
+        <div class="btn-group" id="yearFilters">
+            <button class="btn active" onclick="setYear('Overall', this)">Overall</button>
+            <button class="btn" onclick="setYear('2026', this)">2026</button>
+            <button class="btn" onclick="setYear('2024', this)">2024</button>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn active" id="btnFull" onclick="setMode('Full')">Full Stats</button>
+            <button class="btn" id="btnSumm" onclick="setMode('Summary')">Stat Summary</button>
+        </div>
+
+        <div id="summaryOptions" class="btn-group hidden">
+            <button class="btn" style="border-color:var(--accent)" onclick="openSummaryCard('Wickets')">Wickets Leaderboard</button>
+            <button class="btn" style="border-color:var(--accent)" onclick="openSummaryCard('Sixes')">Sixes Leaderboard</button>
+            <button class="btn" style="border-color:var(--accent)" onclick="openSummaryCard('Fours')">Fours Leaderboard</button>
+        </div>
     </div>
 
-    <div id="teamsContainer">
-        <p style="text-align:center;">Loading Teams Boss...</p>
+    <div id="fullStats">
+        <div class="table-container">
+            <div class="table-header">Batting Leaderboard</div>
+            <div class="scroll-x">
+                <table>
+                    <thead><tr><th>Player</th><th>Mat</th><th>Inns</th><th>Runs</th><th>HS</th><th>Avg</th><th>SR</th><th>100s</th><th>50s</th><th>6s</th></tr></thead>
+                    <tbody id="battingTable"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <div class="table-header">Bowling Leaderboard</div>
+            <div class="scroll-x">
+                <table>
+                    <thead><tr><th>Player</th><th>Mat</th><th>Inns</th><th>Overs</th><th>Mdns</th><th>Runs</th><th>Wkts</th><th>Econ</th><th>5w</th></tr></thead>
+                    <tbody id="bowlingTable"></tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
-<div id="statsModal" class="modal" onclick="closeStats()">
-    <div class="stats-card" onclick="event.stopPropagation()">
+<div id="mainModal" class="modal" onclick="closeStats()">
+    <div class="boxy-card" onclick="event.stopPropagation()">
         <span class="close-btn" onclick="closeStats()">&times;</span>
-        <div class="stats-list">
-            <h2 id="mName" style="margin:0; font-family:'Bebas Neue'; font-size:28px; color:var(--accent);">NAME</h2>
-            <p id="mRole" style="margin:0 0 15px 0; font-size:12px; opacity:0.8;">ROLE</p>
-            <div class="stat-row"><b>Runs</b> <span id="sRuns">0</span></div>
-            <div class="stat-row"><b>Avg</b> <span id="sAvg">0</span></div>
-            <div class="stat-row"><b>S/R</b> <span id="sSR">0</span></div>
-            <div class="stat-row"><b>6s</b> <span id="s6s">0</span></div>
-        </div>
-        <div style="padding:15px; text-align:center; background:#f9f9f9;">
-            <img id="mImg" src="" style="width:120px; height:120px; border-radius:50%; border:3px solid var(--primary); object-fit:contain; background:#fff;">
-        </div>
+        <div class="card-head"><h2 id="modalTitle">TITLE</h2></div>
+        <div id="modalContent"></div>
     </div>
 </div>
 
 <script>
 const sheetID = "1tUGjc1s7Qo8Zvn7jmn3PhUKmUk2hs7yF3OpZXXqiJSU";
-let allTeamsRaw = [];
-let allBattingRaw = [];
+let rawBatting = [], rawBowling = [], masterTeams = [];
+let currentYear = 'Overall';
 
 Promise.all([
-    fetch(`https://opensheet.elk.sh/${sheetID}/Teams`).then(r => r.json()),
-    fetch(`https://opensheet.elk.sh/${sheetID}/Batting`).then(r => r.json())
-]).then(([teams, batting]) => {
-    allTeamsRaw = teams;
-    allBattingRaw = batting;
-    filterByYear('2026');
+    fetch(`https://opensheet.elk.sh/${sheetID}/Batting`).then(r => r.json()),
+    fetch(`https://opensheet.elk.sh/${sheetID}/Bowling`).then(r => r.json()),
+    fetch(`https://opensheet.elk.sh/${sheetID}/Teams`).then(r => r.json())
+]).then(([bat, bowl, teams]) => {
+    rawBatting = bat; rawBowling = bowl; masterTeams = teams;
+    refreshData();
 });
 
-function filterByYear(year) {
-    document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('btn' + year).classList.add('active');
-
-    let grouped = {};
-    allTeamsRaw.forEach(row => {
-        if (row.Year == year || (!row.Year && year == '2024')) { 
-            let tName = row.Team || row.TEAM;
-            if(!grouped[tName]) grouped[tName] = [];
-            
-            let b = allBattingRaw.find(item => item.Player === (row.Player || row.PLAYER)) || {};
-            grouped[tName].push({
-                name: row.Player || row.PLAYER,
-                role: row.Role || "Player",
-                image: row.Image || "",
-                runs: b.Runs || "0",
-                avg: b.Avg || "0",
-                sr: b.SR || "0",
-                c6s: b['6s'] || "0"
-            });
-        }
-    });
-    render(grouped);
+function setYear(year, btn) {
+    currentYear = year;
+    document.querySelectorAll('#yearFilters .btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    refreshData();
 }
 
-function render(teams) {
-    let html = "";
-    for(let t in teams) {
-        html += `
-        <div class="team-card-container">
-            <div class="team-header">${t}</div>
-            <div class="teams-wrapper">`;
-        
-        teams[t].forEach(p => {
-            html += `
-                <div class="player-card" onclick='openModal(${JSON.stringify(p)})'>
-                    <div class="profile-wrap">
-                        <img src="${p.image || 'https://via.placeholder.com/100'}" class="profile-img">
-                    </div>
-                    <div class="player-name">${p.name}</div>
-                    <div class="player-role">${p.role}</div>
-                </div>`;
-        });
-        
-        html += `</div></div>`;
+function setMode(mode) {
+    document.getElementById('btnFull').classList.toggle('active', mode === 'Full');
+    document.getElementById('btnSumm').classList.toggle('active', mode === 'Summary');
+    document.getElementById('summaryOptions').classList.toggle('hidden', mode !== 'Summary');
+    document.getElementById('fullStats').classList.toggle('hidden', mode === 'Summary');
+}
+
+function refreshData() {
+    let bat = (currentYear === 'Overall') ? aggregateBatting(rawBatting) : rawBatting.filter(p => p.Year == currentYear);
+    let bowl = (currentYear === 'Overall') ? aggregateBowling(rawBowling) : rawBowling.filter(p => p.Year == currentYear);
+    renderTables(bat, bowl);
+}
+
+function openSummaryCard(type) {
+    let bat = (currentYear === 'Overall') ? aggregateBatting(rawBatting) : rawBatting.filter(p => p.Year == currentYear);
+    let bowl = (currentYear === 'Overall') ? aggregateBowling(rawBowling) : rawBowling.filter(p => p.Year == currentYear);
+    let content = "";
+    document.getElementById('modalTitle').innerText = `${currentYear} ${type}`;
+
+    let sortedData = [];
+    let key = "";
+
+    if(type === 'Wickets') {
+        key = 'Wkts';
+        sortedData = bowl.sort((a,b) => parseInt(b.Wkts||0) - parseInt(a.Wkts||0)).slice(0,10);
+    } else {
+        key = (type === 'Sixes') ? '6s' : '4s';
+        sortedData = bat.sort((a,b) => parseInt(b[key]||0) - parseInt(a[key]||0)).slice(0,10);
     }
-    document.getElementById("teamsContainer").innerHTML = html || "<p style='text-align:center;'>No data found for this year.</p>";
+
+    content = `<div class="leaderboard-list">`;
+    sortedData.forEach((p, i) => {
+        let t = masterTeams.find(x => x.Player === p.Player || x.PLAYER === p.Player) || {};
+        content += `<div class="leader-item">
+            <div class="p-info">
+                <img class="p-img-thumb" src="${t.Image || t.IMAGE || 'https://via.placeholder.com/50'}">
+                <span class="p-name" onclick="openPlayerProfile('${p.Player}')">${p.Player}</span>
+            </div>
+            <span class="p-val">${p[key] || 0}</span>
+        </div>`;
+    });
+    content += `</div>`;
+    
+    document.getElementById('modalContent').innerHTML = content;
+    document.getElementById('mainModal').style.display = "block";
 }
 
-function openModal(p) {
-    document.getElementById("mName").innerText = p.name;
-    document.getElementById("mRole").innerText = p.role;
-    document.getElementById("mImg").src = p.image || 'https://via.placeholder.com/200';
-    document.getElementById("sRuns").innerText = p.runs;
-    document.getElementById("sAvg").innerText = p.avg;
-    document.getElementById("sSR").innerText = p.sr;
-    document.getElementById("s6s").innerText = p.c6s;
-    document.getElementById("statsModal").style.display = "block";
+function aggregateBatting(data) {
+    const res = {};
+    data.forEach(p => {
+        if (!res[p.Player]) res[p.Player] = { ...p, Mat:0, Inns:0, Runs:0, HS:0, BF:0, "100s":0, "50s":0, "6s":0, "4s":0 };
+        res[p.Player].Mat += parseInt(p.Mat || 0); res[p.Player].Inns += parseInt(p.Inns || 0);
+        res[p.Player].Runs += parseInt(p.Runs || 0); res[p.Player].HS = Math.max(res[p.Player].HS, parseInt(p.HS || 0));
+        res[p.Player].BF += parseInt(p.BF || 0); res[p.Player]["100s"] += parseInt(p["100s"] || 0);
+        res[p.Player]["50s"] += parseInt(p["50s"] || 0); res[p.Player]["6s"] += parseInt(p["6s"] || 0);
+        res[p.Player]["4s"] += parseInt(p["4s"] || 0);
+    });
+    return Object.values(res).map(p => { p.Avg = (p.Runs/(p.Inns||1)).toFixed(2); p.SR = ((p.Runs/(p.BF||1))*100).toFixed(2); return p; });
 }
 
-function closeStats() { document.getElementById("statsModal").style.display = "none"; }
+function aggregateBowling(data) {
+    const res = {};
+    data.forEach(p => {
+        if (!res[p.Player]) res[p.Player] = { ...p, Mat:0, Inns:0, Overs:0, Mdns:0, Runs:0, Wkts:0, "5w":0 };
+        res[p.Player].Mat += parseInt(p.Mat || 0); res[p.Player].Inns += parseInt(p.Inns || 0);
+        res[p.Player].Overs += parseFloat(p.Overs || 0); res[p.Player].Mdns += parseInt(p.Mdns || 0);
+        res[p.Player].Runs += parseInt(p.Runs || 0); res[p.Player].Wkts += parseInt(p.Wkts || 0);
+        res[p.Player]["5w"] += parseInt(p["5w"] || 0);
+    });
+    return Object.values(res).map(p => { p.Econ = (p.Runs/(p.Overs||1)).toFixed(2); return p; });
+}
+
+function renderTables(batting, bowling) {
+    let bHtml = "", boHtml = "";
+    batting.forEach(p => bHtml += `<tr><td class="player-link" onclick="openPlayerProfile('${p.Player}')">${p.Player}</td><td>${p.Mat}</td><td>${p.Inns}</td><td>${p.Runs}</td><td>${p.HS}</td><td>${p.Avg}</td><td>${p.SR}</td><td>${p['100s']}</td><td>${p['50s']}</td><td>${p['6s']}</td></tr>`);
+    bowling.forEach(p => boHtml += `<tr><td class="player-link" onclick="openPlayerProfile('${p.Player}')">${p.Player}</td><td>${p.Mat}</td><td>${p.Inns}</td><td>${p.Overs}</td><td>${p.Mdns}</td><td>${p.Runs}</td><td>${p.Wkts}</td><td>${p.Econ}</td><td>${p['5w']}</td></tr>`);
+    document.getElementById("battingTable").innerHTML = bHtml;
+    document.getElementById("bowlingTable").innerHTML = boHtml;
+}
+
+function openPlayerProfile(name) {
+    const bat = aggregateBatting(rawBatting).find(p => p.Player === name) || {};
+    const bowl = aggregateBowling(rawBowling).find(p => p.Player === name) || {};
+    const team = masterTeams.find(p => p.Player === name || p.PLAYER === name) || {};
+    
+    document.getElementById('modalTitle').innerText = name;
+    document.getElementById('modalContent').innerHTML = `
+        <div style="display:flex; align-items:center;">
+            <div style="flex:1.2; padding:20px; background:var(--primary); color:white;">
+                <p style="color:var(--accent); font-weight:bold; margin:0;">${team.Role || team.ROLE || "PCL PLAYER"}</p>
+                <div style="margin-top:10px; font-size:13px; line-height:1.8;">
+                    Runs: <b>${bat.Runs||0}</b> | Avg: <b>${bat.Avg||0}</b><br>
+                    Wkts: <b>${bowl.Wkts||0}</b> | Econ: <b>${bowl.Econ||0}</b>
+                </div>
+            </div>
+            <div style="flex:1; padding:10px; text-align:center;">
+                <img src="${team.Image||team.IMAGE||'https://via.placeholder.com/150'}" style="max-width:100%; filter: drop-shadow(4px 4px 0px var(--primary));">
+            </div>
+        </div>
+    `;
+    document.getElementById('mainModal').style.display = "block";
+}
+
+function closeStats() { document.getElementById("mainModal").style.display = "none"; }
 </script>
 </body>
 </html>
