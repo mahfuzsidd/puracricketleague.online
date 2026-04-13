@@ -245,3 +245,218 @@ footer {
     h1 { font-size: 28px !important; }
     h2 { font-size: 24px !important; }
 }
+:root {
+    --footer-bg: #032049; /* Dark Navy Blue */
+    --gold: #D4AF37; /* Vibrant Gold */
+    --white: #ffffff;
+    --text-muted: rgba(255, 255, 255, 0.7);
+}
+
+/* Base style reset for footer example */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.pcl-footer {
+    background-color: var(--footer-bg);
+    color: var(--white);
+    padding: 60px 0 20px 0;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Gold Dynamic Background Accent (Image match) */
+.pcl-footer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 35%;
+    height: 100%;
+    background-color: #051b3d; /* Slightly different dark blue for layer */
+    transform: skewX(-15deg);
+    transform-origin: top right;
+    border-left: 8px solid var(--gold);
+    z-index: 1;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 2fr; /* Layout distribution */
+    gap: 40px;
+    position: relative;
+    z-index: 2; /* Content above gold accent */
+}
+
+/* --- Mobile view adjust (responsive) --- */
+@media (max-width: 900px) {
+    .footer-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+    }
+    .pcl-footer::after {
+        display: none; /* Hide accent on mobile for cleaner look */
+    }
+}
+
+@media (max-width: 600px) {
+    .footer-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    .footer-follow-section, .footer-bottom, .newsletter-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .footer-titles {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+}
+
+/* 1. Logo Section */
+.footer-logo-section {
+    display: flex;
+    align-items: center;
+}
+
+.footer-titles {
+    margin-left: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo-pcl {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 40px;
+    color: var(--gold);
+    letter-spacing: 2px;
+}
+
+.logo-desc {
+    font-size: 10px;
+    color: var(--white);
+    letter-spacing: 1px;
+}
+
+/* 2. Quick Links and League Info */
+.footer-links-section h4, 
+.footer-follow-section h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 15px;
+}
+
+.footer-links-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links-section li {
+    margin-bottom: 10px;
+}
+
+.footer-links-section a,
+.footer-bottom a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.3s;
+    font-size: 13px;
+}
+
+.footer-links-section a:hover,
+.clickable-mail:hover {
+    color: var(--gold);
+}
+
+/* 3. Follow Us and Newsletter */
+.social-icons {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.social-icons a {
+    color: var(--footer-bg);
+    background-color: var(--gold);
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.social-icons a:hover {
+    background-color: var(--white);
+    transform: scale(1.1);
+}
+
+.newsletter-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.newsletter-form input {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: none;
+    background-color: var(--white);
+    border-radius: 4px;
+    color: #333;
+    font-size: 13px;
+}
+
+.newsletter-form input:focus {
+    outline: 2px solid var(--gold);
+}
+
+.newsletter-form button {
+    padding: 10px 15px;
+    border: none;
+    background-color: var(--gold);
+    color: var(--footer-bg);
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    transition: opacity 0.3s;
+}
+
+.newsletter-form button:hover {
+    opacity: 0.9;
+}
+
+/* 4. Footer Bottom (Copyright) */
+.footer-bottom {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-muted);
+    position: relative;
+    z-index: 2;
+}
+
+.clickable-mail {
+    color: var(--white) !important;
+    font-weight: 600;
+    margin-right: 5px;
+}
