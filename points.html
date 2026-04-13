@@ -1,82 +1,144 @@
-<header>
-
-<div class="logo">
-<img src="https://i.postimg.cc/wT4XCqmr/file-0000000092a8720882e7059a82d5a28f.png" height="50"><span>PCL</span>
-<span></span>
-</div>
-
-<nav>
-<a href="index.html">Home</a>
-<a href="matches.html">Matches</a>
-<a href="teams.html">Teams</a>
-<a href="points.html">Points Table</a>
-<a href="stats.html">Stats</a>
-<a href="gallery.html">Images</a>
-<a href="contact.html">Contact</a>
-</nav>
-
-</header>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <link rel="stylesheet" href="assets/css/style.css">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PCL Home</title>
-<link rel="stylesheet" href="assets/css/style.css">
+    <title>PCL Points Table</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f9f9f9; color: #333; }
+        
+        .section { padding: 30px 15px; max-width: 1000px; margin: auto; }
+        
+        h2.main-title { 
+            text-align: center; color: #003366; font-size: 28px; 
+            margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .year-container {
+            background: #fff; border: 1px solid #eee;
+            border-radius: 8px; margin-bottom: 40px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden;
+        }
+
+        .year-title {
+            background: #003366; color: #fff; padding: 12px 20px;
+            font-size: 18px; font-weight: 600; display: block;
+        }
+
+        .table-container { width: 100%; overflow-x: auto; }
+
+        table { width: 100%; border-collapse: collapse; min-width: 500px; }
+
+        th { 
+            background: #f4f6f8; color: #555; font-size: 12px; 
+            text-transform: uppercase; padding: 15px; text-align: left;
+            border-bottom: 2px solid #eee;
+        }
+
+        td { padding: 14px 15px; border-bottom: 1px solid #eee; font-size: 14px; }
+
+        tr:hover { background: #fcfcfc; }
+
+        /* Highlight specific text */
+        .team-name { font-weight: 700; color: #003366; }
+        .pts-bold { font-weight: 700; color: #000; }
+
+        /* Mobile Fix */
+        @media (max-width: 600px) {
+            .section { padding: 15px 10px; }
+            th, td { padding: 10px; font-size: 13px; }
+            .year-title { font-size: 16px; }
+        }
+    </style>
 </head>
+<body>
+
+<header>
+    <div class="logo">
+        <img src="https://i.postimg.cc/wT4XCqmr/file-0000000092a8720882e7059a82d5a28f.png" height="50">
+        <span>PCL</span>
+    </div>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="matches.html">Matches</a>
+        <a href="teams.html">Teams</a>
+        <a href="points.html">Points Table</a>
+        <a href="stats.html">Stats</a>
+        <a href="gallery.html">Images</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+</header>
 
 <div class="section">
-
-<h2>Points Table</h2>
-
-<table>
-<thead>
-<tr>
-<th>POS</th>
-<th>TEAM</th>
-<th>P</th>
-<th>W</th>
-<th>L</th>
-<th>Point</th>
-<th>NRR</th>
-</tr>
-</thead>
-
-<tbody id="pointsTable"></tbody>
-
-</table>
-
+    <h2 class="main-title">Points Table</h2>
+    
+    <div id="dynamicPointsTables">
+        <p style="text-align:center;">Loading standings...</p>
+    </div>
 </div>
 
 <script>
-
 fetch("https://opensheet.elk.sh/1tUGjc1s7Qo8Zvn7jmn3PhUKmUk2hs7yF3OpZXXqiJSU/Points")
 .then(res => res.json())
 .then(data => {
+    // 1. Sort years
+    const years = [...new Set(data.map(row => row.Year || "2024"))].sort((a, b) => b - a);
+    
+    let finalHtml = "";
 
-let output = "";
+    years.forEach(year => {
+        finalHtml += `
+            <div class="year-container">
+                <div class="year-title">SEASON - ${year}</div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>POS</th>
+                                <th>TEAM</th>
+                                <th>P</th>
+                                <th>W</th>
+                                <th>L</th>
+                                <th>PTS</th>
+                                <th>NRR</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+        `;
 
-data.forEach(team => {
-output += `
-<tr>
-<td>${team.POS}</td>
-<td>${team.TEAM}</td>
-<td>${team.P}</td>
-<td>${team.W}</td>
-<td>${team.L}</td>
-<td>${team.Point}</td>
-<td>${team.NRR}</td>
-</tr>
-`;
-});
+        const yearData = data.filter(team => (team.Year || "2024") === year);
 
-document.getElementById("pointsTable").innerHTML = output;
+        yearData.forEach(team => {
+            finalHtml += `
+                <tr>
+                    <td>${team.POS}</td>
+                    <td class="team-name">${team.TEAM}</td>
+                    <td>${team.P}</td>
+                    <td>${team.W}</td>
+                    <td>${team.L}</td>
+                    <td class="pts-bold">${team.Point}</td>
+                    <td>${team.NRR}</td>
+                </tr>
+            `;
+        });
+
+        finalHtml += `
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+    });
+
+    document.getElementById("dynamicPointsTables").innerHTML = finalHtml;
 
 })
 .catch(err => {
-console.log("Points Error:", err);
+    console.log("Error:", err);
+    document.getElementById("dynamicPointsTables").innerHTML = "Failed to load standings.";
 });
-
 </script>
 
 </body>
