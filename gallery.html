@@ -12,7 +12,6 @@
         <a href="contact.html">Contact</a>
     </nav>
 </header>
-
 <!DOCTYPE html>
 <html lang="hi">
 <head>
@@ -191,24 +190,31 @@
         </div>
     </div>
 </div>
-
 <script>
     const sheetID = "1tUGjc1s7Qo8Zvn7jmn3PhUKmUk2hs7yF3OpZXXqiJSU";
     let allPlayerData = [];
 
-    // 1. Reverse Matching Function for descriptions
+    // 🔥 Flexible key reader (handles wrong column names, spaces, caps)
+    function getVal(obj, key) {
+        if (!obj) return "";
+        const found = Object.keys(obj).find(k => k.trim().toLowerCase() === key.toLowerCase());
+        return found ? obj[found] : "";
+    }
+
+    // 🔥 Description formatter (safe)
     function formatDescription(text) {
         if (!text) return "";
         let formattedText = text;
 
-        // Sort by length so "Mahfuz Siddiqui" matches before "Mahfuz"
-        const sortedPlayers = [...allPlayerData].sort((a, b) => b.Player.length - a.Player.length);
+        const sortedPlayers = [...allPlayerData].sort((a, b) => 
+            (b.Player || "").length - (a.Player || "").length
+        );
 
         sortedPlayers.forEach(p => {
-            const pName = p.Player.trim();
-            // Optional @ support, matches the name exactly even with spaces
-            const regex = new RegExp(`@?(${pName})`, 'gi'); 
-            
+            const pName = (p.Player || "").trim();
+            if (!pName) return;
+
+            const regex = new RegExp(`@?(${pName})`, 'gi');
             formattedText = formattedText.replace(regex, (match) => {
                 return `<span class="player-mention" onclick="openPlayerStats('${pName}')">${match}</span>`;
             });
@@ -217,35 +223,57 @@
         return formattedText;
     }
 
-    // Load Player Data
+    // 🔥 Load Player Data SAFE
     Promise.all([
-        fetch(`https://opensheet.elk.sh/${sheetID}/Teams`).then(res => res.json()),
-        fetch(`https://opensheet.elk.sh/${sheetID}/Batting`).then(res => res.json())
+        fetch(`https://opensheet.elk.sh/${sheetID}/Teams`).then(r => r.json()).catch(() => []),
+        fetch(`https://opensheet.elk.sh/${sheetID}/Batting`).then(r => r.json()).catch(() => [])
     ]).then(([teams, batting]) => {
-        allPlayerData = teams.map(p => {
-            let stats = batting.find(b => b.Player === p.Player) || {};
+
+        allPlayerData = (teams || []).map(p => {
+            const name = getVal(p, "Player");
+
+            let stats = (batting || []).find(b =>
+                getVal(b, "Player").trim().toLowerCase() === name.trim().toLowerCase()
+            ) || {};
+
             return { ...p, ...stats };
         });
+
         loadNews();
     });
 
+    // 🔥 MAIN NEWS LOADER (ULTRA SAFE)
     function loadNews() {
         fetch(`https://opensheet.elk.sh/${sheetID}/Gallery`)
         .then(res => res.json())
         .then(data => {
+
+            console.log("Gallery Data:", data);
+
+            if (!data || data.length === 0) {
+                document.getElementById("gallery-loader").innerText = "No Updates Available";
+                return;
+            }
+
             document.getElementById("gallery-loader").style.display = "none";
+
             let output = "";
+
             data.forEach(item => {
-                const postDate = item.Date || "Recent";
-                const desc = formatDescription(item.Description || "");
+
+                const title = getVal(item, "Title") || "Headline";
+                const desc = formatDescription(getVal(item, "Description") || "");
+                const img = getVal(item, "Image") || "https://via.placeholder.com/400x300";
+                const postDate = getVal(item, "Date") || "Recent";
+
                 output += `
                     <div class="news-card">
                         <div class="news-img-container">
-                            <img src="${item.Image || 'https://via.placeholder.com/400x300'}" alt="PCL Gallery">
+                            <img src="${img}" onerror="this.src='https://via.placeholder.com/400x300'">
                         </div>
                         <div class="news-content">
                             <span class="news-tag">Official Update</span>
-                            <div class="news-title">${item.Title || 'Headline'}</div>
+                            <div class="news-title">${title}</div>
                             <p class="news-desc">${desc}</p>
                         </div>
                         <div class="news-footer">
@@ -254,34 +282,50 @@
                         </div>
                     </div>`;
             });
+
             document.getElementById("newsContainer").innerHTML = output;
+        })
+        .catch(err => {
+            console.error("Gallery Error:", err);
+            document.getElementById("gallery-loader").innerText = "Error Loading Data";
         });
     }
 
     function openPlayerStats(playerName) {
-        const p = allPlayerData.find(player => player.Player.trim().toLowerCase() === playerName.toLowerCase());
+        const p = allPlayerData.find(player =>
+            (player.Player || "").trim().toLowerCase() === playerName.toLowerCase()
+        );
         if (!p) return;
 
         document.getElementById("mName").innerText = p.Player;
         document.getElementById("mRole").innerText = p.Role || "Player";
-        document.getElementById("mImg").src = p.Image || 'https://via.placeholder.com/300?text=No+Photo';
-        
+        document.getElementById("mImg").src = p.Image || 'https://via.placeholder.com/300';
+
         const statsToShow = [
-            {l: 'Mat', v: p.Mat}, {l: 'Runs', v: p.Runs}, {l: 'HS', v: p.HS}, 
-            {l: 'Avg', v: p.Avg}, {l: 'SR', v: p.SR}, {l: '6s', v: p['6s']}
+            {l: 'Mat', v: getVal(p,'Mat')},
+            {l: 'Runs', v: getVal(p,'Runs')},
+            {l: 'HS', v: getVal(p,'HS')},
+            {l: 'Avg', v: getVal(p,'Avg')},
+            {l: 'SR', v: getVal(p,'SR')},
+            {l: '6s', v: getVal(p,'6s')}
         ];
-        
+
         let statHtml = "";
         statsToShow.forEach(s => {
             statHtml += `<div class="stat-row"><b>${s.l}</b> <span>${s.v || 0}</span></div>`;
         });
-        
+
         document.getElementById("modalStatsList").innerHTML = statHtml;
         document.getElementById("statsModal").style.display = "block";
     }
 
-    function closeStats() { document.getElementById("statsModal").style.display = "none"; }
-    window.onclick = function(event) { if (event.target == document.getElementById("statsModal")) closeStats(); }
+    function closeStats() {
+        document.getElementById("statsModal").style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == document.getElementById("statsModal")) closeStats();
+    }
 </script>
 
 <!DOCTYPE html>
